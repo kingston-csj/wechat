@@ -1,6 +1,6 @@
 package com.kingston.net;
 
-public class IllegalPacketException extends RuntimeException{
+public class IllegalPacketException  extends RuntimeException{
 
 
 	public IllegalPacketException() {

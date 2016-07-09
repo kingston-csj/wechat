@@ -5,16 +5,16 @@ import com.kingston.net.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class ServerHearBeat extends Packet{
+public class ServerHeartBeat extends Packet{
 
 	@Override
-	public void writePacketMsg(ByteBuf buf) {
+	public void writePacketBody(ByteBuf buf) {
 //		buf.writeInt(222);
 //		buf.writeInt(333);
 	}
 
 	@Override
-	public void readFromBuff(ByteBuf buf) {
+	public void readPacketBody(ByteBuf buf) {
 //		System.err.println("args="+buf.readInt());
 //		System.err.println("args="+buf.readInt());
 		
@@ -27,7 +27,7 @@ public class ServerHearBeat extends Packet{
 
 	@Override
 	public void execPacket() {
-		System.err.println("ServerHearBeat exec.........");
+		System.out.println("收到客户端的心跳回复");
 	}
 
 }

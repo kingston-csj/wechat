@@ -5,20 +5,19 @@ import io.netty.buffer.ByteBuf;
 import com.kingston.net.Packet;
 import com.kingston.net.PacketType;
 
-
 public class ClientLogin extends Packet{
 
 	private String alertMsg;
 	private byte isValid;
 	
 	@Override
-	public void writePacketMsg(ByteBuf buf) {
+	public void writePacketBody(ByteBuf buf) {
 		writeUTF8(buf, alertMsg);
 		buf.writeByte(isValid);
 	}
 
 	@Override
-	public void readFromBuff(ByteBuf buf) {
+	public void readPacketBody(ByteBuf buf) {
 		this.alertMsg = readUTF8(buf);
 		this.isValid = buf.readByte();
 	}
@@ -30,8 +29,8 @@ public class ClientLogin extends Packet{
 
 	@Override
 	public void execPacket() {
-		System.err.println("收到服务端的验证消息，"+alertMsg);
-		LoginManager.getInstance().receiveServerMsg(this);
+		System.err.println("receive login "+alertMsg);
+		
 	}
 
 	public String getAlertMsg() {

@@ -32,8 +32,7 @@ public class NettyClientHandler extends ChannelHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception{
 		Packet  packet = (Packet)msg;
-
-		PacketManager.execPacket(packet);
+		PacketManager.INSTANCE.execPacket(packet);
 	}
 
 	@Override

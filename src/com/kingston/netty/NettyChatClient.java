@@ -30,7 +30,7 @@ public class NettyChatClient {
 					pipeline.addLast(new PacketDecoder(1024*4,0,4,0,4));
 					pipeline.addLast(new LengthFieldPrepender(4));
 					pipeline.addLast(new PacketEncoder());
-					pipeline.addLast(new HeartBeatReqHandler()); 
+//					pipeline.addLast(new HeartBeatScheduleHandler());
 					pipeline.addLast(new NettyClientHandler());
 				}
 				

@@ -1,49 +1,19 @@
 package com.kingston.net;
+
 import io.netty.buffer.ByteBuf;
 
 import java.io.UnsupportedEncodingException;
+
 public abstract  class Packet {
 
-	protected String userId;
-//	protected ByteBuf buf;
-	
-	public void writeToBuff(ByteBuf buf){
-		buf.writeShort(getPacketType().getType());
-		writePacketMsg(buf);
-	}
-	
-	abstract public void  writePacketMsg(ByteBuf buf);
-	
-	abstract public void  readFromBuff(ByteBuf buf);
-	
+	abstract public void writePacketBody(ByteBuf buf);
+
+	abstract public void readPacketBody(ByteBuf buf);
+
 	abstract public PacketType  getPacketType();
-	
+
 	abstract public void execPacket();
-	
-//	protected byte readByte(){
-//		return buf.readByte();
-//	}
-//	
-//	protected short readShort(){
-//		return buf.readShort();
-//	}
-//	
-//	protected long readLong(){
-//		return buf.readLong();
-//	}
-//	
-//	protected void writeByte(byte data){
-//		this.buf.writeByte(data);
-//	}
-//	
-//	protected void writeShort(short data){
-//		this.buf.writeShort(data);
-//	}
-//	
-//	protected void writeLong(long data){
-//		this.buf.writeLong(data);
-//	}
-	
+
 	protected  String readUTF8(ByteBuf buf){
 		int strSize = buf.readInt();
 		byte[] content = new byte[strSize];
@@ -54,9 +24,9 @@ public abstract  class Packet {
 			e.printStackTrace();
 			return "";
 		}
-		
+
 	}
-	
+
 	protected  void writeUTF8(ByteBuf buf,String msg){
 		byte[] content ;
 		try {
@@ -67,5 +37,14 @@ public abstract  class Packet {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 *  是否开启gzip压缩(默认关闭)
+	 *  消息体数据大的时候才开启，非常小的包压缩后体积反而变大，而且耗时
+	 */
+	public boolean isUseCompression() {
+		return false;
+	}
+
+
 }
