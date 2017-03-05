@@ -11,12 +11,12 @@ import com.kingston.service.login.ServerHeartBeat;
 import com.kingston.service.login.ServerLogin;
 
 public enum PacketType {
-	//ÒµÎñÉÏĞĞÊı¾İ°ü
+	//ä¸šåŠ¡ä¸Šè¡Œæ•°æ®åŒ…
 	ServerLogin((short)0x0001,ServerLogin.class),
 	ServerHearBeat((short)0x0002,ServerHeartBeat.class),
 	
 
-	//ÒµÎñÏÂĞĞÊı¾İ°ü
+	//ä¸šåŠ¡ä¸‹è¡Œæ•°æ®åŒ…
 	ClientLogin((short)0x2000,ClientLogin.class),
 	ClientHeartBeat((short)0x2001,ClientHeartBeat.class),
 	
@@ -31,7 +31,7 @@ public enum PacketType {
 		for(PacketType p:PacketType.values()){
 			Short type = p.getType();
 			if(typeSet.contains(type)){
-				throw new IllegalStateException("packet type Ğ­ÒéÀàĞÍÖØ¸´"+type);
+				throw new IllegalStateException("packet type åè®®ç±»å‹é‡å¤"+type);
 			}
 			PACKET_CLASS_MAP.put(type,p.getPacketClass());
 			typeSet.add(type);

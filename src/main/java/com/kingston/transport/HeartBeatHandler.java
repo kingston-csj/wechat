@@ -1,4 +1,4 @@
-package com.kingston.netty;
+package com.kingston.transport;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.kingston.service.login.ServerHeartBeat;
 
-public class HeartBeatReqHandler extends ChannelHandlerAdapter{
+public class HeartBeatHandler extends ChannelHandlerAdapter{
 
 	private volatile ScheduledFuture<?> heartBeatScheduler;
 	@Override

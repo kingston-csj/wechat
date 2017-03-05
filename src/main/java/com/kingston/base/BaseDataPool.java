@@ -7,5 +7,4 @@ public class BaseDataPool {
 
 	public static ChannelHandlerContext channelContext = null;
 	
-	public static Stage currStage;
 }

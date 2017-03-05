@@ -2,7 +2,6 @@ package com.kingston.base;
 
 import javafx.application.Platform;
 
-import com.kingston.entry.StartClient;
 import com.kingston.net.Packet;
 
 public enum ServerManager {
@@ -13,7 +12,7 @@ public enum ServerManager {
 	}
 	
 	/**
-	 * 将任务转移给fxapplication线程延迟执行
+	 * 灏嗕换鍔¤浆绉荤粰fxapplication绾跨▼寤惰繜鎵ц
 	 * @param task
 	 */
 	public void FXApplicationThreadExcute(Runnable task){

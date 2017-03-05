@@ -38,15 +38,15 @@ public class PacketDecoder extends LengthFieldBasedFrameDecoder{
 			return sourceBuf;
 		}
 
-		int bodyLength = sourceBuf.readInt();//ÏÈ¶ÁÑ¹ËõÊı¾İµÄ³¤¶È
+		int bodyLength = sourceBuf.readInt();//å…ˆè¯»å‹ç¼©æ•°æ®çš„é•¿åº¦
 		byte[] sourceBytes  = new byte[bodyLength];
-		sourceBuf.readBytes(sourceBytes);//µÃµ½Ñ¹ËõÊı¾İµÄ×Ö½ÚÊı×é
+		sourceBuf.readBytes(sourceBytes);//å¾—åˆ°å‹ç¼©æ•°æ®çš„å­—èŠ‚æ•°ç»„
 
-		//½âÑ¹Ëõ
+		//è§£å‹ç¼©
 		ByteArrayInputStream bis = new ByteArrayInputStream(sourceBytes);
 		GZIPInputStream gzip = new GZIPInputStream(bis);
 
-		final int MAX_MSG_LENGTH = bodyLength * 2;  //¼ÙÉèÑ¹ËõÂÊ×î´óÎª100%£¡£¡£¡£¡£¡
+		final int MAX_MSG_LENGTH = bodyLength * 2;  //å‡è®¾å‹ç¼©ç‡æœ€å¤§ä¸º100%ï¼ï¼ï¼ï¼ï¼
 		byte[] content = new byte[MAX_MSG_LENGTH];
 		int num = -1;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -57,9 +57,9 @@ public class PacketDecoder extends LengthFieldBasedFrameDecoder{
 		gzip.close();
 		bis.close();
 
-		//ÖØĞÂ·â×°³ÉByteBuf¶ÔÏó
+		//é‡æ–°å°è£…æˆByteBufå¯¹è±¡
 		ByteBuf resultBuf = Unpooled.buffer();
-		byte[] realBytes = baos.toByteArray(); //Ñ¹ËõÇ°µÄÊµ¼ÊÊı¾İ
+		byte[] realBytes = baos.toByteArray(); //å‹ç¼©å‰çš„å®é™…æ•°æ®
 		resultBuf.writeBytes(realBytes);
 		baos.close();
 

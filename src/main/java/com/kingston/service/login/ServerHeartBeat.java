@@ -9,14 +9,10 @@ public class ServerHeartBeat extends Packet{
 
 	@Override
 	public void writePacketBody(ByteBuf buf) {
-//		buf.writeInt(222);
-//		buf.writeInt(333);
 	}
 
 	@Override
 	public void readPacketBody(ByteBuf buf) {
-//		System.err.println("args="+buf.readInt());
-//		System.err.println("args="+buf.readInt());
 		
 	}
 
@@ -27,7 +23,7 @@ public class ServerHeartBeat extends Packet{
 
 	@Override
 	public void execPacket() {
-		System.out.println("收到客户端的心跳回复");
+		System.out.println("鏀跺埌瀹㈡埛绔殑蹇冭烦鍥炲");
 	}
 
 }

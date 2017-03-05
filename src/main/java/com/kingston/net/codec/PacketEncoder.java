@@ -15,9 +15,9 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Packet msg, ByteBuf out)
 			throws Exception {
-		out.writeShort(msg.getPacketType().getType());	//ÏûÏ¢Í·
-		//ÏûÏ¢Ìå
-		if(msg.isUseCompression()){  //¿ªÆôgzipÑ¹Ëõ
+		out.writeShort(msg.getPacketType().getType());	//æ¶ˆæ¯å¤´
+		//æ¶ˆæ¯ä½“
+		if(msg.isUseCompression()){  //å¼€å¯gzipå‹ç¼©
 			ByteBuf buf =  Unpooled.buffer();
 			msg.writePacketBody(buf);
 			byte[] content = new byte[buf.readableBytes()];

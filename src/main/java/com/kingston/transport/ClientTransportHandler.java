@@ -1,4 +1,4 @@
-package com.kingston.netty;
+package com.kingston.transport;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -8,23 +8,16 @@ import io.netty.channel.ChannelPromise;
 import com.kingston.base.BaseDataPool;
 import com.kingston.net.Packet;
 import com.kingston.net.PacketManager;
-import com.kingston.service.login.ServerLogin;
 
-public class NettyClientHandler extends ChannelHandlerAdapter{
+public class ClientTransportHandler extends ChannelHandlerAdapter{
 
 
-	public NettyClientHandler(){
+	public ClientTransportHandler(){
 
 	}
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx){
-		ServerLogin loginPact = new ServerLogin();
-		loginPact.setUserName("Netty°®ºÃÕß");
-		loginPact.setUserPwd("world");
-		loginPact.setUserId(1234);
-		ctx.writeAndFlush(loginPact);
-		System.err.println("Ïò·þÎñ¶Ë·¢ËÍµÇÂ¼ÇëÇó");
 		BaseDataPool.channelContext = ctx;
 	}
 
@@ -43,24 +36,23 @@ public class NettyClientHandler extends ChannelHandlerAdapter{
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		System.err.println("¿Í»§¶Ë¹Ø±Õ1");
+		System.err.println("å®¢æˆ·ç«¯å…³é—­1");
 	}
 
 	@Override
 	public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
 		ctx.disconnect(promise);
-		System.err.println("¿Í»§¶Ë¹Ø±Õ2");
+		System.err.println("å®¢æˆ·ç«¯å…³é—­2");
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		System.err.println("¿Í»§¶Ë¹Ø±Õ3");
+		System.err.println("å®¢æˆ·ç«¯å…³é—­3");
 		//	        ctx.fireExceptionCaught(cause);
 		Channel channel = ctx.channel();
 		cause.printStackTrace();
 		if(channel.isActive()){
-			System.err.println("simpleclient"+channel.remoteAddress()+"Òì³£");
-			//			    ctx.close();
+			System.err.println("simpleclient"+channel.remoteAddress()+"å¼‚å¸¸");
 		}
 	}
 }

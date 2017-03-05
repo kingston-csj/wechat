@@ -26,13 +26,13 @@ public enum PacketManager {
 	public  Packet createNewPacket(short packetType){
 		Class<? extends Packet> packetClass = PacketType.getPacketClassBy(packetType);
 		if(packetClass == null){
-			throw new IllegalPacketException("ÀàĞÍÎª"+packetType+"µÄ°ü¶¨Òå²»´æÔÚ");
+			throw new IllegalPacketException("ç±»å‹ä¸º"+packetType+"çš„åŒ…å®šä¹‰ä¸å­˜åœ¨");
 		}
 		Packet packet = null;
 		try {
 			packet = (Packet)packetClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new IllegalPacketException("ÀàĞÍÎª"+packetType+"µÄ°üÊµÀı»¯Ê§°Ü");
+			throw new IllegalPacketException("ç±»å‹ä¸º"+packetType+"çš„åŒ…å®ä¾‹åŒ–å¤±è´¥");
 		}
 
 		return packet;
