@@ -1,7 +1,7 @@
-package com.kingston.service.login;
+package com.kingston.logic.login.message;
 
-import com.kingston.net.Packet;
-import com.kingston.net.PacketType;
+import com.kingston.net.message.Packet;
+import com.kingston.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 

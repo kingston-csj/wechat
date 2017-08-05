@@ -1,10 +1,10 @@
-package com.kingston.service.login;
+package com.kingston.logic.login.message;
 
 import io.netty.buffer.ByteBuf;
 
 import com.kingston.base.ServerManager;
-import com.kingston.net.Packet;
-import com.kingston.net.PacketType;
+import com.kingston.net.message.Packet;
+import com.kingston.net.message.PacketType;
 
 public class ClientHeartBeat extends Packet{
 

@@ -1,14 +1,23 @@
 package com.kingston.base;
 
+import com.kingston.net.IoSession;
+import com.kingston.net.message.Packet;
+
+import io.netty.channel.Channel;
 import javafx.application.Platform;
 
-import com.kingston.net.Packet;
-
 public enum ServerManager {
+	
 	INSTANCE;
+	
+	private IoSession session;
+	
+	public void registerSession(Channel channel) {
+		this.session = new IoSession(channel);
+	}
 
 	public void sendServerRequest(Packet request){
-		BaseDataPool.channelContext.writeAndFlush(request);
+		this.session.sendPacket(request);
 	}
 	
 	/**
@@ -18,4 +27,5 @@ public enum ServerManager {
 	public void FXApplicationThreadExcute(Runnable task){
 		Platform.runLater(task);
 	}
+	
 }

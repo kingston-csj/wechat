@@ -1,5 +1,7 @@
 package com.kingston.net;
 
+import com.kingston.net.message.Packet;
+
 import io.netty.channel.Channel;
 
 public class IoSession {

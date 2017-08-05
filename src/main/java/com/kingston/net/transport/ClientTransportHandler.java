@@ -1,9 +1,9 @@
-package com.kingston.transport;
+package com.kingston.net.transport;
 
-import com.kingston.base.BaseDataPool;
-import com.kingston.net.Packet;
+import com.kingston.base.ServerManager;
+import com.kingston.logic.login.LoginManager;
 import com.kingston.net.PacketManager;
-import com.kingston.service.login.ServerLogin;
+import com.kingston.net.message.Packet;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -19,14 +19,11 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx){
-		BaseDataPool.channelContext = ctx;
+		//注册session
+		ServerManager.INSTANCE.registerSession(ctx.channel());
+		//发送账号登录协议
+		LoginManager.getInstance().beginToLogin();
 		
-		 ServerLogin loginPact = new ServerLogin();  
-		 	loginPact.setUserId(1);
-	        loginPact.setUserName("Netty爱好者");  
-	        loginPact.setUserPwd("world");  
-	        ctx.writeAndFlush(loginPact);  
-	        System.err.println("向服务端发送登录请求");  
 	}
 
 	@Override

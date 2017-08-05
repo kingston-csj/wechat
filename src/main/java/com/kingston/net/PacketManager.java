@@ -3,6 +3,10 @@ package com.kingston.net;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.kingston.net.message.IllegalPacketException;
+import com.kingston.net.message.Packet;
+import com.kingston.net.message.PacketType;
+
 public enum PacketManager {
 
 	INSTANCE;
