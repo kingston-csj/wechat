@@ -1,13 +1,14 @@
 package com.kingston.transport;
 
+import com.kingston.base.BaseDataPool;
+import com.kingston.net.Packet;
+import com.kingston.net.PacketManager;
+import com.kingston.service.login.ServerLogin;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
-
-import com.kingston.base.BaseDataPool;
-import com.kingston.net.Packet;
-import com.kingston.net.PacketManager;
 
 public class ClientTransportHandler extends ChannelHandlerAdapter{
 
@@ -19,6 +20,13 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 	@Override
 	public void channelActive(ChannelHandlerContext ctx){
 		BaseDataPool.channelContext = ctx;
+		
+		 ServerLogin loginPact = new ServerLogin();  
+		 	loginPact.setUserId(1);
+	        loginPact.setUserName("Netty爱好者");  
+	        loginPact.setUserPwd("world");  
+	        ctx.writeAndFlush(loginPact);  
+	        System.err.println("向服务端发送登录请求");  
 	}
 
 	@Override

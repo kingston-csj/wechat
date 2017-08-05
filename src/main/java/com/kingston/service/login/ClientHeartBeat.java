@@ -27,7 +27,7 @@ public class ClientHeartBeat extends Packet{
 
 	@Override
 	public void execPacket() {
-		System.err.println("ÊÕµ½·şÎñ¶ËµÄpingÇëÇóºó£¬»Ø¸´Ò»¸öpongÏìÓ¦");  
+		System.err.println("æ”¶åˆ°æœåŠ¡ç«¯çš„pingåŒ…ï¼Œå›å¤pongåŒ…");  
 		ServerManager.INSTANCE.sendServerRequest(new ServerHeartBeat());  
 	}
 
