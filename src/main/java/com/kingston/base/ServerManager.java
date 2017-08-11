@@ -1,7 +1,7 @@
 package com.kingston.base;
 
 import com.kingston.net.IoSession;
-import com.kingston.net.message.Packet;
+import com.kingston.net.message.AbstractPacket;
 
 import io.netty.channel.Channel;
 import javafx.application.Platform;
@@ -16,7 +16,7 @@ public enum ServerManager {
 		this.session = new IoSession(channel);
 	}
 
-	public void sendServerRequest(Packet request){
+	public void sendServerRequest(AbstractPacket request){
 		this.session.sendPacket(request);
 	}
 	

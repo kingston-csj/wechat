@@ -1,6 +1,6 @@
 package com.kingston.net;
 
-import com.kingston.net.message.Packet;
+import com.kingston.net.message.AbstractPacket;
 
 import io.netty.channel.Channel;
 
@@ -26,7 +26,7 @@ public class IoSession {
 	 * 向客户端发送消息
 	 * @param packet
 	 */
-	public void sendPacket(Packet packet) {
+	public void sendPacket(AbstractPacket packet) {
 		if (packet == null) {
 			return;
 		}

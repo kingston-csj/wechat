@@ -3,7 +3,7 @@ package com.kingston.net.transport;
 import com.kingston.base.ServerManager;
 import com.kingston.logic.login.LoginManager;
 import com.kingston.net.PacketManager;
-import com.kingston.net.message.Packet;
+import com.kingston.net.message.AbstractPacket;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -29,7 +29,7 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception{
-		Packet  packet = (Packet)msg;
+		AbstractPacket  packet = (AbstractPacket)msg;
 		PacketManager.INSTANCE.execPacket(packet);
 	}
 

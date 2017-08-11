@@ -1,11 +1,11 @@
 package com.kingston.logic.login.message;
 
-import com.kingston.net.message.Packet;
-import com.kingston.net.message.PacketType;
-
 import io.netty.buffer.ByteBuf;
 
-public class ServerHeartBeat extends Packet{
+import com.kingston.net.message.AbstractPacket;
+import com.kingston.net.message.PacketType;
+
+public class ReqHeartBeatPacket extends AbstractPacket{
 
 	@Override
 	public void writePacketBody(ByteBuf buf) {
@@ -18,7 +18,7 @@ public class ServerHeartBeat extends Packet{
 
 	@Override
 	public PacketType getPacketType() {
-		return PacketType.ServerHearBeat;
+		return PacketType.ReqHeartBeat;
 	}
 
 	@Override

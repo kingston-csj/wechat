@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.UnsupportedEncodingException;
 
-public abstract  class Packet {
+public abstract class AbstractPacket {
 
 	abstract public void writePacketBody(ByteBuf buf);
 

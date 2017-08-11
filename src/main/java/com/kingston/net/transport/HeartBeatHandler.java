@@ -6,7 +6,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 
 import java.util.concurrent.TimeUnit;
 
-import com.kingston.logic.login.message.ServerHeartBeat;
+import com.kingston.logic.login.message.ReqHeartBeatPacket;
 
 public class HeartBeatHandler extends ChannelHandlerAdapter{
 
@@ -32,7 +32,7 @@ public class HeartBeatHandler extends ChannelHandlerAdapter{
 		}
 		@Override
 		public void run() {
-			this.ctx.writeAndFlush(new ServerHeartBeat());
+			this.ctx.writeAndFlush(new ReqHeartBeatPacket());
 		}
 
 	}

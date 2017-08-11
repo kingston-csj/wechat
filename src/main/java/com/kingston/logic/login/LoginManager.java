@@ -1,8 +1,8 @@
 package com.kingston.logic.login;
 
 import com.kingston.base.ServerManager;
-import com.kingston.logic.login.message.ClientLogin;
-import com.kingston.logic.login.message.ServerLogin;
+import com.kingston.logic.login.message.ReqUserLoginPacket;
+import com.kingston.logic.login.message.RespUserLoginPacket;
 
 public class LoginManager {
 
@@ -15,7 +15,7 @@ public class LoginManager {
 	}
 	
 	public void beginToLogin() {
-		ServerLogin reqLogin= new ServerLogin();  
+		ReqUserLoginPacket reqLogin= new ReqUserLoginPacket();  
 		reqLogin.setUserId(1);
 		reqLogin.setUserName("Netty爱好者");  
 		reqLogin.setUserPwd("world");  
@@ -24,6 +24,6 @@ public class LoginManager {
 		ServerManager.INSTANCE.sendServerRequest(reqLogin);
 	}
 	
-	public void receiveServerMsg(ClientLogin resp){
+	public void receiveServerMsg(RespUserLoginPacket resp){
 	}
 }

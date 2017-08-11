@@ -4,14 +4,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.kingston.net.message.IllegalPacketException;
-import com.kingston.net.message.Packet;
+import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 
 public enum PacketManager {
 
 	INSTANCE;
 	
-	public  void execPacket(Packet pact){
+	public  void execPacket(AbstractPacket pact){
 		if(pact == null) return;
 		try {
 			Method m = pact.getClass().getMethod("execPacket");
@@ -27,14 +27,14 @@ public enum PacketManager {
 		}
 	}
 	
-	public  Packet createNewPacket(short packetType){
-		Class<? extends Packet> packetClass = PacketType.getPacketClassBy(packetType);
+	public  AbstractPacket createNewPacket(short packetType){
+		Class<? extends AbstractPacket> packetClass = PacketType.getPacketClassBy(packetType);
 		if(packetClass == null){
 			throw new IllegalPacketException("类型为"+packetType+"的包定义不存在");
 		}
-		Packet packet = null;
+		AbstractPacket packet = null;
 		try {
-			packet = (Packet)packetClass.newInstance();
+			packet = (AbstractPacket)packetClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new IllegalPacketException("类型为"+packetType+"的包实例化失败");
 		}

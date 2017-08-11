@@ -5,26 +5,34 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.kingston.logic.login.message.ClientHeartBeat;
-import com.kingston.logic.login.message.ClientLogin;
-import com.kingston.logic.login.message.ServerHeartBeat;
-import com.kingston.logic.login.message.ServerLogin;
+import com.kingston.logic.login.message.ReqHeartBeatPacket;
+import com.kingston.logic.login.message.ReqUserLoginPacket;
+import com.kingston.logic.login.message.RespHeartBeatPacket;
+import com.kingston.logic.login.message.RespUserLoginPacket;
+import com.kingston.logic.user.message.ReqUserRegisterPacket;
+import com.kingston.logic.user.message.ResUserRegisterPacket;
 
 public enum PacketType {
 	//业务上行数据包
-	ServerLogin((short)0x0001,ServerLogin.class),
-	ServerHearBeat((short)0x0002,ServerHeartBeat.class),
-	
+	//链接心跳包
+	ReqHeartBeat((short)0x0001, ReqHeartBeatPacket.class),
+	//新用户注册
+	ReqUserRegister((short)0x0100, ReqUserRegisterPacket.class),
+	//用户登陆
+	ReqUserLogin((short)0x0101, ReqUserLoginPacket.class),
+
 
 	//业务下行数据包
-	ClientLogin((short)0x2000,ClientLogin.class),
-	ClientHeartBeat((short)0x2001,ClientHeartBeat.class),
-	
+	RespHeartBeat((short)0x2001, RespHeartBeatPacket.class),
+	//新用户注册
+	ResUserRegister((short)0x2100, ResUserRegisterPacket.class),
+
+	RespUserLogin((short)0x2102, RespUserLoginPacket.class),
 	;
 
 	private short type;
-	private Class<? extends Packet> packetClass;
-	private static Map<Short,Class<? extends Packet>> PACKET_CLASS_MAP = new HashMap<Short,Class<? extends Packet>>();
+	private Class<? extends AbstractPacket> packetClass;
+	private static Map<Short,Class<? extends AbstractPacket>> PACKET_CLASS_MAP = new HashMap<Short,Class<? extends AbstractPacket>>();
 
 	static{
 		Set<Short> typeSet = new HashSet<Short>();
@@ -37,8 +45,8 @@ public enum PacketType {
 			typeSet.add(type);
 		}
 	}
-	
-	PacketType(short type,Class<? extends Packet> packetClass){
+
+	PacketType(short type,Class<? extends AbstractPacket> packetClass){
 		this.setType(type);
 		this.packetClass = packetClass;
 	}
@@ -51,16 +59,16 @@ public enum PacketType {
 		this.type = type;
 	}
 
-	public Class<? extends Packet> getPacketClass() {
+	public Class<? extends AbstractPacket> getPacketClass() {
 		return packetClass;
 	}
 
-	public void setPacketClass(Class<? extends Packet> packetClass) {
+	public void setPacketClass(Class<? extends AbstractPacket> packetClass) {
 		this.packetClass = packetClass;
 	}
 
 
-	public static  Class<? extends Packet> getPacketClassBy(short packetType){
+	public static  Class<? extends AbstractPacket> getPacketClassBy(short packetType){
 		return PACKET_CLASS_MAP.get(packetType);
 	}
 
