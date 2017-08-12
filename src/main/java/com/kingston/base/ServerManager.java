@@ -2,6 +2,7 @@ package com.kingston.base;
 
 import com.kingston.net.IoSession;
 import com.kingston.net.message.AbstractPacket;
+import com.kingston.ui.StageController;
 
 import io.netty.channel.Channel;
 import javafx.application.Platform;
@@ -9,6 +10,8 @@ import javafx.application.Platform;
 public enum ServerManager {
 	
 	INSTANCE;
+	
+	private StageController stageController = new StageController();
 	
 	private IoSession session;
 	
@@ -18,6 +21,11 @@ public enum ServerManager {
 
 	public void sendServerRequest(AbstractPacket request){
 		this.session.sendPacket(request);
+	}
+	
+	
+	public StageController getStageController() {
+		return stageController;
 	}
 	
 	/**

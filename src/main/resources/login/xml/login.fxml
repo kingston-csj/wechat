@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+   fx:controller="com.kingston.ui.viewcontroller.LoginViewController" stylesheets="@../css/login.css">
+   <children>
+      <ImageView fitHeight="330.0" fitWidth="430.0" layoutX="91.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../img/login.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="login" layoutX="135.0" layoutY="288.0" mnemonicParsing="false" onMouseClicked="#login" onMouseEntered="#login_en" onMouseExited="#login_ex" prefHeight="32.0" prefWidth="194.0" text="安  全  登  录" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="38.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/head.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="username" layoutX="135.0" layoutY="195.0" prefHeight="25.0" prefWidth="194.0" promptText="帐号" text="123456" />
+      <PasswordField fx:id="password" layoutX="135.0" layoutY="226.0" prefHeight="25.0" prefWidth="194.0" promptText="密码" text="kingston" />
+      <CheckBox fx:id="rememberPsw" layoutX="135.0" layoutY="258.0" mnemonicParsing="false" text="记住密码" />
+      <CheckBox fx:id="autoLogin" layoutX="260.0" layoutY="258.0" mnemonicParsing="false" text="自动登录" />
+      <Label />
+      <Label />
+      <ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="399.0" onMouseClicked="#close" onMouseEntered="#closeEntered" onMouseExited="#closeExited" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../img/close.png" />
+         </image>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+      </ImageView>
+      <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="346.0" onMouseClicked="#min" onMouseEntered="#minEntered" onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../img/min.png" />
+         </image>
+      </ImageView>
+      <ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0" prefWidth="200.0" visible="false" />
+      <Pane fx:id="loginError" layoutY="36.0" prefHeight="307.0" prefWidth="430.0" style="-fx-background-color: #9AD3EE;" visible="false" AnchorPane.topAnchor="30.0">
+         <children>
+            <Label layoutX="118.0" layoutY="52.0" prefHeight="153.0" prefWidth="194.0" text="您输入的密码或帐号不正确！" wrapText="true">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Label>
+            <Button layoutX="118.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#callBackLogin" prefHeight="32.0" prefWidth="194.0" style="-fx-background-color: #09A3DC;" text="返 回 登 录" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Hyperlink layoutX="339.0" layoutY="195.0" text="注册帐号">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Hyperlink>
+      <Hyperlink layoutX="339.0" layoutY="226.0" text="找回密码">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Hyperlink>
+   </children>
+   <rotationAxis>
+      <Point3D />
+   </rotationAxis>
+   
+</AnchorPane>

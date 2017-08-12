@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #70D1FF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.dunn.im.events.UserInfoEvent">
+   <children>
+      <Pane layoutY="87.0" prefHeight="516.0" prefWidth="800.0" style="-fx-background-color: #E0EFFF;" />
+      <ImageView fx:id="headImage" layoutX="14.0" layoutY="14.0">
+         <image>
+            <Image url="@../img/head.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Label fx:id="username" layoutX="90.0" layoutY="14.0" text="username" visible="false">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="autograph" layoutX="90.0" layoutY="53.0" text="autograph" textFill="#575757" visible="false">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="741.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../login/img/min.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="771.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../login/img/close.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="userid" layoutX="296.0" layoutY="25.0" text="userid" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="but1" layoutX="640.0" layoutY="528.0" mnemonicParsing="false" onMouseEntered="#mainButEn" onMouseExited="#mainButEx" prefHeight="47.0" prefWidth="131.0" style="-fx-background-color: #09A3DC;" text="加为好友" textFill="WHITE" visible="false">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="but2" layoutX="640.0" layoutY="528.0" mnemonicParsing="false" onMouseEntered="#mainButEn" onMouseExited="#mainButEx" prefHeight="47.0" prefWidth="131.0" style="-fx-background-color: #09A3DC;" text="发送消息" textFill="WHITE" visible="false">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="but3" layoutX="640.0" layoutY="528.0" mnemonicParsing="false" onMouseEntered="#mainButEn" onMouseExited="#mainButEx" prefHeight="47.0" prefWidth="131.0" style="-fx-background-color: #09A3DC;" text="保  存" textFill="WHITE" visible="false">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
+      <TextField layoutX="90.0" layoutY="13.0" text="username">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="90.0" layoutY="50.0" text="autograph">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Label layoutX="310.0" layoutY="19.0" text="register 2015年7月5日 23:01:26">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="headImagePath" layoutX="326.0" layoutY="56.0" text="headImagePath" visible="false">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="headImageMD5" layoutX="527.0" layoutY="46.0" text="headImageMD5" visible="false">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

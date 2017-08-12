@@ -21,8 +21,6 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 	public void channelActive(ChannelHandlerContext ctx){
 		//注册session
 		ServerManager.INSTANCE.registerSession(ctx.channel());
-		//发送账号登录协议
-		LoginManager.getInstance().beginToLogin();
 		
 	}
 

@@ -2,6 +2,7 @@ package com.kingston.logic.login.message;
 
 import io.netty.buffer.ByteBuf;
 
+import com.kingston.logic.login.LoginManager;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 
@@ -29,8 +30,8 @@ public class RespUserLoginPacket extends AbstractPacket{
 
 	@Override
 	public void execPacket() {
-		System.err.println("receive login "+alertMsg);
-		
+		System.err.println("receive login "+ alertMsg);
+		LoginManager.getInstance().handleLoginResponse(this);
 	}
 
 	public String getAlertMsg() {

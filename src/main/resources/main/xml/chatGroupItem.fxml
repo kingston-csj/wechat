@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="5.0">
+         <image>
+            <Image url="@../img/head.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="68.0" layoutY="9.0" text="groupname">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="friendId" layoutX="206.0" layoutY="23.0" text="groupid" visible="false" />
+      <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="50.0" layoutX="180.0" layoutY="26.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: #f00;" text="99" textAlignment="CENTER" textFill="WHITE" visible="false">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+   </children>
+</Pane>

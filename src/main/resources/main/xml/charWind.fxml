@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #70D1FF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.6372549019607843" layoutY="88.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="627.0">
+        <items>
+          <AnchorPane minHeight="250.0" minWidth="0.0" prefHeight="327.0" prefWidth="620.0">
+               <children>
+                  <ScrollPane fitToWidth="true" layoutY="20.0" maxWidth="625.0" prefHeight="275.0" prefWidth="625.0">
+                     <content>
+                        <VBox fillWidth="false" maxWidth="625.0" prefHeight="273.0" prefWidth="625.0" />
+                     </content>
+                  </ScrollPane>
+                  <ProgressIndicator layoutX="269.0" layoutY="121.0" visible="false" />
+                  <Button mnemonicParsing="false" prefHeight="1.0" prefWidth="625.0" text="加载更多" />
+                  <ProgressBar prefHeight="23.0" prefWidth="625.0" visible="false" />
+               </children>
+            </AnchorPane>
+          <AnchorPane maxWidth="625.0" minHeight="120.0" minWidth="0.0" prefHeight="173.0" prefWidth="625.0">
+               <children>
+                  <TextArea fx:id="waitArea" maxWidth="625.0" prefHeight="143.0" prefWidth="625.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <ImageView fx:id="headImage" layoutX="14.0" layoutY="14.0">
+         <image>
+            <Image url="@../img/head.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="username" layoutX="90.0" layoutY="14.0" text="username" visible="false">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="autograph" layoutX="90.0" layoutY="53.0" text="autograph" textFill="#575757">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="elegantImage" fitHeight="507.0" fitWidth="170.0" layoutX="628.0" layoutY="90.0">
+         <image>
+            <Image url="@../img/elegant.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="563.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="发送" />
+      <Button layoutX="488.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="关闭" />
+      <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="741.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../login/img/min.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="771.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../login/img/close.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="userid" layoutX="296.0" layoutY="25.0" text="userid" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Hyperlink layoutX="80.0" layoutY="13.0" text="username">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Hyperlink>
+   </children>
+</Pane>
