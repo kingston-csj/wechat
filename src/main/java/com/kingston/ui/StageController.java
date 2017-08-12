@@ -33,7 +33,7 @@ public class StageController {
 			FXMLLoader loader = new FXMLLoader(url);
 			Pane tmpPane = (Pane)loader.load();
 			ControlledStage controlledStage = (ControlledStage)loader.getController();
-			controlledStage.setController(this);
+//			controlledStage.setController(this);
 			
 			Scene tmpScene = new Scene(tmpPane);
 			result = new Stage();

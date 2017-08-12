@@ -48,8 +48,7 @@ public class ResUserRegisterPacket extends AbstractPacket {
 
 	@Override
 	public void execPacket() {
-		// TODO Auto-generated method stub
-		
+		UserManager.getInstance().handleRegisterResponse(getResultCode(), getMessage());
 	}
 
 	@Override
@@ -57,6 +56,4 @@ public class ResUserRegisterPacket extends AbstractPacket {
 		return "ResUserRegisterPacket [resultCode=" + resultCode + ", message=" + message + "]";
 	}
 	
-	
-
 }

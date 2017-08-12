@@ -7,21 +7,16 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
-import javafx.scene.effect.Light.Point;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import com.kingston.ui.ControlledStage;
-import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
 
 public class MainViewController implements ControlledStage {
 	
-	private StageController controller;
-
 	public static Stage stage;
-	public static Point point = new Point();
 	@FXML
 	private ImageView close;
 	@FXML
@@ -118,8 +113,8 @@ public class MainViewController implements ControlledStage {
 		shineImage.setVisible(true);
 	}
 
-	@Override
-	public void setController(StageController controller) {
-		this.controller = controller;
-	}
+//	@Override
+//	public void setController(StageController controller) {
+//		this.controller = controller;
+//	}
 }

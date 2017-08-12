@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.RadioButton?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
+	prefWidth="430.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.kingston.ui.viewcontroller.RegisterViewController"
+	stylesheets="@../css/register.css">
+	<children>
+		<Text layoutX="50.0" layoutY="75.0" text="欢迎注册帐号">
+			<font>
+				<Font size="24.0" />
+			</font>
+		</Text>
+		<Text layoutX="50.0" layoutY="105.0" text="每一天，乐在沟通。">
+			<font>
+				<Font size="18.0" />
+			</font>
+		</Text>
+		<TextField fx:id="userName" layoutX="100.0" layoutY="140.0"
+			prefHeight="25.0" prefWidth="240.0" promptText="帐号" />
+		<PasswordField fx:id="password" layoutX="100.0" layoutY="170.0"
+			prefHeight="25.0" prefWidth="240.0" promptText="密码" />
+
+		<!-- <RadioButton text="男" fx:id="sex" layoutX="100" layoutY="195" selected="true"
+			prefHeight="20" />
+		<RadioButton text="女" fx:id="sex" layoutX="150" layoutY="195"
+			prefHeight="20" />  -->
+		<Label />
+		<Label />
+		<ImageView fitHeight="30.0" fitWidth="30.0" layoutX="399.0"
+			onMouseClicked="#close" onMouseEntered="#closeEntered" onMouseExited="#closeExited"
+			pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0"
+			AnchorPane.topAnchor="0.0">
+			<image>
+				<Image url="@../img/close.png" />
+			</image>
+			<rotationAxis>
+				<Point3D />
+			</rotationAxis>
+		</ImageView>
+		<ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0"
+			prefWidth="200.0" visible="false" />
+		<Label fx:id="errorText" layoutX="135.0" layoutY="200.0"
+			prefHeight="20.0" prefWidth="194.0" text="该用户名已被使用" wrapText="true"
+			visible="false">
+			<font>
+				<Font size="14.0" />
+			</font>
+		</Label>
+
+		<Button fx:id="register" layoutX="100.0" layoutY="235.0"
+			prefHeight="32.0" prefWidth="240.0" mnemonicParsing="false"
+			onMouseClicked="#register" onMouseEntered="#register_entered"
+			onMouseExited="#register_exit" text="立 即 注 册" textFill="WHITE">
+			<font>
+				<Font size="18.0" />
+			</font>
+		</Button>
+
+		<Hyperlink layoutX="350.0" layoutY="140.0" text="返回登录"
+			onMouseClicked="#gotoLogin">
+			<font>
+				<Font size="14.0" />
+			</font>
+		</Hyperlink>
+
+		<CheckBox layoutX="100.0" layoutY="280.0" mnemonicParsing="false"
+			selected="true" disable="true" prefWidth="250.0" text="我已阅读并同意相关服务条款和隐私政策 ">
+			<font>
+				<Font size="12.0" />
+			</font>
+		</CheckBox>
+
+	</children>
+	<rotationAxis>
+		<Point3D />
+	</rotationAxis>
+
+</AnchorPane>

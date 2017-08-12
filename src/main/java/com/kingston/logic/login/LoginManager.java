@@ -3,7 +3,7 @@ package com.kingston.logic.login;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import com.kingston.base.ServerManager;
+import com.kingston.base.ClientBaseService;
 import com.kingston.logic.GlobalConst;
 import com.kingston.logic.login.message.ReqUserLoginPacket;
 import com.kingston.logic.login.message.RespUserLoginPacket;
@@ -26,19 +26,19 @@ public class LoginManager {
 		reqLogin.setUserName("Netty爱好者");  
 		reqLogin.setUserPwd(password);  
 		System.err.println("向服务端发送登录请求");  
-		ServerManager.INSTANCE.sendServerRequest(reqLogin);
+		ClientBaseService.INSTANCE.sendServerRequest(reqLogin);
 	}
 
 	public void handleLoginResponse(RespUserLoginPacket resp){
 		boolean isSucc = resp.getIsValid() == GlobalConst.SUCC;
 		if (isSucc) {
-			ServerManager.INSTANCE.FXApplicationThreadExcute(() -> {
+			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
 				enterMainPanel(resp.getAlertMsg());
 			});
 		}else {
-			ServerManager.INSTANCE.FXApplicationThreadExcute(() -> {
-				StageController stageController = ServerManager.INSTANCE.getStageController();
-				Stage stage = stageController.getStageBy(R.Id.LoginView);
+			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
+				StageController stageController = ClientBaseService.INSTANCE.getStageController();
+				Stage stage = stageController.getStageBy(R.id.LoginView);
 				Pane errPane = (Pane)stage.getScene().getRoot().lookup("#loginError");
 				errPane.setVisible(true);
 			});
@@ -46,8 +46,8 @@ public class LoginManager {
 	}
 
 	private void enterMainPanel(String nickName) {
-		StageController stageController = ServerManager.INSTANCE.getStageController();
-		stageController.switchStage(R.Id.MainView, R.Id.LoginView);
+		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		stageController.switchStage(R.id.MainView, R.id.LoginView);
 //		Label _username = (Label) ComponentContainer._MAIN_PARENT.getChildrenUnmodifiable().get(6);
 //		_username.setText(nickName);
 	}

@@ -7,12 +7,16 @@ import com.kingston.ui.StageController;
 import io.netty.channel.Channel;
 import javafx.application.Platform;
 
-public enum ServerManager {
+/**
+ * 提供一些基础服务接口
+ * @author kingston
+ */
+public enum ClientBaseService {
 	
 	INSTANCE;
 	
 	private StageController stageController = new StageController();
-	
+	/** 通信会话 */
 	private IoSession session;
 	
 	public void registerSession(Channel channel) {
@@ -23,7 +27,6 @@ public enum ServerManager {
 		this.session.sendPacket(request);
 	}
 	
-	
 	public StageController getStageController() {
 		return stageController;
 	}
@@ -32,7 +35,7 @@ public enum ServerManager {
 	 * 将任务转移给fxapplication线程延迟执行
 	 * @param task
 	 */
-	public void FXApplicationThreadExcute(Runnable task){
+	public void runTaskInFxThread(Runnable task){
 		Platform.runLater(task);
 	}
 	

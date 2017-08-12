@@ -2,14 +2,14 @@ package com.kingston;
 
 import java.io.IOException;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import com.kingston.base.ServerManager;
+import com.kingston.base.ClientBaseService;
 import com.kingston.net.transport.ChatClient;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
+
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ClientStartup extends Application {
 
@@ -22,17 +22,18 @@ public class ClientStartup extends Application {
 	public void start(final Stage stage) throws IOException {
 
 		connectToServer();
-		
-		StageController stageController = ServerManager.INSTANCE.getStageController();
+
+		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		stageController.setPrimaryStage("root", stage);
 
-		Stage loginStage = stageController.loadStage(R.Id.LoginView, R.Layout.LoginView, StageStyle.UNDECORATED);
+		Stage loginStage = stageController.loadStage(R.id.LoginView, R.layout.LoginView, StageStyle.UNDECORATED);
 		loginStage.setTitle("QQ");
-		
-		Stage mainStage = stageController.loadStage(R.Id.MainView, R.Layout.MainView);
+
+		stageController.loadStage(R.id.RegisterView, R.layout.RegisterView);
+		stageController.loadStage(R.id.MainView, R.layout.MainView);
 
 		//显示MainView舞台
-		stageController.setStage(R.Id.LoginView);
+		stageController.setStage(R.id.LoginView);
 	}
 
 	private void connectToServer() {

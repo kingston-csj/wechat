@@ -1,6 +1,6 @@
 package com.kingston.net.transport;
 
-import com.kingston.base.ServerManager;
+import com.kingston.base.ClientBaseService;
 import com.kingston.logic.login.LoginManager;
 import com.kingston.net.PacketManager;
 import com.kingston.net.message.AbstractPacket;
@@ -20,7 +20,7 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 	@Override
 	public void channelActive(ChannelHandlerContext ctx){
 		//注册session
-		ServerManager.INSTANCE.registerSession(ctx.channel());
+		ClientBaseService.INSTANCE.registerSession(ctx.channel());
 		
 	}
 

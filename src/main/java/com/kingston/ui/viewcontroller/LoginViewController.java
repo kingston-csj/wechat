@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,21 +16,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import com.kingston.base.ServerManager;
+import com.kingston.base.ClientBaseService;
 import com.kingston.logic.login.LoginManager;
 import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
+import com.kingston.util.NumberUtil;
 
 public class LoginViewController implements ControlledStage, Initializable {
 
-	private StageController controller;
-	
 	@FXML
 	private Button login;
 	@FXML
-	private TextField username;
+	private TextField userId;
 	@FXML
 	private PasswordField password;
 	@FXML
@@ -46,20 +46,18 @@ public class LoginViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void login() throws IOException {
-		final long useId = Long.parseLong(username.getText());
+		final long useId = Long.parseLong(userId.getText());
 		final String psw = password.getText();
-		
+
 		LoginManager.getInstance().beginToLogin(useId, psw);
-		
-		
 
 //		ObservableList<Node> list = ComponentContainer._LOGIN.getChildrenUnmodifiable();
 //		for (Node node : list) {
 //			node.setDisable(true);
 //		}
-		
-		StageController controller = ServerManager.INSTANCE.getStageController();
-		Stage loginStage = controller.getStageBy(R.Id.LoginView);
+
+		StageController controller = ClientBaseService.INSTANCE.getStageController();
+		Stage loginStage = controller.getStageBy(R.id.LoginView);
 //		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(9).setDisable(false);
 //		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(10).setDisable(false);
 //		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(11).setDisable(false);
@@ -125,15 +123,24 @@ public class LoginViewController implements ControlledStage, Initializable {
 	private void login_ex() {
 		login.setStyle("-fx-background-radius:4;-fx-background-color: #09A3DC");
 	}
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		
+
+	@FXML
+	private void gotoRegister() {
+		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		stageController.switchStage(R.id.RegisterView, R.id.LoginView);
 	}
 
 	@Override
-	public void setController(StageController controller) {
-		this.controller = controller;
+	public void initialize(URL location, ResourceBundle resources) {
+		//验证规则：　userId非空且为数字　password非空
+		login.disableProperty().bind(
+			Bindings.createBooleanBinding(
+				() -> userId.getText().length() == 0 ||
+					  !NumberUtil.isInteger(userId.getText()) ||
+					  password.getText().length() == 0,
+				userId.textProperty(),
+				password.textProperty()));
 	}
+
 
 }
