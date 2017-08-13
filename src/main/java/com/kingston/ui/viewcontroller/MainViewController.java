@@ -11,11 +11,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import com.kingston.base.ClientBaseService;
 import com.kingston.ui.ControlledStage;
+import com.kingston.ui.R;
+import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
 
 public class MainViewController implements ControlledStage {
-	
+
 	public static Stage stage;
 	@FXML
 	private ImageView close;
@@ -113,8 +116,10 @@ public class MainViewController implements ControlledStage {
 		shineImage.setVisible(true);
 	}
 
-//	@Override
-//	public void setController(StageController controller) {
-//		this.controller = controller;
-//	}
+	@Override
+	public Stage getMyStage() {
+		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		return stageController.getStageBy(R.id.MainView);
+	}
+
 }

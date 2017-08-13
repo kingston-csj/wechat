@@ -12,13 +12,13 @@ import javafx.application.Platform;
  * @author kingston
  */
 public enum ClientBaseService {
-	
+
 	INSTANCE;
-	
+
 	private StageController stageController = new StageController();
 	/** 通信会话 */
 	private IoSession session;
-	
+
 	public void registerSession(Channel channel) {
 		this.session = new IoSession(channel);
 	}
@@ -26,11 +26,19 @@ public enum ClientBaseService {
 	public void sendServerRequest(AbstractPacket request){
 		this.session.sendPacket(request);
 	}
-	
+
+	/**
+	 * 是否已连上服务器
+	 * @return
+	 */
+	public boolean isConnectedSever() {
+		return this.session != null;
+	}
+
 	public StageController getStageController() {
 		return stageController;
 	}
-	
+
 	/**
 	 * 将任务转移给fxapplication线程延迟执行
 	 * @param task
@@ -38,5 +46,5 @@ public enum ClientBaseService {
 	public void runTaskInFxThread(Runnable task){
 		Platform.runLater(task);
 	}
-	
+
 }

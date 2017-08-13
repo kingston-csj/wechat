@@ -1,9 +1,9 @@
 .root {
    -fx-background-radius:4;
-   -fx-background-color:#F0F8FF;
+   -fx-background-color:#F5F5F5
 }
 
-#errorText {
+#errorTips {
 	-fx-text-fill:red;
 	-fx-text-alignment:center;
 }

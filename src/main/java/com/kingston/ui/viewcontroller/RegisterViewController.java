@@ -20,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class RegisterViewController implements ControlledStage, Initializable {
 
@@ -30,12 +32,21 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	@FXML
 	private PasswordField password;
 	@FXML
-	private Label errorText;
+	private Label errorTips;
 	@FXML
 	private ToggleGroup sexGroup;
+	@FXML
+	private ImageView minBtn;
+	@FXML
+	private ImageView closeBtn;
 
 	@FXML
 	private void register() {
+		if (!ClientBaseService.INSTANCE.isConnectedSever()) {
+			errorTips.setText(R.string.FAIL_TO_CONNECT_SERVER);
+			errorTips.setVisible(true);
+			return;
+		}
 		String nickName = userName.getText();
 		String psw = password.getText();
 		byte sexCode = Byte.parseByte(sexGroup.getSelectedToggle().getUserData().toString());
@@ -53,10 +64,6 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	}
 
 	@FXML
-	private void userNameChange() {
-	}
-
-	@FXML
 	private void close() {
 		System.exit(1);
 	}
@@ -68,11 +75,13 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	@FXML
 	private void closeEntered() {
 		Image image = ResourceContainer.getClose_1();
+		closeBtn.setImage(image);
 	}
 
 	@FXML
 	private void closeExited() {
 		Image image = ResourceContainer.getClose();
+		closeBtn.setImage(image);
 	}
 
 	@FXML
@@ -85,13 +94,20 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	private void clearFields() {
 		userName.setText("");
 		password.setText("");
-		errorText.setText("");
-		errorText.setVisible(false);
+		errorTips.setText("");
+		errorTips.setVisible(false);
 	}
 
 	@FXML
-	private void callBackLogin() {
+	private void minEntered() {
+		Image image = ResourceContainer.getMin_1();
+		minBtn.setImage(image);
+	}
 
+	@FXML
+	private void minExited() {
+		Image image = ResourceContainer.getMin();
+		minBtn.setImage(image);
 	}
 
 	@Override
@@ -108,6 +124,12 @@ public class RegisterViewController implements ControlledStage, Initializable {
 			Toggle sexToggle = this.sexGroup.getToggles().get(i);
 			sexToggle.setUserData(String.valueOf(i));
 		}
+	}
+
+	@Override
+	public Stage getMyStage() {
+		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		return stageController.getStageBy(R.id.RegisterView);
 	}
 
 

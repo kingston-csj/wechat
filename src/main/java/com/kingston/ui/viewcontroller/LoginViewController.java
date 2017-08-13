@@ -4,19 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.beans.binding.Bindings;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
 import com.kingston.base.ClientBaseService;
 import com.kingston.logic.login.LoginManager;
 import com.kingston.ui.ControlledStage;
@@ -24,6 +11,20 @@ import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
 import com.kingston.util.NumberUtil;
+
+import javafx.beans.binding.Bindings;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class LoginViewController implements ControlledStage, Initializable {
 
@@ -38,25 +39,34 @@ public class LoginViewController implements ControlledStage, Initializable {
 	@FXML
 	private CheckBox autoLogin;
 	@FXML
-	private ImageView close;
+	private ImageView closeBtn;
 	@FXML
-	private ImageView min;
+	private ImageView minBtn;
 
 	@FXML
 	private ProgressBar loginProgress;
 
 	@FXML
-	private Pane loginError;
+	private Pane errorPane;
+
+	@FXML
+	private Label errorTips;
 
 	@FXML
 	private void login() throws IOException {
 		final long useId = Long.parseLong(userId.getText());
 		final String psw = password.getText();
+
+		if (!ClientBaseService.INSTANCE.isConnectedSever()) {
+			errorPane.setVisible(true);
+			errorTips.setText(R.string.FAIL_TO_CONNECT_SERVER);
+			return;
+		}
+
 		loginProgress.setVisible(true);
 		login.setVisible(false);
 
 		LoginManager.getInstance().beginToLogin(useId, psw);
-
 	}
 
 	@FXML
@@ -66,45 +76,41 @@ public class LoginViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void min() {
+		Stage stage = getMyStage();
+		if (stage != null) {
+			stage.setIconified(true);
+		}
 	}
 
 	@FXML
 	private void closeEntered() {
 		Image image = ResourceContainer.getClose_1();
-		close.setImage(image);
+		closeBtn.setImage(image);
 	}
 
 	@FXML
 	private void closeExited() {
 		Image image = ResourceContainer.getClose();
-		close.setImage(image);
+		closeBtn.setImage(image);
 	}
 
 	@FXML
 	private void minEntered() {
 		Image image = ResourceContainer.getMin_1();
-		min.setImage(image);
+		minBtn.setImage(image);
 	}
 
 	@FXML
 	private void minExited() {
 		Image image = ResourceContainer.getMin();
-		min.setImage(image);
+		minBtn.setImage(image);
 	}
 
 
 	@FXML
-	private void callBackLogin() {
-//		ObservableList<Node> list = ComponentContainer._LOGIN.getChildrenUnmodifiable();
-//		for (Node node : list) {
-//			node.setDisable(false);
-//		}
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(1).setVisible(true);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(11).setVisible(false);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(13).setVisible(true);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(14).setVisible(true);
+	private void backToLogin() {
 		loginProgress.setVisible(false);
-		loginError.setVisible(false);
+		errorPane.setVisible(false);
 	}
 
 	@FXML
@@ -135,5 +141,10 @@ public class LoginViewController implements ControlledStage, Initializable {
 				password.textProperty()));
 	}
 
+	@Override
+	public Stage getMyStage() {
+		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		return stageController.getStageBy(R.id.LoginView);
+	}
 
 }

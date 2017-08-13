@@ -28,7 +28,7 @@ public class ClientStartup extends Application {
 
 		Stage loginStage = stageController.loadStage(R.id.LoginView, R.layout.LoginView, StageStyle.UNDECORATED);
 		loginStage.setTitle("QQ");
-		stageController.loadStage(R.id.RegisterView, R.layout.RegisterView);
+		stageController.loadStage(R.id.RegisterView, R.layout.RegisterView, StageStyle.UNDECORATED);
 		stageController.loadStage(R.id.MainView, R.layout.MainView);
 
 		//显示MainView舞台

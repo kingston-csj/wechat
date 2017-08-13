@@ -47,7 +47,7 @@
 			mnemonicParsing="false" text="自动登录" />
 		<Label />
 		<Label />
-		<ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0"
+		<ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0"
 			layoutX="399.0" onMouseClicked="#close" onMouseEntered="#closeEntered"
 			onMouseExited="#closeExited" pickOnBounds="true" preserveRatio="true"
 			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -58,7 +58,7 @@
 				<Point3D />
 			</rotationAxis>
 		</ImageView>
-		<ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0"
+		<ImageView fx:id="minBtn" fitHeight="30.0" fitWidth="30.0"
 			layoutX="346.0" onMouseClicked="#min" onMouseEntered="#minEntered"
 			onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true"
 			AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
@@ -66,20 +66,20 @@
 				<Image url="@../img/min.png" />
 			</image>
 		</ImageView>
-		<ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0"
+		<ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0" fx:id="loginProgress"
 			prefWidth="200.0" visible="false" />
-		<Pane fx:id="loginError" layoutY="36.0" prefHeight="307.0"
+		<Pane fx:id="errorPane" layoutY="36.0" prefHeight="307.0"
 			prefWidth="430.0" style="-fx-background-color: #9AD3EE;" visible="false"
 			AnchorPane.topAnchor="30.0">
 			<children>
-				<Label layoutX="118.0" layoutY="52.0" prefHeight="153.0"
-					prefWidth="194.0" text="您输入的密码或帐号不正确！" wrapText="true">
+				<Label fx:id="errorTips" layoutX="118.0" layoutY="52.0" prefHeight="153.0"
+					prefWidth="194.0" wrapText="true">
 					<font>
 						<Font size="27.0" />
 					</font>
 				</Label>
 				<Button layoutX="118.0" layoutY="223.0" mnemonicParsing="false"
-					onMouseClicked="#callBackLogin" prefHeight="32.0" prefWidth="194.0"
+					onMouseClicked="#backToLogin" prefHeight="32.0" prefWidth="194.0"
 					style="-fx-background-color: #09A3DC;" text="返 回 登 录" textFill="WHITE">
 					<font>
 						<Font size="18.0" />
