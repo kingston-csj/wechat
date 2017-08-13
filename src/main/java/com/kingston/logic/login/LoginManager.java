@@ -23,7 +23,6 @@ public class LoginManager {
 	public void beginToLogin(long userId, String password) {
 		ReqUserLoginPacket reqLogin= new ReqUserLoginPacket();  
 		reqLogin.setUserId(userId);
-		reqLogin.setUserName("Netty爱好者");  
 		reqLogin.setUserPwd(password);  
 		System.err.println("向服务端发送登录请求");  
 		ClientBaseService.INSTANCE.sendServerRequest(reqLogin);

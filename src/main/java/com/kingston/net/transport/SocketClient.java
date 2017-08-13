@@ -15,7 +15,7 @@ import io.netty.handler.codec.LengthFieldPrepender;
 import com.kingston.net.codec.PacketDecoder;  
 import com.kingston.net.codec.PacketEncoder;  
 
-public class ChatClient {  
+public class SocketClient {  
 
 	/** 当前重接次数*/
 	private int reconnectTimes = 0;

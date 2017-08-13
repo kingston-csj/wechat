@@ -9,7 +9,6 @@ import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
-import com.kingston.util.NumberUtil;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -17,8 +16,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 
 public class RegisterViewController implements ControlledStage, Initializable {
@@ -32,16 +32,14 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	@FXML
 	private Label errorText;
 	@FXML
-	private RadioButton sex;
+	private ToggleGroup sexGroup;
 
 	@FXML
 	private void register() {
 		String nickName = userName.getText();
 		String psw = password.getText();
-		sex.getText();
-		System.err.print(sex.getText());
-		byte sex = (byte)0;
-		UserManager.getInstance().registerAccount(sex, nickName, psw);
+		byte sexCode = Byte.parseByte(sexGroup.getSelectedToggle().getUserData().toString());
+		UserManager.getInstance().registerAccount(sexCode, nickName, psw);
 	}
 
 	@FXML
@@ -105,6 +103,11 @@ public class RegisterViewController implements ControlledStage, Initializable {
 					  password.getText().length() == 0,
 				userName.textProperty(),
 				password.textProperty()));
+		//把性别的常量值填进去
+		for (int i=0;i<this.sexGroup.getToggles().size();i++) {
+			Toggle sexToggle = this.sexGroup.getToggles().get(i);
+			sexToggle.setUserData(String.valueOf(i));
+		}
 	}
 
 

@@ -3,7 +3,7 @@ package com.kingston;
 import java.io.IOException;
 
 import com.kingston.base.ClientBaseService;
-import com.kingston.net.transport.ChatClient;
+import com.kingston.net.transport.SocketClient;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 
@@ -20,7 +20,7 @@ public class ClientStartup extends Application {
 
 	@Override
 	public void start(final Stage stage) throws IOException {
-
+		//与服务端建立连接
 		connectToServer();
 
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
@@ -28,7 +28,6 @@ public class ClientStartup extends Application {
 
 		Stage loginStage = stageController.loadStage(R.id.LoginView, R.layout.LoginView, StageStyle.UNDECORATED);
 		loginStage.setTitle("QQ");
-
 		stageController.loadStage(R.id.RegisterView, R.layout.RegisterView);
 		stageController.loadStage(R.id.MainView, R.layout.MainView);
 
@@ -39,7 +38,7 @@ public class ClientStartup extends Application {
 	private void connectToServer() {
 		new Thread() {
 			public void run() {
-				new ChatClient().start();
+				new SocketClient().start();
 			};
 		}.start();
 	}

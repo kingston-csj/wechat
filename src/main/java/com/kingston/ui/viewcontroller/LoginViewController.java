@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,28 +43,19 @@ public class LoginViewController implements ControlledStage, Initializable {
 	private ImageView min;
 
 	@FXML
+	private ProgressBar loginProgress;
+
+	@FXML
 	private Pane loginError;
 
 	@FXML
 	private void login() throws IOException {
 		final long useId = Long.parseLong(userId.getText());
 		final String psw = password.getText();
+		loginProgress.setVisible(true);
+		login.setVisible(false);
 
 		LoginManager.getInstance().beginToLogin(useId, psw);
-
-//		ObservableList<Node> list = ComponentContainer._LOGIN.getChildrenUnmodifiable();
-//		for (Node node : list) {
-//			node.setDisable(true);
-//		}
-
-		StageController controller = ClientBaseService.INSTANCE.getStageController();
-		Stage loginStage = controller.getStageBy(R.id.LoginView);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(9).setDisable(false);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(10).setDisable(false);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(11).setDisable(false);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(12).setDisable(false);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(1).setVisible(false);
-//		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(11).setVisible(true);
 
 	}
 
@@ -111,6 +103,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 //		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(11).setVisible(false);
 //		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(13).setVisible(true);
 //		ComponentContainer._LOGIN.getChildrenUnmodifiable().get(14).setVisible(true);
+		loginProgress.setVisible(false);
 		loginError.setVisible(false);
 	}
 

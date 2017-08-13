@@ -5,11 +5,9 @@ import io.netty.buffer.ByteBuf;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 
-public class ReqUserLoginPacket  extends AbstractPacket{
+public class ReqUserLoginPacket extends AbstractPacket{
 
-	private byte reqType;
 	private long userId;
-	private String userName;
 	private String userPwd; 
 
 	@Override
@@ -37,14 +35,6 @@ public class ReqUserLoginPacket  extends AbstractPacket{
 		
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
 	public String getUserPwd() {
 		return userPwd;
 	}
@@ -59,14 +49,6 @@ public class ReqUserLoginPacket  extends AbstractPacket{
 
 	public void setUserId(long userId) {
 		this.userId = userId;
-	}
-
-	public byte getReqType() {
-		return reqType;
-	}
-
-	public void setReqType(byte reqType) {
-		this.reqType = reqType;
 	}
 
 }

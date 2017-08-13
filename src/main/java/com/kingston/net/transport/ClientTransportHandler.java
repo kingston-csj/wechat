@@ -1,14 +1,13 @@
 package com.kingston.net.transport;
 
-import com.kingston.base.ClientBaseService;
-import com.kingston.logic.login.LoginManager;
-import com.kingston.net.PacketManager;
-import com.kingston.net.message.AbstractPacket;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
+
+import com.kingston.base.ClientBaseService;
+import com.kingston.net.PacketManager;
+import com.kingston.net.message.AbstractPacket;
 
 public class ClientTransportHandler extends ChannelHandlerAdapter{
 
@@ -51,7 +50,6 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		System.err.println("客户端关闭3");
-		//	        ctx.fireExceptionCaught(cause);
 		Channel channel = ctx.channel();
 		cause.printStackTrace();
 		if(channel.isActive()){
