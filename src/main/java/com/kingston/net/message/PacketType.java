@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.kingston.logic.friend.message.RespFriendListPacket;
 import com.kingston.logic.login.message.ReqHeartBeatPacket;
 import com.kingston.logic.login.message.ReqUserLoginPacket;
 import com.kingston.logic.login.message.RespHeartBeatPacket;
@@ -28,6 +29,9 @@ public enum PacketType {
 	ResUserRegister((short)0x2100, ResUserRegisterPacket.class),
 
 	RespUserLogin((short)0x2102, RespUserLoginPacket.class),
+	/** 好友列表 */
+	RespFriendList((short)0x2104, RespFriendListPacket.class),
+
 	;
 
 	private short type;

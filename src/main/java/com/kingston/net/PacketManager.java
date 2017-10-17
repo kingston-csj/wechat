@@ -10,7 +10,7 @@ import com.kingston.net.message.PacketType;
 public enum PacketManager {
 
 	INSTANCE;
-	
+
 	public  void execPacket(AbstractPacket pact){
 		if(pact == null) return;
 		try {
@@ -26,11 +26,14 @@ public enum PacketManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public  AbstractPacket createNewPacket(short packetType){
 		Class<? extends AbstractPacket> packetClass = PacketType.getPacketClassBy(packetType);
 		if(packetClass == null){
 			throw new IllegalPacketException("类型为"+packetType+"的包定义不存在");
+		}
+		if (packetType!=0x2001){
+			System.err.println("sdf");
 		}
 		AbstractPacket packet = null;
 		try {
@@ -41,5 +44,5 @@ public enum PacketManager {
 
 		return packet;
 	}
-	
+
 }

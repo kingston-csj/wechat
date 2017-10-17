@@ -11,13 +11,13 @@ public class ReqUserLoginPacket extends AbstractPacket{
 	private String userPwd; 
 
 	@Override
-	public void writePacketBody(ByteBuf buf) {
+	public void writeBody(ByteBuf buf) {
 		buf.writeLong(userId);
 		writeUTF8(buf, userPwd);
 	}
 
 	@Override
-	public void readPacketBody(ByteBuf buf) {
+	public void readBody(ByteBuf buf) {
 		this.userId = buf.readLong();
 		this.userPwd =readUTF8(buf);
 

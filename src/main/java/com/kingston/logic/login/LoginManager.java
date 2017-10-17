@@ -7,7 +7,13 @@ import com.kingston.logic.login.message.RespUserLoginPacket;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 
+import javafx.scene.Node;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -50,8 +56,14 @@ public class LoginManager {
 	private void enterMainPanel(String nickName) {
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.MainView, R.id.LoginView);
-//		Label _username = (Label) ComponentContainer._MAIN_PARENT.getChildrenUnmodifiable().get(6);
-//		_username.setText(nickName);
+
+		Stage stage = stageController.getStageBy(R.id.MainView);
+		Label userNameLabel = (Label)stage.getScene().getRoot().lookup("#username");
+		userNameLabel.setText(nickName);
+
+
 	}
+
+
 
 }

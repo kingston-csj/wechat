@@ -8,11 +8,11 @@ import com.kingston.net.message.PacketType;
 public class ReqHeartBeatPacket extends AbstractPacket{
 
 	@Override
-	public void writePacketBody(ByteBuf buf) {
+	public void writeBody(ByteBuf buf) {
 	}
 
 	@Override
-	public void readPacketBody(ByteBuf buf) {
+	public void readBody(ByteBuf buf) {
 		
 	}
 

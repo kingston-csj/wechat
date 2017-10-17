@@ -8,7 +8,10 @@ Netty聊天室客户端。
   
 
 注册界面  
-![](/screenshots/register.png "RegisterUI")　　　
+![](/screenshots/register.png "RegisterUI")  
+
+主界面  
+![](/screenshots/main.png "MainUI")  　　　
 
 
 

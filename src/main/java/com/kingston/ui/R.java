@@ -16,6 +16,8 @@ public final class R {
 		public static final String LoginView = "login/xml/login.fxml";
 		/** 主界面 */
 		public static final String MainView = "main/xml/main.fxml";
+		/** 主界面 */
+		public static final String FriendItem = "main/xml/friendItem.fxml";
 	}
 
 	public static class string {

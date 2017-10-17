@@ -38,7 +38,7 @@
 			</image>
 		</ImageView>
 		<TextField fx:id="userId" layoutX="135.0" layoutY="195.0"
-			prefHeight="25.0" prefWidth="194.0" promptText="帐号" text="123456" />
+			prefHeight="25.0" prefWidth="194.0" promptText="帐号" text="1000" />
 		<PasswordField fx:id="password" layoutX="135.0" layoutY="226.0"
 			prefHeight="25.0" prefWidth="194.0" promptText="密码" />
 		<CheckBox fx:id="rememberPsw" layoutX="135.0" layoutY="258.0"
