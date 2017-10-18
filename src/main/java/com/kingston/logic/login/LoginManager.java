@@ -2,18 +2,14 @@ package com.kingston.logic.login;
 
 import com.kingston.base.ClientBaseService;
 import com.kingston.logic.GlobalConst;
+import com.kingston.logic.login.message.ReqHeartBeatPacket;
 import com.kingston.logic.login.message.ReqUserLoginPacket;
 import com.kingston.logic.login.message.ResUserLoginPacket;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
+import com.kingston.util.SchedulerManager;
 
-import javafx.scene.Node;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -41,6 +37,8 @@ public class LoginManager {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
 				enterMainPanel(resp.getAlertMsg());
 			});
+			
+			registerHeartTimer();
 		}else {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
 				StageController stageController = ClientBaseService.INSTANCE.getStageController();
@@ -52,18 +50,23 @@ public class LoginManager {
 			});
 		}
 	}
-
+	
 	private void enterMainPanel(String nickName) {
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.MainView, R.id.LoginView);
 
 		Stage stage = stageController.getStageBy(R.id.MainView);
-		Label userNameLabel = (Label)stage.getScene().getRoot().lookup("#username");
-		userNameLabel.setText(nickName);
-
-
+		Label userNameUi = (Label)stage.getScene().getRoot().lookup("#username");
+		userNameUi.setText(nickName);
 	}
-
-
+	
+	/**
+	 * 注册心跳事件
+	 */
+	private void registerHeartTimer() {
+		SchedulerManager.INSTANCE.scheduleAtFixedRate("HEART_BEAT", ()->{
+			ClientBaseService.INSTANCE.sendServerRequest(new ReqHeartBeatPacket());
+		}, 0, 5*1000);
+	}
 
 }
