@@ -1,12 +1,13 @@
-package com.kingston.logic.login.message;
+package com.kingston.logic.chat.message.resp;
 
-import io.netty.buffer.ByteBuf;
-
-import com.kingston.base.ClientBaseService;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 
-public class RespHeartBeatPacket extends AbstractPacket{
+import io.netty.buffer.ByteBuf;
+
+public class ResChatToUserPacket extends AbstractPacket {
+	
+	private String content;
 
 	@Override
 	public void writeBody(ByteBuf buf) {
@@ -22,13 +23,22 @@ public class RespHeartBeatPacket extends AbstractPacket{
 
 	@Override
 	public PacketType getPacketType() {
-		return PacketType.RespHeartBeat;
+		return PacketType.ResChatToUser;
 	}
 
 	@Override
 	public void execPacket() {
-		System.err.println("收到服务端的ping包，回复pong包");  
-		ClientBaseService.INSTANCE.sendServerRequest(new ReqHeartBeatPacket());  
+		// TODO Auto-generated method stub
+		
 	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
 
 }

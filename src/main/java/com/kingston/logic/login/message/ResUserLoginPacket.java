@@ -6,7 +6,7 @@ import com.kingston.logic.login.LoginManager;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 
-public class RespUserLoginPacket extends AbstractPacket{
+public class ResUserLoginPacket extends AbstractPacket{
 
 	private String alertMsg;
 	private byte isValid;

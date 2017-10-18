@@ -27,7 +27,7 @@ public enum PacketManager {
 		}
 	}
 
-	public  AbstractPacket createNewPacket(short packetType){
+	public  AbstractPacket createNewPacket(int packetType){
 		Class<? extends AbstractPacket> packetClass = PacketType.getPacketClassBy(packetType);
 		if(packetClass == null){
 			throw new IllegalPacketException("类型为"+packetType+"的包定义不存在");

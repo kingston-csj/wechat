@@ -1,9 +1,5 @@
 package com.kingston.net.message;
 
-import io.netty.buffer.ByteBuf;
-
-import java.io.UnsupportedEncodingException;
-
 public abstract class AbstractPacket extends ByteBufBean {
 
 	abstract public PacketType  getPacketType();

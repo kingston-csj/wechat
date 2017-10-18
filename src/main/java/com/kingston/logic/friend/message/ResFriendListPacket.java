@@ -10,13 +10,13 @@ import com.kingston.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class RespFriendListPacket extends AbstractPacket {
+public class ResFriendListPacket extends AbstractPacket {
 
 	private List<FriendItemVo> friends;
 
 	@Override
 	public PacketType getPacketType() {
-		return PacketType.RespFriendList;
+		return PacketType.ResFriendList;
 	}
 
 	public List<FriendItemVo> getFriends() {

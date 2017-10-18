@@ -3,7 +3,7 @@ package com.kingston.logic.login;
 import com.kingston.base.ClientBaseService;
 import com.kingston.logic.GlobalConst;
 import com.kingston.logic.login.message.ReqUserLoginPacket;
-import com.kingston.logic.login.message.RespUserLoginPacket;
+import com.kingston.logic.login.message.ResUserLoginPacket;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 
@@ -35,7 +35,7 @@ public class LoginManager {
 		ClientBaseService.INSTANCE.sendServerRequest(reqLogin);
 	}
 
-	public void handleLoginResponse(RespUserLoginPacket resp){
+	public void handleLoginResponse(ResUserLoginPacket resp){
 		boolean isSucc = resp.getIsValid() == GlobalConst.SUCC;
 		if (isSucc) {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
