@@ -47,10 +47,8 @@ public class FriendManager {
 	private void decorateFriendItem(Pane itemUi, FriendItemVo friendVo) {
 		Label autographLabel = (Label) itemUi.lookup("#signature");
 		autographLabel.setText(friendVo.getSignature());
-		System.out.println("-------------"+friendVo.getSignature());
 		Hyperlink _username_ = (Hyperlink) itemUi.lookup("#userName");
 		_username_.setText(friendVo.getFullName());
 	}
-
 
 }

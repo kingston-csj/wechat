@@ -37,7 +37,7 @@ public class LoginManager {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
 				enterMainPanel(resp.getAlertMsg());
 			});
-			
+
 			registerHeartTimer();
 		}else {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
@@ -50,16 +50,16 @@ public class LoginManager {
 			});
 		}
 	}
-	
+
 	private void enterMainPanel(String nickName) {
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.MainView, R.id.LoginView);
 
 		Stage stage = stageController.getStageBy(R.id.MainView);
 		Label userNameUi = (Label)stage.getScene().getRoot().lookup("#username");
-		userNameUi.setText(nickName);
+		userNameUi.setText("Java爱好者");
 	}
-	
+
 	/**
 	 * 注册心跳事件
 	 */

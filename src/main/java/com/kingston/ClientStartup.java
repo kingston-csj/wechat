@@ -3,6 +3,7 @@ package com.kingston;
 import java.io.IOException;
 
 import com.kingston.base.ClientBaseService;
+import com.kingston.net.message.PacketType;
 import com.kingston.net.transport.SocketClient;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
@@ -15,7 +16,7 @@ public class ClientStartup extends Application {
 
 	@Override
 	public void init() throws Exception {
-
+		PacketType.initPackets();
 	}
 
 	@Override

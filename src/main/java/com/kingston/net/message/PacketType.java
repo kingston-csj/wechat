@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.kingston.logic.chat.message.req.ReqChatToGroupPacket;
 import com.kingston.logic.chat.message.req.ReqChatToUserPacket;
+import com.kingston.logic.chat.message.resp.ResChatToGroupPacket;
 import com.kingston.logic.chat.message.resp.ResChatToUserPacket;
 import com.kingston.logic.friend.message.ResFriendListPacket;
 import com.kingston.logic.login.message.ReqHeartBeatPacket;
@@ -52,7 +53,7 @@ public enum PacketType {
 	/** 推送--单聊 */
 	ResChatToUser(4_200, ResChatToUserPacket.class),
 	/** 推送--群聊 */
-	ResChatToGroup(4_201, ReqChatToGroupPacket.class),
+	ResChatToGroup(4_201, ResChatToGroupPacket.class),
 
 	/** 推送--好友列表 */
 	ResFriendList(5_200, ResFriendListPacket.class),

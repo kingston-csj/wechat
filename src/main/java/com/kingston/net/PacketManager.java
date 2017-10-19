@@ -27,19 +27,16 @@ public enum PacketManager {
 		}
 	}
 
-	public  AbstractPacket createNewPacket(int packetType){
+	public AbstractPacket createNewPacket(int packetType) {
 		Class<? extends AbstractPacket> packetClass = PacketType.getPacketClassBy(packetType);
-		if(packetClass == null){
-			throw new IllegalPacketException("类型为"+packetType+"的包定义不存在");
-		}
-		if (packetType!=0x2001){
-			System.err.println("sdf");
+		if (packetClass == null) {
+			throw new IllegalPacketException("类型为"+packetType+"的消息定义不存在");
 		}
 		AbstractPacket packet = null;
 		try {
 			packet = (AbstractPacket)packetClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new IllegalPacketException("类型为"+packetType+"的包实例化失败");
+			throw new IllegalPacketException("类型为"+packetType+"的消息实例化失败");
 		}
 
 		return packet;
