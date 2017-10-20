@@ -64,7 +64,7 @@
 				<Image url="@../../login/img/close.png" />
 			</image>
 		</ImageView>
-		<Label fx:id="username" contentDisplay="CENTER" layoutX="111.0" layoutY="39.0" onMouseEntered="#username_entered" onMouseExited="#username_exited" text="username" textFill="WHITE">
+		<Label fx:id="username" contentDisplay="CENTER" layoutX="95.0" layoutY="39.0" onMouseEntered="#username_entered" onMouseExited="#username_exited" text="username" textFill="WHITE">
 			<font>
 				<Font size="20.0" />
 			</font>
@@ -72,7 +72,7 @@
 				<Insets bottom="-1.0" left="5.0" right="5.0" top="-1.0" />
 			</padding>
 		</Label>
-		<Label fx:id="autograph" layoutX="111.0" layoutY="79.0" onMouseEntered="#autograph_entered" onMouseExited="#autograph_exited" text="autograph" textFill="WHITE">
+		<Label id="signature" fx:id="autograph" layoutX="95.0" layoutY="66.0" onMouseEntered="#autograph_entered" onMouseExited="#autograph_exited" prefHeight="18.0" prefWidth="193.0" text="个性签名" textFill="WHITE">
 			<font>
 				<Font size="17.0" />
 			</font>

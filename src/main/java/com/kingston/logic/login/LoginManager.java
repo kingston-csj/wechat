@@ -35,7 +35,7 @@ public class LoginManager {
 		boolean isSucc = resp.getIsValid() == GlobalConst.SUCC;
 		if (isSucc) {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
-				enterMainPanel(resp.getAlertMsg());
+				redirecToMainPanel();
 			});
 
 			registerHeartTimer();
@@ -51,13 +51,9 @@ public class LoginManager {
 		}
 	}
 
-	private void enterMainPanel(String nickName) {
+	private void redirecToMainPanel() {
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.MainView, R.id.LoginView);
-
-		Stage stage = stageController.getStageBy(R.id.MainView);
-		Label userNameUi = (Label)stage.getScene().getRoot().lookup("#username");
-		userNameUi.setText("Java爱好者");
 	}
 
 	/**
