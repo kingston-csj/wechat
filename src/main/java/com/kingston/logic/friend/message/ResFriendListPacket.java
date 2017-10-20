@@ -29,7 +29,7 @@ public class ResFriendListPacket extends AbstractPacket {
 
 	@Override
 	public void execPacket() {
-		FriendManager.getInstance().showMyFriendsView(friends);
+		FriendManager.getInstance().receiveFriendsList(friends);
 
 	}
 

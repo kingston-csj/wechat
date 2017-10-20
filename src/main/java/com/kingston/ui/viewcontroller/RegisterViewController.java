@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.kingston.base.ClientBaseService;
-import com.kingston.logic.user.message.UserManager;
+import com.kingston.logic.user.UserManager;
 import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;

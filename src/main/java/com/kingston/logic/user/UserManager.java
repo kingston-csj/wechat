@@ -1,20 +1,27 @@
-package com.kingston.logic.user.message;
+package com.kingston.logic.user;
+
+import com.kingston.base.ClientBaseService;
+import com.kingston.logic.GlobalConst;
+import com.kingston.logic.user.message.ReqUserRegisterPacket;
+import com.kingston.ui.R;
+import com.kingston.ui.StageController;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import com.kingston.base.ClientBaseService;
-import com.kingston.logic.GlobalConst;
-import com.kingston.ui.R;
-import com.kingston.ui.StageController;
-
 public class UserManager {
 	
 	private static UserManager instance = new UserManager();
 	
+	private MyProfile profile = new MyProfile();
+	
 	public static UserManager getInstance() {
 		return instance;
+	}
+	
+	public void updateMyProfile() {
+		
 	}
 	
 	public void registerAccount(byte sex, String nickName, String password) {

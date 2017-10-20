@@ -1,6 +1,8 @@
 package com.kingston.logic.friend;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.kingston.base.ClientBaseService;
 import com.kingston.logic.friend.vo.FriendItemVo;
@@ -20,12 +22,27 @@ import javafx.stage.Stage;
 public class FriendManager {
 
 	private static FriendManager instance = new FriendManager();
+	
+	private Map<Long, FriendItemVo> friends = new HashMap<>();
 
 	public static FriendManager getInstance() {
 		return instance;
 	}
+	
+	public void receiveFriendsList(List<FriendItemVo> friendItems) {
+		friends.clear();
+		for (FriendItemVo item:friendItems) {
+			friends.put(item.getUserId(), item);
+		}
+		
+		refreshMyFriendsView(friendItems);
+	}
+	
+	public FriendItemVo queryFriend(long friendId) {
+		return this.friends.get(friendId);
+	}
 
-	public void showMyFriendsView(List<FriendItemVo> friendItems) {
+	public void refreshMyFriendsView(List<FriendItemVo> friendItems) {
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		Stage stage = stageController.getStageBy(R.id.MainView);
 		ScrollPane scrollPane = (ScrollPane)stage.getScene().getRoot().lookup("#friendSp");

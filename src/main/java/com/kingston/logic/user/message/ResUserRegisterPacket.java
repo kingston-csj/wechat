@@ -1,9 +1,10 @@
 package com.kingston.logic.user.message;
 
-import io.netty.buffer.ByteBuf;
-
+import com.kingston.logic.user.UserManager;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
+
+import io.netty.buffer.ByteBuf;
 
 public class ResUserRegisterPacket extends AbstractPacket {
 	
