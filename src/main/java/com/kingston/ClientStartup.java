@@ -1,7 +1,6 @@
 package com.kingston;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 import com.kingston.base.ClientBaseService;
 import com.kingston.net.message.PacketType;
@@ -12,6 +11,7 @@ import com.kingston.ui.StageController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Screen;
 
 public class ClientStartup extends Application {
 
@@ -31,9 +31,16 @@ public class ClientStartup extends Application {
 		Stage loginStage = stageController.loadStage(R.id.LoginView, R.layout.LoginView,
 								StageStyle.UNDECORATED);
 		loginStage.setTitle("QQ");
+		
 		stageController.loadStage(R.id.RegisterView, R.layout.RegisterView, StageStyle.UNDECORATED);
-		stageController.loadStage(R.id.MainView, R.layout.MainView);
-
+		Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView);
+		
+//		Screen screen = Screen.getPrimary();
+//		double rightTopX = screen.getVisualBounds().getWidth()*0.75;
+//		double rightTopY = screen.getVisualBounds().getHeight()*0.2;
+//		mainStage.setX(rightTopX);
+//		mainStage.setY(rightTopY);
+		
 		//显示MainView舞台
 		stageController.setStage(R.id.LoginView);
 	}

@@ -72,10 +72,10 @@ public class MainViewController implements ControlledStage {
 			@Override
 			public void changed(ObservableValue<? extends TitledPane> arg0, TitledPane arg1, TitledPane arg2) {
 				if (arg2 != null) {
-					System.out.println("---------------");
+					System.out.println("-------11111111--------");
 				}
 				if (arg1 != null) {
-					System.out.println("----------------");
+					System.out.println("-------2222222222---------");
 				}
 			}
 		});

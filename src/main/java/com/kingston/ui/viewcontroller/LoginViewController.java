@@ -111,6 +111,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 	private void backToLogin() {
 		loginProgress.setVisible(false);
 		errorPane.setVisible(false);
+		login.setVisible(true);
 	}
 
 	@FXML

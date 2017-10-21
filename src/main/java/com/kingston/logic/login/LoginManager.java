@@ -43,7 +43,7 @@ public class LoginManager {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
 				StageController stageController = ClientBaseService.INSTANCE.getStageController();
 				Stage stage = stageController.getStageBy(R.id.LoginView);
-				Pane errPane = (Pane)stage.getScene().getRoot().lookup("#loginError");
+				Pane errPane = (Pane)stage.getScene().getRoot().lookup("#errorPane");
 				errPane.setVisible(true);
 				Label errTips = (Label)stage.getScene().getRoot().lookup("#errorTips");
 				errTips.setText(R.string.FAIL_TO_CONNECT_SERVER);
