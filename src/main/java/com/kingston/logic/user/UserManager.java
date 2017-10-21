@@ -6,6 +6,7 @@ import com.kingston.logic.user.message.ReqUserRegisterPacket;
 import com.kingston.logic.user.message.ResUserInfoMessage;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
+import com.kingston.util.I18n;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -58,14 +59,14 @@ public class UserManager {
 		if (isSucc) {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
 				errorTips.setVisible(true);
-				errorTips.setText(R.string.REGISTER_SUCC);
+				errorTips.setText(I18n.get("register.operateSucc"));
 				long userId = Long.parseLong(message);
 				gotoLoginPanel(userId);
 			});
 		}else {
 			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
 				errorTips.setVisible(true);
-				errorTips.setText(R.string.REGISTER_FAILED);
+				errorTips.setText("register.nickUsed");
 			});
 		}
 	}

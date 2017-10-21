@@ -6,6 +6,8 @@ login.autoLogin=自动登录
 login.backToLogin=返 回 登 录
 login.findPsw=找回密码
 login.registerAccount=注册帐号
+login.failToConnect=连接服务器失败
+login.operateFailed=您输入的密码或帐号不正确！
 
 register.welcom=欢迎注册帐号
 register.profile=每一天，乐在沟通。
@@ -17,3 +19,4 @@ register.backToLogin=返回登录
 register.serviceLaw=我已阅读并同意相关服务条款和隐私政策
 register.boy=男
 register.girl=女
+register.operateSucc=注册成功！

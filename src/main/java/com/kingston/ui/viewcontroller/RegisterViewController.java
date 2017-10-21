@@ -9,6 +9,7 @@ import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
+import com.kingston.util.I18n;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -43,7 +44,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	@FXML
 	private void register() {
 		if (!ClientBaseService.INSTANCE.isConnectedSever()) {
-			errorTips.setText(R.string.FAIL_TO_CONNECT_SERVER);
+			errorTips.setText(I18n.get("login.failToConnect"));
 			errorTips.setVisible(true);
 			return;
 		}

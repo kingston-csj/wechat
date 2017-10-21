@@ -10,6 +10,7 @@ import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
+import com.kingston.util.I18n;
 import com.kingston.util.NumberUtil;
 
 import javafx.beans.binding.Bindings;
@@ -59,7 +60,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 
 		if (!ClientBaseService.INSTANCE.isConnectedSever()) {
 			errorPane.setVisible(true);
-			errorTips.setText(R.string.FAIL_TO_CONNECT_SERVER);
+			errorTips.setText(I18n.get("login.failToConnect"));
 			return;
 		}
 

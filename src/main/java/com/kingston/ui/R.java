@@ -20,11 +20,4 @@ public final class R {
 		public static final String FriendItem = "main/xml/friendItem.fxml";
 	}
 
-	public static class string {
-		public static final String FAIL_TO_CONNECT_SERVER = "连接服务器失败";
-		public static final String REGISTER_SUCC = "注册成功！";
-		public static final String REGISTER_FAILED = "昵称已存在！";
-		public static final String LOGIN_FAILED = "您输入的密码或帐号不正确！";
-	}
-
 }

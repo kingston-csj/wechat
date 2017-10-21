@@ -7,6 +7,7 @@ import com.kingston.logic.login.message.ReqUserLoginPacket;
 import com.kingston.logic.login.message.ResUserLoginPacket;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
+import com.kingston.util.I18n;
 import com.kingston.util.SchedulerManager;
 
 import javafx.scene.control.Label;
@@ -46,7 +47,7 @@ public class LoginManager {
 				Pane errPane = (Pane)stage.getScene().getRoot().lookup("#errorPane");
 				errPane.setVisible(true);
 				Label errTips = (Label)stage.getScene().getRoot().lookup("#errorTips");
-				errTips.setText(R.string.FAIL_TO_CONNECT_SERVER);
+				errTips.setText(I18n.get("login.operateFailed"));
 			});
 		}
 	}
