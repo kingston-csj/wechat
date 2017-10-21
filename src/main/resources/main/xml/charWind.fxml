@@ -8,25 +8,29 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #70D1FF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" style="-fx-background-color: #70D1FF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <SplitPane dividerPositions="0.6372549019607843" layoutY="88.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="627.0">
+      <SplitPane dividerPositions="0.6372549019607843" layoutY="88.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="600.0">
         <items>
-          <AnchorPane minHeight="250.0" minWidth="0.0" prefHeight="327.0" prefWidth="620.0">
+          <AnchorPane minHeight="250.0" minWidth="0.0" prefHeight="327.0" prefWidth="450.0">
                <children>
-                  <ScrollPane fitToWidth="true" layoutY="20.0" maxWidth="625.0" prefHeight="275.0" prefWidth="625.0">
+                  <ScrollPane fitToWidth="true" layoutY="20.0" maxWidth="625.0" prefHeight="275.0" prefWidth="450.0">
                      <content>
                         <VBox fillWidth="false" maxWidth="625.0" prefHeight="273.0" prefWidth="625.0" />
                      </content>
                   </ScrollPane>
                   <ProgressIndicator layoutX="269.0" layoutY="121.0" visible="false" />
-                  <Button mnemonicParsing="false" prefHeight="1.0" prefWidth="625.0" text="加载更多" />
-                  <ProgressBar prefHeight="23.0" prefWidth="625.0" visible="false" />
+                  <ProgressBar prefHeight="23.0" prefWidth="450.0" visible="false" />
+                  <ImageView fx:id="elegantImage" fitHeight="507.0" fitWidth="170.0" layoutX="450.0" layoutY="-12.0">
+                     <image>
+                        <Image url="@../img/elegant.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
           <AnchorPane maxWidth="625.0" minHeight="120.0" minWidth="0.0" prefHeight="173.0" prefWidth="625.0">
                <children>
-                  <TextArea fx:id="waitArea" maxWidth="625.0" prefHeight="143.0" prefWidth="625.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TextArea fx:id="waitArea" maxWidth="625.0" prefHeight="167.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="148.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>
@@ -46,11 +50,6 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <ImageView fx:id="elegantImage" fitHeight="507.0" fitWidth="170.0" layoutX="628.0" layoutY="90.0">
-         <image>
-            <Image url="@../img/elegant.png" />
-         </image>
-      </ImageView>
       <Button layoutX="563.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="发送" />
       <Button layoutX="488.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="关闭" />
       <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="741.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
@@ -73,5 +72,6 @@
             <Font size="25.0" />
          </font>
       </Hyperlink>
+      <Button layoutX="102.0" layoutY="-24.0" mnemonicParsing="false" prefHeight="1.0" prefWidth="625.0" text="加载更多" />
    </children>
 </Pane>

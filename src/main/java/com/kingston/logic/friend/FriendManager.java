@@ -7,10 +7,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.kingston.base.ClientBaseService;
+import com.kingston.fxextend.event.DoubleClickEventHandler;
 import com.kingston.logic.friend.vo.FriendItemVo;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
+import com.kingston.util.ImageUtil;
 
+import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Hyperlink;
@@ -18,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -91,14 +95,36 @@ public class FriendManager {
 		int onlineCount = 0;
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		for (FriendItemVo item:friendItems) {
+			if (item.isOnlie()) {
+				onlineCount++;
+			}
 			Pane pane = stageController.load(R.layout.FriendItem, Pane.class);
 			decorateFriendItem(pane, item);
 			listView.getItems().add(pane);
 		}
 
+		bindDoubleClickEvent(listView);
 		String groupInfo = groupName + " " + onlineCount+"/"+friendItems.size();
 		TitledPane tp = new TitledPane(groupInfo, listView);
 		container.getPanes().add(tp);
+	}
+
+	private void bindDoubleClickEvent(ListView<Node> listView) {
+		listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				if (this.checkVaild()) {
+					//显示MainView舞台
+					StageController stageController = ClientBaseService.INSTANCE.getStageController();
+					Stage chatStage = stageController.setStage(R.id.ChatToPoint);
+
+					Label userNameUi = (Label)chatStage.getScene().getRoot().lookup("#userName");
+					Label signatureUi = (Label)chatStage.getScene().getRoot().lookup("#signature");
+					userNameUi.setText("world");
+					signatureUi.setText("helo");
+				}
+			}
+		});
 	}
 
 	private void decorateFriendItem(Pane itemUi, FriendItemVo friendVo) {
@@ -106,6 +132,13 @@ public class FriendManager {
 		autographLabel.setText(friendVo.getSignature());
 		Hyperlink _username_ = (Hyperlink) itemUi.lookup("#userName");
 		_username_.setText(friendVo.getFullName());
+
+		ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
+
+		if (!friendVo.isOnlie()) {
+			headImage.setImage(ImageUtil.convertToGray( headImage.getImage()));
+		}
+
 	}
 
 }

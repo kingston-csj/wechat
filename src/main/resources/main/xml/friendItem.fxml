@@ -8,7 +8,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="270.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<ImageView fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="5.0">
+		<ImageView id="headIcon" fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="5.0">
 			<image>
 				<Image url="@../img/head.png" />
 			</image>

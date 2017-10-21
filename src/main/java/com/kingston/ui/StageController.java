@@ -87,13 +87,13 @@ public class StageController {
 		return null;
 	}
 
-	public boolean setStage(String name) {
+	public Stage setStage(String name) {
 		Stage stage = this.getStageBy(name);
 		if (stage == null) {
-			return false;
+			return null;
 		}
 		stage.show();
-		return true;
+		return stage;
 	}
 
 	public boolean switchStage(String toShow, String toClose) {

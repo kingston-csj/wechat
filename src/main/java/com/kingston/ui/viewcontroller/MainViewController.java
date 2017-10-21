@@ -19,7 +19,6 @@ import com.kingston.ui.container.ResourceContainer;
 
 public class MainViewController implements ControlledStage {
 
-	public static Stage stage;
 	@FXML
 	private ImageView close;
 	@FXML
@@ -83,7 +82,7 @@ public class MainViewController implements ControlledStage {
 
 	@FXML
 	private void min() {
-		stage.setIconified(true);
+		getMyStage().setIconified(true);
 	}
 
 	@FXML
