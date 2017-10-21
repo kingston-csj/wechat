@@ -10,6 +10,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<message.dir.rel>i18n</message.dir.rel>
 	</properties>
 
 	<dependencies>
@@ -52,6 +53,28 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>native2ascii-maven-plugin</artifactId>
+				<version>1.0-beta-1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<src>src/main/resources/${message.dir.rel}</src>
+					<dest>${message.dir.rel}</dest>
+					<includes>
+						<include>**/*.txt</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>native2ascii-utf8</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>native2ascii</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

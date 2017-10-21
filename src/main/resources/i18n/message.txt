@@ -1,0 +1,19 @@
+login.safeLogin=安 全 登 录
+login.account=帐号
+login.password=密码
+login.rememberPsw=记住密码
+login.autoLogin=自动登录
+login.backToLogin=返 回 登 录
+login.findPsw=找回密码
+login.registerAccount=注册帐号
+
+register.welcom=欢迎注册帐号
+register.profile=每一天，乐在沟通。
+register.account=帐号
+register.password=密码
+register.nickUsed=该用户名已被使用
+register.action=立 即 注 册
+register.backToLogin=返回登录
+register.serviceLaw=我已阅读并同意相关服务条款和隐私政策
+register.boy=男
+register.girl=女

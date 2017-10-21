@@ -19,26 +19,26 @@
 	prefWidth="430.0" stylesheets="@../css/register.css" xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kingston.ui.viewcontroller.RegisterViewController">
 	<children>
-		<Text layoutX="50.0" layoutY="75.0" text="欢迎注册帐号">
+		<Text layoutX="50.0" layoutY="75.0" text="%register.welcom">
 			<font>
 				<Font size="24.0" />
 			</font>
 		</Text>
-		<Text layoutX="50.0" layoutY="105.0" text="每一天，乐在沟通。">
+		<Text layoutX="50.0" layoutY="105.0" text="%register.profile">
 			<font>
 				<Font size="18.0" />
 			</font>
 		</Text>
 		<TextField fx:id="userName" layoutX="100.0" layoutY="128.0"
-			prefHeight="25.0" prefWidth="240.0" promptText="帐号" />
+			prefHeight="25.0" prefWidth="240.0" promptText="%register.account" />
 		<PasswordField fx:id="password" layoutX="100.0" layoutY="158.0"
-			prefHeight="25.0" prefWidth="240.0" promptText="密码" />
+			prefHeight="25.0" prefWidth="240.0" promptText="%register.password" />
 		<Label />
 		<Label />
 		<ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0"
 			prefWidth="200.0" visible="false" />
 		<Label fx:id="errorTips" layoutX="145.0" layoutY="212.0"
-			prefHeight="20.0" prefWidth="194.0" text="该用户名已被使用" visible="false"
+			prefHeight="20.0" prefWidth="194.0" text="%register.nickUsed" visible="false"
 			wrapText="true">
 			<font>
 				<Font size="14.0" />
@@ -48,14 +48,14 @@
 		<Button fx:id="register" layoutX="100.0" layoutY="242.0"
 			mnemonicParsing="false" onMouseClicked="#register" onMouseEntered="#register_entered"
 			onMouseExited="#register_exit" prefHeight="32.0" prefWidth="240.0"
-			text="立 即 注 册" textFill="WHITE">
+			text="%register.action" textFill="WHITE">
 			<font>
 				<Font size="18.0" />
 			</font>
 		</Button>
 
 		<Hyperlink layoutX="350.0" layoutY="127.0" onMouseClicked="#gotoLogin"
-			text="返回登录">
+			text="%register.backToLogin">
 			<font>
 				<Font size="14.0" />
 			</font>
@@ -63,20 +63,20 @@
 
 		<CheckBox disable="true" layoutX="100.0" layoutY="284.0"
 			mnemonicParsing="false" prefWidth="250.0" selected="true"
-			text="我已阅读并同意相关服务条款和隐私政策 ">
+			text="%register.serviceLaw">
 			<font>
 				<Font size="12.0" />
 			</font>
 		</CheckBox>
 
 		<RadioButton layoutX="106.0" layoutY="192.0"
-			mnemonicParsing="false" selected="true" text="男">
+			mnemonicParsing="false" selected="true" text="%register.boy">
 			<toggleGroup>
 				<ToggleGroup fx:id="sexGroup" />
 			</toggleGroup>
 		</RadioButton>
 		<RadioButton layoutX="152.0" layoutY="192.0"
-			mnemonicParsing="false" text="女" toggleGroup="$sexGroup" />
+			mnemonicParsing="false" text="%register.girl" toggleGroup="$sexGroup" />
 
 		<ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0" layoutX="399.0"
 			onMouseClicked="#close" onMouseEntered="#closeEntered" onMouseExited="#closeExited"

@@ -25,7 +25,7 @@
 		</ImageView>
 		<Button fx:id="login" layoutX="135.0" layoutY="288.0"
 			mnemonicParsing="false" onMouseClicked="#login" onMouseEntered="#login_en"
-			onMouseExited="#login_ex" prefHeight="32.0" prefWidth="194.0" text="安  全  登  录"
+			onMouseExited="#login_ex" prefHeight="32.0" prefWidth="194.0" text="%login.safeLogin"
 			textFill="WHITE">
 			<font>
 				<Font size="18.0" />
@@ -38,13 +38,13 @@
 			</image>
 		</ImageView>
 		<TextField fx:id="userId" layoutX="135.0" layoutY="195.0"
-			prefHeight="25.0" prefWidth="194.0" promptText="帐号" text="1000" />
+			prefHeight="25.0" prefWidth="194.0" promptText="%login.account" text="1000" />
 		<PasswordField fx:id="password" layoutX="135.0" layoutY="226.0"
-			prefHeight="25.0" prefWidth="194.0" promptText="密码" />
+			prefHeight="25.0" prefWidth="194.0" promptText="%login.password" />
 		<CheckBox fx:id="rememberPsw" layoutX="135.0" layoutY="258.0"
-			mnemonicParsing="false" text="记住密码" />
+			mnemonicParsing="false" text="%login.rememberPsw" />
 		<CheckBox fx:id="autoLogin" layoutX="260.0" layoutY="258.0"
-			mnemonicParsing="false" text="自动登录" />
+			mnemonicParsing="false" text="%login.autoLogin" />
 		<Label />
 		<Label />
 		<ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0"
@@ -80,20 +80,20 @@
 				</Label>
 				<Button layoutX="118.0" layoutY="223.0" mnemonicParsing="false"
 					onMouseClicked="#backToLogin" prefHeight="32.0" prefWidth="194.0"
-					style="-fx-background-color: #09A3DC;" text="返 回 登 录" textFill="WHITE">
+					style="-fx-background-color: #09A3DC;" text="%login.backToLogin" textFill="WHITE">
 					<font>
 						<Font size="18.0" />
 					</font>
 				</Button>
 			</children>
 		</Pane>
-		<Hyperlink layoutX="339.0" layoutY="195.0" text="注册帐号"
+		<Hyperlink layoutX="339.0" layoutY="195.0" text="%login.registerAccount"
 			onMouseClicked="#gotoRegister">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</Hyperlink>
-		<Hyperlink layoutX="339.0" layoutY="226.0" text="找回密码">
+		<Hyperlink layoutX="339.0" layoutY="226.0" text="%login.findPsw">
 			<font>
 				<Font size="14.0" />
 			</font>
