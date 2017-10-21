@@ -1,6 +1,10 @@
 package com.kingston.logic.user;
 
-public class MyProfile {
+/**
+ * 用户个人信息
+ * @author kingston
+ */
+public class ProfileModel {
 
 	private long userId;
 	/** 账号昵称 */

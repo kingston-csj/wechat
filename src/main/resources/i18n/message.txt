@@ -20,3 +20,8 @@ register.serviceLaw=我已阅读并同意相关服务条款和隐私政策
 register.boy=男
 register.girl=女
 register.operateSucc=注册成功！
+
+main.head.seach=搜索：联系人、多人聊天、群
+main.tab.friend=好友
+main.tab.group=群
+main.tab.recent=最近

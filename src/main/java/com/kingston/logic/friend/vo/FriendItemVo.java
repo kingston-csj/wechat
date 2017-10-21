@@ -19,6 +19,8 @@ public class FriendItemVo extends ByteBufBean {
 	private byte sex;
 	/** 所属好友分组 */
 	private int group;
+	/** 分组备注 */
+	private String groupName;
 
 	public long getUserId() {
 		return userId;
@@ -56,6 +58,12 @@ public class FriendItemVo extends ByteBufBean {
 	public void setGroup(int group) {
 		this.group = group;
 	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 
 	public String getFullName() {
 		if (StringUtils.isEmpty(signature)) {
@@ -72,6 +80,7 @@ public class FriendItemVo extends ByteBufBean {
 		writeUTF8(buf, signature);
 		buf.writeByte(sex);
 		buf.writeInt(group);
+		writeUTF8(buf, groupName);
 	}
 
 	@Override
@@ -82,12 +91,13 @@ public class FriendItemVo extends ByteBufBean {
 		this.signature = readUTF8(buf);
 		this.sex = buf.readByte();
 		this.group = buf.readInt();
+		this.groupName = readUTF8(buf);
 	}
 
 	@Override
 	public String toString() {
-		return "FriendItemVo [userId=" + userId + ", userName=" + userName + ", remarks=" + remark + ", signature="
-				+ signature + ", sex=" + sex + ", group=" + group + "]";
+		return "FriendItemVo [userId=" + userId + ", userName=" + userName + ", remark=" + remark + ", signature="
+				+ signature + ", sex=" + sex + ", group=" + group + ", groupName=" + groupName + "]";
 	}
 
 }

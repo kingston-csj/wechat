@@ -16,7 +16,7 @@ public class UserManager {
 
 	private static UserManager instance = new UserManager();
 
-	private MyProfile profile = new MyProfile();
+	private ProfileModel profile = new ProfileModel();
 
 	public static UserManager getInstance() {
 		return instance;
@@ -37,7 +37,7 @@ public class UserManager {
 		signatureUi.setText(userInfo.getSignature());
 	}
 
-	public MyProfile getMyProfile() {
+	public ProfileModel getMyProfile() {
 		return this.profile;
 	}
 
