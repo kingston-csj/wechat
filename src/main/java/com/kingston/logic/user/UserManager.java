@@ -75,7 +75,7 @@ public class UserManager {
 		StageController stageController = ClientBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.LoginView, R.id.RegisterView);
 		Stage stage = stageController.getStageBy(R.id.LoginView);
-		TextField userIdField = (TextField)stage.getScene().getRoot().lookup("#"+R.id.UserId);
+		TextField userIdField = (TextField)stage.getScene().getRoot().lookup("#userId");
 		userIdField.setText(String.valueOf(userId));
 	}
 

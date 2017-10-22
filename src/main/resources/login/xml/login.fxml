@@ -12,7 +12,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
 	prefWidth="430.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.kingston.ui.viewcontroller.LoginViewController"
+	fx:controller="com.kingston.ui.controller.LoginViewController"
 	stylesheets="@../css/login.css">
 	<children>
 		<ImageView fitHeight="330.0" fitWidth="430.0" layoutX="91.0"

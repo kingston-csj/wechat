@@ -1,4 +1,4 @@
-package com.kingston.ui.viewcontroller;
+package com.kingston.ui.controller;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

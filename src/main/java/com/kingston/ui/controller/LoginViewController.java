@@ -1,4 +1,4 @@
-package com.kingston.ui.viewcontroller;
+package com.kingston.ui.controller;
 
 import java.io.IOException;
 import java.net.URL;

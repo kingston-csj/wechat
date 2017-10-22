@@ -8,64 +8,81 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #70D1FF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefHeight="540.0" prefWidth="600.0"
+	 style="-fx-background-color: #70D1FF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	  fx:controller="com.kingston.ui.controller.ChatToPointController">
    <children>
-      <SplitPane layoutY="88.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="600.0">
-        <items>
-          <AnchorPane minHeight="250.0" minWidth="0.0" prefHeight="295.0" prefWidth="492.0">
+      <VBox>
+         <children>
+            <Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="600.0">
                <children>
-                  <ScrollPane fitToWidth="true" layoutY="20.0" maxWidth="625.0" prefHeight="275.0" prefWidth="455.0">
-                     <content>
-                        <VBox fillWidth="false" maxWidth="625.0" prefHeight="283.0" prefWidth="440.0" />
-                     </content>
-                  </ScrollPane>
-                  <ProgressIndicator layoutX="269.0" layoutY="121.0" visible="false" />
-                  <Button mnemonicParsing="false" prefHeight="1.0" prefWidth="625.0" text="加载更多" />
-                  <ImageView fx:id="elegantImage" fitHeight="507.0" fitWidth="140.0" layoutX="457.0" layoutY="-5.0">
+                  <ImageView id="closeBtn" fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0" layoutX="554.0" pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#close" >
                      <image>
-                        <Image url="@../img/elegant.png" />
+                        <Image url="@../../login/img/close.png" />
                      </image>
                   </ImageView>
-                <AnchorPane layoutY="275.0" maxWidth="455.0" minHeight="120.0" minWidth="0.0" prefHeight="173.0" prefWidth="455.0">
-                     <children>
-                        <TextArea fx:id="waitArea" layoutX="1.0" layoutY="25.0" maxWidth="455.0" minHeight="154.0" minWidth="400.0" prefHeight="154.0" prefWidth="400.0" text="w234s" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-191.0" AnchorPane.topAnchor="25.0" />
-                        <Button layoutX="323.0" layoutY="146.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="关闭" />
-                        <Button layoutX="395.0" layoutY="146.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="发送" />
-                     </children>
-                  </AnchorPane>
+                  <Label id="signature" fx:id="autograph" layoutX="76.0" layoutY="50.0" text="autograph" textFill="#575757">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <ImageView id="headIcon" fx:id="headImage" layoutY="11.0">
+                     <image>
+                        <Image url="@../img/head.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView id="minBtn" fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="520.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../login/img/min.png" />
+                     </image>
+                  </ImageView>
+                  <Hyperlink id="userName" layoutX="69.0" layoutY="8.0" text="username">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Hyperlink>
+                  <Label fx:id="userid" layoutX="282.0" layoutY="22.0" text="userid" visible="false">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
                </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-      <ImageView id="headIcon" fx:id="headImage" layoutX="14.0" layoutY="14.0">
-         <image>
-            <Image url="@../img/head.png" />
-         </image>
-      </ImageView>
-      <Label id="signature" fx:id="autograph" layoutX="90.0" layoutY="53.0" text="autograph" textFill="#575757">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </Label>
-      <ImageView id="minBtn" fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="534.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../login/img/min.png" />
-         </image>
-      </ImageView>
-      <ImageView id="closeBtn" fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="568.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../login/img/close.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="userid" layoutX="296.0" layoutY="25.0" text="userid" visible="false">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Hyperlink id="userName" layoutX="80.0" layoutY="13.0" text="username">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Hyperlink>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Pane>
+            <HBox layoutX="3.0" layoutY="8.0" minHeight="460.0" prefHeight="400.0">
+               <children>
+                  <VBox id="left" prefWidth="450.0">
+                     <children>
+                        <SplitPane id="outputArea" dividerPositions="0.5" layoutY="133.0" minHeight="300.0" orientation="VERTICAL" prefHeight="300.0" prefWidth="450.0">
+                          <items>
+                              <Button mnemonicParsing="false" prefHeight="1.0" text="%chat.loadmore" />
+                              <ScrollPane fitToWidth="true" layoutY="20.0" maxWidth="600.0" />
+                          </items>
+                        </SplitPane>
+                        <Pane id="inputArea" minHeight="160.0" minWidth="450.0" prefHeight="200.0" prefWidth="450.0">
+                           <children>
+                              <TextArea fx:id="waitArea" layoutY="-0.0" maxWidth="455.0" minHeight="111.0" minWidth="400.0" prefHeight="163.0" prefWidth="450.0" text="w234s" />
+                              <Button layoutX="360.0" layoutY="123.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="%chat.send" />
+                              <Button layoutX="289.0" layoutY="123.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="%chat.close" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <Pane id="right" layoutX="330.0" minHeight="460.0" prefHeight="460.0" prefWidth="150.0">
+                     <children>
+                        <ImageView fx:id="elegantImage" fitHeight="460.0" fitWidth="150.0" layoutX="-0.0">
+                           <image>
+                              <Image url="@../img/elegant.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </Pane>

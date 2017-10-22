@@ -118,7 +118,15 @@ public class FriendManager {
 					StageController stageController = ClientBaseService.INSTANCE.getStageController();
 					Stage chatStage = stageController.setStage(R.id.ChatToPoint);
 
-					Label userNameUi = (Label)chatStage.getScene().getRoot().lookup("#userName");
+					ListView<Node> view = (ListView<Node>) event.getSource();
+					Node selectedItem = view.getSelectionModel().getSelectedItem();
+					if (selectedItem == null)
+						return;
+					Pane pane = (Pane) selectedItem;
+					Label userIdUi = (Label)pane.lookup("#friendId");
+//					System.out.println("==text="+userIdUi.getText());
+
+					Hyperlink userNameUi = (Hyperlink)chatStage.getScene().getRoot().lookup("#userName");
 					Label signatureUi = (Label)chatStage.getScene().getRoot().lookup("#signature");
 					userNameUi.setText("world");
 					signatureUi.setText("helo");
@@ -130,8 +138,12 @@ public class FriendManager {
 	private void decorateFriendItem(Pane itemUi, FriendItemVo friendVo) {
 		Label autographLabel = (Label) itemUi.lookup("#signature");
 		autographLabel.setText(friendVo.getSignature());
-		Hyperlink _username_ = (Hyperlink) itemUi.lookup("#userName");
-		_username_.setText(friendVo.getFullName());
+		Hyperlink usernameUi = (Hyperlink) itemUi.lookup("#userName");
+		usernameUi.setText(friendVo.getFullName());
+
+		//隐藏域，聊天界面用
+		Label userIdUi = (Label)itemUi.lookup("#friendId");
+		userIdUi.setText(String.valueOf(friendVo.getUserId()));
 
 		ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
 

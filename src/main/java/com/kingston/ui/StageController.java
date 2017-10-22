@@ -103,6 +103,11 @@ public class StageController {
 		return true;
 	}
 
+	public void closeStge(String name) {
+		Stage target = getStageBy(name);
+		target.close();
+	}
+
 	public boolean unloadStage(String name) {
 		return this.stages.remove(name) != null;
 	}
