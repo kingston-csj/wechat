@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.kingston.base.ClientBaseService;
+import com.kingston.base.IoBaseService;
+import com.kingston.base.UiBaseService;
 import com.kingston.logic.login.LoginManager;
 import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
@@ -58,7 +59,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 		final long useId = Long.parseLong(userId.getText());
 		final String psw = password.getText();
 
-		if (!ClientBaseService.INSTANCE.isConnectedSever()) {
+		if (!IoBaseService.INSTANCE.isConnectedSever()) {
 			errorPane.setVisible(true);
 			errorTips.setText(I18n.get("login.failToConnect"));
 			return;
@@ -127,7 +128,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void gotoRegister() {
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.RegisterView, R.id.LoginView);
 	}
 
@@ -145,7 +146,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 
 	@Override
 	public Stage getMyStage() {
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		return stageController.getStageBy(R.id.LoginView);
 	}
 

@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.kingston.base.ClientBaseService;
+import com.kingston.base.IoBaseService;
+import com.kingston.base.UiBaseService;
 import com.kingston.fxextend.event.DoubleClickEventHandler;
 import com.kingston.logic.friend.vo.FriendItemVo;
 import com.kingston.ui.R;
@@ -46,7 +47,7 @@ public class FriendManager {
 		}
 		rangeToGroupFriends(friendItems);
 
-		ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
+		UiBaseService.INSTANCE.runTaskInFxThread(() -> {
 			refreshMyFriendsView(friendItems);
 		});
 
@@ -57,7 +58,7 @@ public class FriendManager {
 	}
 
 	public void refreshMyFriendsView(List<FriendItemVo> friendItems) {
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		Stage stage = stageController.getStageBy(R.id.MainView);
 		ScrollPane scrollPane = (ScrollPane)stage.getScene().getRoot().lookup("#friendSp");
 		Accordion friendGroup = (Accordion)scrollPane.getContent();
@@ -93,7 +94,7 @@ public class FriendManager {
 	private void decorateFriendGroup(Accordion container, String groupName, List<FriendItemVo> friendItems) {
 		ListView<Node> listView = new ListView<Node>();
 		int onlineCount = 0;
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		for (FriendItemVo item:friendItems) {
 			if (item.isOnlie()) {
 				onlineCount++;
@@ -107,32 +108,6 @@ public class FriendManager {
 		String groupInfo = groupName + " " + onlineCount+"/"+friendItems.size();
 		TitledPane tp = new TitledPane(groupInfo, listView);
 		container.getPanes().add(tp);
-	}
-
-	private void bindDoubleClickEvent(ListView<Node> listView) {
-		listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
-			@Override
-			public void handle(Event event) {
-				if (this.checkVaild()) {
-					//显示MainView舞台
-					StageController stageController = ClientBaseService.INSTANCE.getStageController();
-					Stage chatStage = stageController.setStage(R.id.ChatToPoint);
-
-					ListView<Node> view = (ListView<Node>) event.getSource();
-					Node selectedItem = view.getSelectionModel().getSelectedItem();
-					if (selectedItem == null)
-						return;
-					Pane pane = (Pane) selectedItem;
-					Label userIdUi = (Label)pane.lookup("#friendId");
-//					System.out.println("==text="+userIdUi.getText());
-
-					Hyperlink userNameUi = (Hyperlink)chatStage.getScene().getRoot().lookup("#userName");
-					Label signatureUi = (Label)chatStage.getScene().getRoot().lookup("#signature");
-					userNameUi.setText("world");
-					signatureUi.setText("helo");
-				}
-			}
-		});
 	}
 
 	private void decorateFriendItem(Pane itemUi, FriendItemVo friendVo) {
@@ -151,6 +126,42 @@ public class FriendManager {
 			headImage.setImage(ImageUtil.convertToGray( headImage.getImage()));
 		}
 
+	}
+
+	private void bindDoubleClickEvent(ListView<Node> listView) {
+		listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				if (this.checkVaild()) {
+					ListView<Node> view = (ListView<Node>) event.getSource();
+					Node selectedItem = view.getSelectionModel().getSelectedItem();
+					if (selectedItem == null)
+						return;
+					Pane pane = (Pane) selectedItem;
+					Label userIdUi = (Label)pane.lookup("#friendId");
+//					System.out.println("==text="+userIdUi.getText());
+
+					long friendId = Long.parseLong(userIdUi.getText());
+					FriendItemVo targetFriend = friends.get(friendId);
+
+					if (targetFriend != null) {
+						openChat2PointPanel(targetFriend);
+					}
+				}
+			}
+		});
+	}
+
+	private void openChat2PointPanel(FriendItemVo targetFriend) {
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
+		Stage chatStage = stageController.setStage(R.id.ChatToPoint);
+
+		Label userIdUi = (Label)chatStage.getScene().getRoot().lookup("#userIdUi");
+		userIdUi.setText(String.valueOf(targetFriend.getUserId()));
+		Hyperlink userNameUi = (Hyperlink)chatStage.getScene().getRoot().lookup("#userName");
+		Label signatureUi = (Label)chatStage.getScene().getRoot().lookup("#signature");
+		userNameUi.setText(targetFriend.getFullName());
+		signatureUi.setText(targetFriend.getSignature());
 	}
 
 }

@@ -1,16 +1,17 @@
 package com.kingston.logic.chat.message.req;
 
+import com.kingston.logic.chat.ChatManager;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
 public class ReqChatToUserPacket extends AbstractPacket {
-	
+
 	private long toUserId;
-	
+
 	private String content;
-	
+
 	public long getToUserId() {
 		return toUserId;
 	}
@@ -29,15 +30,16 @@ public class ReqChatToUserPacket extends AbstractPacket {
 
 	@Override
 	public void writeBody(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
+		buf.writeLong(this.toUserId);
+		writeUTF8(buf, content);
+
 	}
 
 	@Override
 	public void readBody(ByteBuf buf) {
 		this.toUserId = buf.readLong();
 		this.content = readUTF8(buf);
-		
+
 	}
 
 	@Override
@@ -47,8 +49,7 @@ public class ReqChatToUserPacket extends AbstractPacket {
 
 	@Override
 	public void execPacket() {
-		
+		ChatManager.getInstance().receiveFriendPrivateMessage(toUserId, content);
 	}
-	
 
 }

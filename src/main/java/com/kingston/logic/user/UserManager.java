@@ -1,6 +1,7 @@
 package com.kingston.logic.user;
 
-import com.kingston.base.ClientBaseService;
+import com.kingston.base.IoBaseService;
+import com.kingston.base.UiBaseService;
 import com.kingston.logic.GlobalConst;
 import com.kingston.logic.user.message.ReqUserRegisterPacket;
 import com.kingston.logic.user.message.ResUserInfoMessage;
@@ -28,7 +29,7 @@ public class UserManager {
 		profile.setUserId(userInfo.getUserId());
 		profile.setUserName(userInfo.getUserName());
 
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		Stage stage = stageController.getStageBy(R.id.MainView);
 		Label userNameUi = (Label)stage.getScene().getRoot().lookup("#username");
 		userNameUi.setText(userInfo.getUserName());
@@ -41,6 +42,10 @@ public class UserManager {
 		return this.profile;
 	}
 
+	public long getMyUserId() {
+		return this.profile.getUserId();
+	}
+
 	public void registerAccount(byte sex, String nickName, String password) {
 		ReqUserRegisterPacket request = new ReqUserRegisterPacket();
 		request.setNickName(nickName);
@@ -48,23 +53,23 @@ public class UserManager {
 		request.setSex(sex);
 
 		System.err.println("向服务端发送注册请求");
-		ClientBaseService.INSTANCE.sendServerRequest(request);
+		IoBaseService.INSTANCE.sendServerRequest(request);
 	}
 
 	public void handleRegisterResponse(byte resultCode, String message) {
 		boolean isSucc = resultCode == GlobalConst.SUCC;
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		Stage stage = stageController.getStageBy(R.id.RegisterView);
 		Label errorTips = (Label)stage.getScene().getRoot().lookup("#errorText");
 		if (isSucc) {
-			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
+			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
 				errorTips.setVisible(true);
 				errorTips.setText(I18n.get("register.operateSucc"));
 				long userId = Long.parseLong(message);
 				gotoLoginPanel(userId);
 			});
 		}else {
-			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
+			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
 				errorTips.setVisible(true);
 				errorTips.setText("register.nickUsed");
 			});
@@ -72,7 +77,7 @@ public class UserManager {
 	}
 
 	private void gotoLoginPanel(long userId) {
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.LoginView, R.id.RegisterView);
 		Stage stage = stageController.getStageBy(R.id.LoginView);
 		TextField userIdField = (TextField)stage.getScene().getRoot().lookup("#userId");

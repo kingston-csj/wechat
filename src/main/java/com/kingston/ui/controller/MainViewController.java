@@ -1,5 +1,11 @@
 package com.kingston.ui.controller;
 
+import com.kingston.base.UiBaseService;
+import com.kingston.ui.ControlledStage;
+import com.kingston.ui.R;
+import com.kingston.ui.StageController;
+import com.kingston.ui.container.ResourceContainer;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -10,12 +16,6 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import com.kingston.base.ClientBaseService;
-import com.kingston.ui.ControlledStage;
-import com.kingston.ui.R;
-import com.kingston.ui.StageController;
-import com.kingston.ui.container.ResourceContainer;
 
 public class MainViewController implements ControlledStage {
 
@@ -117,7 +117,7 @@ public class MainViewController implements ControlledStage {
 
 	@Override
 	public Stage getMyStage() {
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		return stageController.getStageBy(R.id.MainView);
 	}
 

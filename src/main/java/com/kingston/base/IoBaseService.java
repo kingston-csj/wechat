@@ -11,11 +11,11 @@ import javafx.application.Platform;
  * 提供一些基础服务接口
  * @author kingston
  */
-public enum ClientBaseService {
+public enum IoBaseService {
 
 	INSTANCE;
 
-	private StageController stageController = new StageController();
+
 	/** 通信会话 */
 	private IoSession session;
 
@@ -35,16 +35,5 @@ public enum ClientBaseService {
 		return this.session != null;
 	}
 
-	public StageController getStageController() {
-		return stageController;
-	}
-
-	/**
-	 * 将任务转移给fxapplication线程延迟执行
-	 * @param task
-	 */
-	public void runTaskInFxThread(Runnable task){
-		Platform.runLater(task);
-	}
 
 }

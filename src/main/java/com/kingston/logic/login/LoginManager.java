@@ -1,6 +1,7 @@
 package com.kingston.logic.login;
 
-import com.kingston.base.ClientBaseService;
+import com.kingston.base.IoBaseService;
+import com.kingston.base.UiBaseService;
 import com.kingston.logic.GlobalConst;
 import com.kingston.logic.login.message.ReqHeartBeatPacket;
 import com.kingston.logic.login.message.ReqUserLoginPacket;
@@ -29,20 +30,20 @@ public class LoginManager {
 		reqLogin.setUserId(userId);
 		reqLogin.setUserPwd(password);
 		System.err.println("向服务端发送登录请求");
-		ClientBaseService.INSTANCE.sendServerRequest(reqLogin);
+		IoBaseService.INSTANCE.sendServerRequest(reqLogin);
 	}
 
 	public void handleLoginResponse(ResUserLoginPacket resp){
 		boolean isSucc = resp.getIsValid() == GlobalConst.SUCC;
 		if (isSucc) {
-			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
+			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
 				redirecToMainPanel();
 			});
 
 			registerHeartTimer();
 		}else {
-			ClientBaseService.INSTANCE.runTaskInFxThread(() -> {
-				StageController stageController = ClientBaseService.INSTANCE.getStageController();
+			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
+				StageController stageController = UiBaseService.INSTANCE.getStageController();
 				Stage stage = stageController.getStageBy(R.id.LoginView);
 				Pane errPane = (Pane)stage.getScene().getRoot().lookup("#errorPane");
 				errPane.setVisible(true);
@@ -53,7 +54,7 @@ public class LoginManager {
 	}
 
 	private void redirecToMainPanel() {
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.MainView, R.id.LoginView);
 	}
 
@@ -62,7 +63,7 @@ public class LoginManager {
 	 */
 	private void registerHeartTimer() {
 		SchedulerManager.INSTANCE.scheduleAtFixedRate("HEART_BEAT", ()->{
-			ClientBaseService.INSTANCE.sendServerRequest(new ReqHeartBeatPacket());
+			IoBaseService.INSTANCE.sendServerRequest(new ReqHeartBeatPacket());
 		}, 0, 5*1000);
 	}
 

@@ -2,7 +2,7 @@ package com.kingston;
 
 import java.io.IOException;
 
-import com.kingston.base.ClientBaseService;
+import com.kingston.base.UiBaseService;
 import com.kingston.net.message.PacketType;
 import com.kingston.net.transport.SocketClient;
 import com.kingston.ui.R;
@@ -24,7 +24,7 @@ public class ClientStartup extends Application {
 	public void start(final Stage stage) throws IOException {
 		//与服务端建立连接
 		connectToServer();
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		stageController.setPrimaryStage("root", stage);
 
 		Stage loginStage = stageController.loadStage(R.id.LoginView, R.layout.LoginView,

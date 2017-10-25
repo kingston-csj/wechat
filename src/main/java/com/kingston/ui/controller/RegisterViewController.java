@@ -3,7 +3,8 @@ package com.kingston.ui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.kingston.base.ClientBaseService;
+import com.kingston.base.IoBaseService;
+import com.kingston.base.UiBaseService;
 import com.kingston.logic.user.UserManager;
 import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
@@ -43,7 +44,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void register() {
-		if (!ClientBaseService.INSTANCE.isConnectedSever()) {
+		if (!IoBaseService.INSTANCE.isConnectedSever()) {
 			errorTips.setText(I18n.get("login.failToConnect"));
 			errorTips.setVisible(true);
 			return;
@@ -88,7 +89,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	@FXML
 	private void gotoLogin() {
 		clearFields();
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.LoginView, R.id.RegisterView);
 	}
 
@@ -129,9 +130,8 @@ public class RegisterViewController implements ControlledStage, Initializable {
 
 	@Override
 	public Stage getMyStage() {
-		StageController stageController = ClientBaseService.INSTANCE.getStageController();
+		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		return stageController.getStageBy(R.id.RegisterView);
 	}
-
 
 }

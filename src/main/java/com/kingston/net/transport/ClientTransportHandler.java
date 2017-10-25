@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 
-import com.kingston.base.ClientBaseService;
+import com.kingston.base.IoBaseService;
 import com.kingston.net.PacketManager;
 import com.kingston.net.message.AbstractPacket;
 
@@ -19,7 +19,7 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 	@Override
 	public void channelActive(ChannelHandlerContext ctx){
 		//注册session
-		ClientBaseService.INSTANCE.registerSession(ctx.channel());
+		IoBaseService.INSTANCE.registerSession(ctx.channel());
 		
 	}
 
