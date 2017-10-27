@@ -41,7 +41,7 @@ public class ClientStartup extends Application {
 		mainStage.setX(rightTopX);
 		mainStage.setY(rightTopY);
 
-		stageController.loadStage(R.id.ChatToPoint, R.layout.ChatToPoint, StageStyle.UNDECORATED);
+		stageController.loadStage(R.id.ChatToPoint, R.layout.ChatToPoint, StageStyle.UTILITY);
 
 		//显示MainView舞台
 		stageController.setStage(R.id.LoginView);

@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.kingston.base.IoBaseService;
+import com.kingston.base.Constants;
 import com.kingston.base.UiBaseService;
 import com.kingston.fxextend.event.DoubleClickEventHandler;
 import com.kingston.logic.friend.vo.FriendItemVo;
+import com.kingston.logic.user.UserManager;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.util.ImageUtil;
@@ -38,6 +39,32 @@ public class FriendManager {
 
 	public static FriendManager getInstance() {
 		return instance;
+	}
+
+	/**
+	 * 好友登录刷新
+	 * @param friendId
+	 */
+	public void onFriendLogin(long friendId) {
+		FriendItemVo friend = friends.get(friendId);
+		if (friend != null) {
+			friend.setOnline(Constants.ONLINE_STATUS);
+			List<FriendItemVo> friendItems = new ArrayList<>(friends.values());
+			receiveFriendsList(friendItems);
+		}
+	}
+
+	/**
+	 * 好友下线刷新
+	 * @param friendId
+	 */
+	public void onFriendLogout(long friendId) {
+		FriendItemVo friend = friends.get(friendId);
+		if (friend != null) {
+			friend.setOnline(Constants.OFFLINE_STATUS);
+			List<FriendItemVo> friendItems = new ArrayList<>(friends.values());
+			receiveFriendsList(friendItems);
+		}
 	}
 
 	public void receiveFriendsList(List<FriendItemVo> friendItems) {
@@ -123,7 +150,7 @@ public class FriendManager {
 		ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
 
 		if (!friendVo.isOnlie()) {
-			headImage.setImage(ImageUtil.convertToGray( headImage.getImage()));
+			headImage.setImage(ImageUtil.convertToGray(headImage.getImage()));
 		}
 
 	}
@@ -144,6 +171,11 @@ public class FriendManager {
 					long friendId = Long.parseLong(userIdUi.getText());
 					FriendItemVo targetFriend = friends.get(friendId);
 
+					long selfId = UserManager.getInstance().getMyUserId();
+					if (friendId == selfId) {
+						//不能跟自己聊天
+						return;
+					}
 					if (targetFriend != null) {
 						openChat2PointPanel(targetFriend);
 					}

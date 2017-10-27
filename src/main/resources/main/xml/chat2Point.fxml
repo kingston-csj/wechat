@@ -10,16 +10,16 @@
 
 <Pane layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="600.0" prefHeight="540.0" prefWidth="600.0"
-	style="-fx-background-color: #70D1FF;" xmlns="http://javafx.com/javafx/8"
+	style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kingston.ui.controller.ChatToPointController">
 	<children>
 		<VBox>
 			<children>
 				<Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="600.0">
 					<children>
-						<ImageView id="closeBtn" fx:id="closeBtn" fitHeight="30.0"
+						<ImageView id="closeBtn" fitHeight="30.0"
 							fitWidth="30.0" layoutX="554.0" pickOnBounds="true"
-							preserveRatio="true" onMouseClicked="#close">
+							preserveRatio="true" onMouseClicked="#close" visible="false">
 							<image>
 								<Image url="@../../login/img/close.png" />
 							</image>
@@ -37,7 +37,7 @@
 						</ImageView>
 						<ImageView id="minBtn" fx:id="min" fitHeight="30.0"
 							fitWidth="30.0" layoutX="520.0" pickOnBounds="true"
-							preserveRatio="true">
+							preserveRatio="true" visible="false">
 							<image>
 								<Image url="@../../login/img/min.png" />
 							</image>
@@ -97,7 +97,7 @@
 						<Pane id="right" layoutX="330.0" minHeight="460.0"
 							prefHeight="460.0" prefWidth="150.0">
 							<children>
-								<ImageView fx:id="elegantImage" fitHeight="460.0"
+								<ImageView fx:id="showImg" fitHeight="460.0"
 									fitWidth="150.0" layoutX="-0.0">
 									<image>
 										<Image url="@../img/elegant.png" />

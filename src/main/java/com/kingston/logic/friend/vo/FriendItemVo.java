@@ -10,7 +10,7 @@ import io.netty.buffer.ByteBuf;
 public class FriendItemVo extends ByteBufBean {
 
 	private long userId;
-	/** 在线状态 {@link Constants#online_status} */
+	/** 在线状态 {@link Constants#ONLINE_STATUS} */
 	private byte online;
 	/** 昵称 */
 	private String userName;
@@ -80,7 +80,7 @@ public class FriendItemVo extends ByteBufBean {
 	}
 
 	public String getFullName() {
-		if (StringUtils.isEmpty(signature)) {
+		if (StringUtils.isEmpty(remark)) {
 			return this.userName;
 		}
 		return this.userName + "(" + this.remark + ")";
