@@ -32,7 +32,6 @@ public class ChatManager {
 		request.setContent(content);
 
 		IoBaseService.INSTANCE.sendServerRequest(request);
-
 	}
 
 	public void receiveFriendPrivateMessage(long sourceId, String content) {

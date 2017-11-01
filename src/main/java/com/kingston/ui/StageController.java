@@ -15,6 +15,8 @@ public class StageController {
 
 	private Map<String, Stage> stages = new HashMap<>();
 
+	private Map<String, ControlledStage> controllers = new HashMap<>();
+
 	public void addStage(String name, Stage stage) {
 		this.stages.put(name, stage);
 	}
@@ -32,9 +34,10 @@ public class StageController {
 		try{
 			URL url = Thread.currentThread().getContextClassLoader().getResource(resource);
 			FXMLLoader loader = new FXMLLoader(url);
-			Pane tmpPane = (Pane)load(resource, Pane.class, ResourceBundle.getBundle("i18n/message"));
+			loader.setResources(ResourceBundle.getBundle("i18n/message"));
+			Pane tmpPane = (Pane)loader.load();
 			ControlledStage controlledStage = (ControlledStage)loader.getController();
-			//			controlledStage.setController(this);
+			this.controllers.put(name, controlledStage);
 			Scene tmpScene = new Scene(tmpPane);
 			result = new Stage();
 			result.setScene(tmpScene);
@@ -42,21 +45,6 @@ public class StageController {
 			for (StageStyle style:styles) {
 				result.initStyle(style);
 			}
-			this.addStage(name, result);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public Stage loadStage(String name, String resource, ResourceBundle resources, StageStyle... styles) {
-		Stage result = null;
-		try{
-			Pane tmpPane = (Pane)load(resource, Pane.class, resources);
-
-			Scene tmpScene = new Scene(tmpPane);
-			result = new Stage();
-			result.setScene(tmpScene);
 			this.addStage(name, result);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -110,6 +98,10 @@ public class StageController {
 
 	public boolean unloadStage(String name) {
 		return this.stages.remove(name) != null;
+	}
+
+	public ControlledStage getController(String name) {
+		return this.controllers.get(name);
 	}
 
 }

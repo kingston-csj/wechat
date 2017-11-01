@@ -1,8 +1,8 @@
 package com.kingston.logic.login;
 
+import com.kingston.base.Constants;
 import com.kingston.base.IoBaseService;
 import com.kingston.base.UiBaseService;
-import com.kingston.logic.GlobalConst;
 import com.kingston.logic.login.message.ReqHeartBeatPacket;
 import com.kingston.logic.login.message.ReqUserLoginPacket;
 import com.kingston.logic.login.message.ResUserLoginPacket;
@@ -21,7 +21,7 @@ public class LoginManager {
 
 	private LoginManager() {}
 
-	public static LoginManager getInstance(){
+	public static LoginManager getInstance() {
 		return instance;
 	}
 
@@ -33,8 +33,8 @@ public class LoginManager {
 		IoBaseService.INSTANCE.sendServerRequest(reqLogin);
 	}
 
-	public void handleLoginResponse(ResUserLoginPacket resp){
-		boolean isSucc = resp.getIsValid() == GlobalConst.SUCC;
+	public void handleLoginResponse(ResUserLoginPacket resp) {
+		boolean isSucc = resp.getIsValid() == Constants.TRUE;
 		if (isSucc) {
 			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
 				redirecToMainPanel();

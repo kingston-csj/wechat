@@ -1,14 +1,22 @@
 package com.kingston.ui.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.kingston.base.UiBaseService;
+import com.kingston.logic.user.UserManager;
+import com.kingston.logic.user.UserModel;
 import com.kingston.ui.ControlledStage;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.ui.container.ResourceContainer;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -17,7 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class MainViewController implements ControlledStage {
+public class MainViewController implements ControlledStage, Initializable{
 
 	@FXML
 	private ImageView close;
@@ -31,9 +39,16 @@ public class MainViewController implements ControlledStage {
 	private ScrollPane friendSp;
 	@FXML
 	private Label username;
-
 	@FXML
-	private Label autograph;
+	private Label signature;
+
+	private UserModel userModel = UserManager.getInstance().getMyProfile();
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		username.textProperty().bind(userModel.userNameProperty());
+		signature.textProperty().bind(userModel.signaturePropertiy());
+	}
 
 	@FXML
 	private void close() {
@@ -97,12 +112,12 @@ public class MainViewController implements ControlledStage {
 
 	@FXML
 	private void autograph_entered() {
-		autograph.setStyle("-fx-background-radius:4;-fx-background-color: #136f9b");
+		signature.setStyle("-fx-background-radius:4;-fx-background-color: #136f9b");
 	}
 
 	@FXML
 	private void autograph_exited() {
-		autograph.setStyle("");
+		signature.setStyle("");
 	}
 
 	@FXML
@@ -120,5 +135,10 @@ public class MainViewController implements ControlledStage {
 		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		return stageController.getStageBy(R.id.MainView);
 	}
+
+	public void refreshProfileInfo(String name) {
+		userModel.setUserName(name);
+	}
+
 
 }

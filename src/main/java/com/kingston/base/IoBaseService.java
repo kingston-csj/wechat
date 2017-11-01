@@ -2,10 +2,8 @@ package com.kingston.base;
 
 import com.kingston.net.IoSession;
 import com.kingston.net.message.AbstractPacket;
-import com.kingston.ui.StageController;
 
 import io.netty.channel.Channel;
-import javafx.application.Platform;
 
 /**
  * 提供一些基础服务接口

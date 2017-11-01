@@ -1,5 +1,6 @@
 package com.kingston.logic.user.message;
 
+import com.kingston.base.UiBaseService;
 import com.kingston.logic.user.UserManager;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
@@ -23,7 +24,9 @@ public class ResUserInfoMessage extends AbstractPacket {
 
 	@Override
 	public void execPacket() {
-		UserManager.getInstance().updateMyProfile(this);
+		UiBaseService.INSTANCE.runTaskInFxThread(()->{
+			UserManager.getInstance().updateMyProfile(this);
+		});
 	}
 
 	@Override

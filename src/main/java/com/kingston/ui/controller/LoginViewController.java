@@ -44,15 +44,24 @@ public class LoginViewController implements ControlledStage, Initializable {
 	private ImageView closeBtn;
 	@FXML
 	private ImageView minBtn;
-
 	@FXML
 	private ProgressBar loginProgress;
-
 	@FXML
 	private Pane errorPane;
-
 	@FXML
 	private Label errorTips;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		//验证规则：　userId非空且为数字　password非空
+		login.disableProperty().bind(
+			Bindings.createBooleanBinding(
+				() -> userId.getText().length() == 0 ||
+					  !NumberUtil.isInteger(userId.getText()) ||
+					  password.getText().length() == 0,
+				userId.textProperty(),
+				password.textProperty()));
+	}
 
 	@FXML
 	private void login() throws IOException {
@@ -108,7 +117,6 @@ public class LoginViewController implements ControlledStage, Initializable {
 		minBtn.setImage(image);
 	}
 
-
 	@FXML
 	private void backToLogin() {
 		loginProgress.setVisible(false);
@@ -130,18 +138,6 @@ public class LoginViewController implements ControlledStage, Initializable {
 	private void gotoRegister() {
 		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		stageController.switchStage(R.id.RegisterView, R.id.LoginView);
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		//验证规则：　userId非空且为数字　password非空
-		login.disableProperty().bind(
-			Bindings.createBooleanBinding(
-				() -> userId.getText().length() == 0 ||
-					  !NumberUtil.isInteger(userId.getText()) ||
-					  password.getText().length() == 0,
-				userId.textProperty(),
-				password.textProperty()));
 	}
 
 	@Override

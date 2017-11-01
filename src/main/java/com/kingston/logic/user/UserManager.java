@@ -1,8 +1,8 @@
 package com.kingston.logic.user;
 
+import com.kingston.base.Constants;
 import com.kingston.base.IoBaseService;
 import com.kingston.base.UiBaseService;
-import com.kingston.logic.GlobalConst;
 import com.kingston.logic.user.message.ReqUserRegisterPacket;
 import com.kingston.logic.user.message.ResUserInfoMessage;
 import com.kingston.ui.R;
@@ -17,7 +17,7 @@ public class UserManager {
 
 	private static UserManager instance = new UserManager();
 
-	private ProfileModel profile = new ProfileModel();
+	private UserModel profile = new UserModel();
 
 	public static UserManager getInstance() {
 		return instance;
@@ -28,17 +28,9 @@ public class UserManager {
 		profile.setSignature(userInfo.getSignature());
 		profile.setUserId(userInfo.getUserId());
 		profile.setUserName(userInfo.getUserName());
-
-		StageController stageController = UiBaseService.INSTANCE.getStageController();
-		Stage stage = stageController.getStageBy(R.id.MainView);
-		Label userNameUi = (Label)stage.getScene().getRoot().lookup("#username");
-		userNameUi.setText(userInfo.getUserName());
-
-		Label signatureUi = (Label)stage.getScene().getRoot().lookup("#signature");
-		signatureUi.setText(userInfo.getSignature());
 	}
 
-	public ProfileModel getMyProfile() {
+	public UserModel getMyProfile() {
 		return this.profile;
 	}
 
@@ -57,7 +49,7 @@ public class UserManager {
 	}
 
 	public void handleRegisterResponse(byte resultCode, String message) {
-		boolean isSucc = resultCode == GlobalConst.SUCC;
+		boolean isSucc = resultCode == Constants.TRUE;
 		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		Stage stage = stageController.getStageBy(R.id.RegisterView);
 		Label errorTips = (Label)stage.getScene().getRoot().lookup("#errorText");
