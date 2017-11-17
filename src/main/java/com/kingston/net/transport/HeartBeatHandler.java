@@ -6,7 +6,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 
 import java.util.concurrent.TimeUnit;
 
-import com.kingston.logic.login.message.ReqHeartBeatPacket;
+import com.kingston.logic.login.message.req.ReqHeartBeatPacket;
 
 public class HeartBeatHandler extends ChannelHandlerAdapter{
 

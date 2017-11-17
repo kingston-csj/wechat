@@ -1,8 +1,9 @@
-package com.kingston.logic.login.message;
+package com.kingston.logic.login.message.res;
 
 import io.netty.buffer.ByteBuf;
 
 import com.kingston.base.IoBaseService;
+import com.kingston.logic.login.message.req.ReqHeartBeatPacket;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 

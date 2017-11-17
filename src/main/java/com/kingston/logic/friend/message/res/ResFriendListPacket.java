@@ -1,10 +1,10 @@
-package com.kingston.logic.friend.message;
+package com.kingston.logic.friend.message.res;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.kingston.logic.friend.FriendManager;
-import com.kingston.logic.friend.vo.FriendItemVo;
+import com.kingston.logic.friend.model.FriendItemVo;
 import com.kingston.net.message.AbstractPacket;
 import com.kingston.net.message.PacketType;
 

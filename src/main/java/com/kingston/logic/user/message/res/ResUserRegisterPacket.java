@@ -1,4 +1,4 @@
-package com.kingston.logic.user.message;
+package com.kingston.logic.user.message.res;
 
 import com.kingston.logic.user.UserManager;
 import com.kingston.net.message.AbstractPacket;

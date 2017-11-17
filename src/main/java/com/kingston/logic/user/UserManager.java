@@ -3,8 +3,8 @@ package com.kingston.logic.user;
 import com.kingston.base.Constants;
 import com.kingston.base.IoBaseService;
 import com.kingston.base.UiBaseService;
-import com.kingston.logic.user.message.ReqUserRegisterPacket;
-import com.kingston.logic.user.message.ResUserInfoMessage;
+import com.kingston.logic.user.message.req.ReqUserRegisterPacket;
+import com.kingston.logic.user.message.res.ResUserInfoPacket;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
 import com.kingston.util.I18n;
@@ -23,7 +23,7 @@ public class UserManager {
 		return instance;
 	}
 
-	public void updateMyProfile(ResUserInfoMessage userInfo) {
+	public void updateMyProfile(ResUserInfoPacket userInfo) {
 		profile.setSex(userInfo.getSex());
 		profile.setSignature(userInfo.getSignature());
 		profile.setUserId(userInfo.getUserId());

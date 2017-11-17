@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import com.kingston.base.Constants;
 import com.kingston.base.UiBaseService;
 import com.kingston.fxextend.event.DoubleClickEventHandler;
-import com.kingston.logic.friend.vo.FriendItemVo;
+import com.kingston.logic.friend.model.FriendItemVo;
 import com.kingston.logic.user.UserManager;
 import com.kingston.ui.R;
 import com.kingston.ui.StageController;
