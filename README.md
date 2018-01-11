@@ -14,7 +14,10 @@ Netty聊天室客户端。
 ![](/screenshots/main.png "主界面")　　
 
 单人聊天界面  
-![](/screenshots/privateChat.png "单人聊天界面")　  　　　
+![](/screenshots/privateChat.png "单人聊天界面")　
+
+## 问题讨论
+如果您发现bug，或者有任何疑问，请提交issue !!  　　　
 
 
 
