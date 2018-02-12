@@ -1,14 +1,14 @@
 package com.kingston.chat.net.transport;
 
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.concurrent.ScheduledFuture;
-
 import java.util.concurrent.TimeUnit;
 
 import com.kingston.chat.logic.login.message.req.ReqHeartBeatPacket;
 
-public class HeartBeatHandler extends ChannelHandlerAdapter{
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.concurrent.ScheduledFuture;
+
+public class HeartBeatHandler extends ChannelInboundHandlerAdapter  {
 
 	private volatile ScheduledFuture<?> heartBeatScheduler;
 	@Override

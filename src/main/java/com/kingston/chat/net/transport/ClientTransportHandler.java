@@ -5,11 +5,10 @@ import com.kingston.chat.net.PacketManager;
 import com.kingston.chat.net.message.AbstractPacket;
 
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPromise;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class ClientTransportHandler extends ChannelHandlerAdapter{
+public class ClientTransportHandler extends ChannelInboundHandlerAdapter {
 
 
 	public ClientTransportHandler(){
@@ -31,20 +30,8 @@ public class ClientTransportHandler extends ChannelHandlerAdapter{
 	}
 
 	@Override
-	public void close(ChannelHandlerContext ctx,ChannelPromise promise){
-		System.err.println("TCP closed...");
-		ctx.close(promise);
-	}
-
-	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		System.err.println("客户端关闭1");
-	}
-
-	@Override
-	public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-		ctx.disconnect(promise);
-		System.err.println("客户端关闭2");
 	}
 
 	@Override

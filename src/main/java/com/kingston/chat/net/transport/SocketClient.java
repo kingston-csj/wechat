@@ -40,7 +40,7 @@ public class SocketClient {
 				protected void initChannel(SocketChannel arg0)
 						throws Exception {
 					ChannelPipeline pipeline = arg0.pipeline();
-					pipeline.addLast(new PacketDecoder(1024*1, 0,4,0,4));
+					pipeline.addLast(new PacketDecoder(1024*4,0,4,0,4));
 					pipeline.addLast(new LengthFieldPrepender(4));
 					pipeline.addLast(new PacketEncoder());
 					pipeline.addLast(new ClientTransportHandler());
