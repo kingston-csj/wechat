@@ -11,7 +11,7 @@ public enum PacketManager {
 
 	INSTANCE;
 
-	public  void execPacket(AbstractPacket pact){
+	public void execPacket(AbstractPacket pact) {
 		if(pact == null) return;
 		try {
 			Method m = pact.getClass().getMethod("execPacket");

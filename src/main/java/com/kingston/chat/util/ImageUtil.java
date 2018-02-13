@@ -15,7 +15,6 @@ public final class ImageUtil {
 	 * @throws IOException
 	 */
 	public static Image convertToGray(Image image) {
-
 		PixelReader pixelReader = image.getPixelReader();
 		WritableImage grayImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
 		PixelWriter pixelWriter = grayImage.getPixelWriter();

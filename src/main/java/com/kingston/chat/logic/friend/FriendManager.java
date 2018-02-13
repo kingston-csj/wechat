@@ -166,7 +166,6 @@ public class FriendManager {
 						return;
 					Pane pane = (Pane) selectedItem;
 					Label userIdUi = (Label)pane.lookup("#friendId");
-//					System.out.println("==text="+userIdUi.getText());
 
 					long friendId = Long.parseLong(userIdUi.getText());
 					FriendItemVo targetFriend = friends.get(friendId);

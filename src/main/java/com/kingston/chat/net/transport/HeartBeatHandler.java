@@ -11,6 +11,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 public class HeartBeatHandler extends ChannelInboundHandlerAdapter  {
 
 	private volatile ScheduledFuture<?> heartBeatScheduler;
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception{

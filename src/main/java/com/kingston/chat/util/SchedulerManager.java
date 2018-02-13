@@ -18,7 +18,7 @@ public enum SchedulerManager {
 
 	INSTANCE;
 
-	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(new NameableThreadFactory("Scheduler-service"));
+	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(new NameadThreadFactory("Scheduler-service"));
 
 	/** 名字不能重复的tasks */
 	private ConcurrentMap<String, ScheduledFuture> uniqueTasks = new ConcurrentHashMap<>();

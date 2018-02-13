@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 可命名线程工厂
  * @author kingston
  */
-public class NameableThreadFactory implements ThreadFactory {
+public class NameadThreadFactory implements ThreadFactory {
 
 	private ThreadGroup threadGroup;
 
@@ -17,11 +17,11 @@ public class NameableThreadFactory implements ThreadFactory {
 
 	private AtomicInteger idGenerator = new AtomicInteger(1);
 
-	public NameableThreadFactory(String group) {
+	public NameadThreadFactory(String group) {
 		this(group, false);
 	}
 
-	public NameableThreadFactory(String group, boolean daemo) {
+	public NameadThreadFactory(String group, boolean daemo) {
 		this.groupName = group;
 		this.daemo = daemo;
 	}

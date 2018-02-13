@@ -19,8 +19,8 @@
 单人聊天界面  
 ![](/screenshots/privateChat.png "单人聊天界面")　　　
 
-##　服务端代码链接  
---> [服务端代码](https://github.com/kingston-csj/im)
+### 服务端源代码  
+--> [服务端im](https://github.com/kingston-csj/im)
 
 ## 问题讨论
 如果您发现bug，或者有任何疑问，请提交issue !!  　　　

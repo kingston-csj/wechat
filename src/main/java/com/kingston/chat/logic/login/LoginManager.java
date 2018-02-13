@@ -62,7 +62,7 @@ public class LoginManager {
 	 * 注册心跳事件
 	 */
 	private void registerHeartTimer() {
-		SchedulerManager.INSTANCE.scheduleAtFixedRate("HEART_BEAT", ()->{
+		SchedulerManager.INSTANCE.scheduleAtFixedRate("HEART_BEAT", () -> {
 			IoBaseService.INSTANCE.sendServerRequest(new ReqHeartBeatPacket());
 		}, 0, 5*1000);
 	}
