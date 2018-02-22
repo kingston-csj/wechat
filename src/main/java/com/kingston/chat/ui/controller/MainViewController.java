@@ -5,14 +5,12 @@ import java.util.ResourceBundle;
 
 import com.kingston.chat.base.UiBaseService;
 import com.kingston.chat.logic.user.UserManager;
-import com.kingston.chat.logic.user.UserModel;
+import com.kingston.chat.logic.user.model.UserModel;
 import com.kingston.chat.ui.ControlledStage;
 import com.kingston.chat.ui.R;
 import com.kingston.chat.ui.StageController;
 import com.kingston.chat.ui.container.ResourceContainer;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;

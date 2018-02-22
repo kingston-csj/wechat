@@ -8,6 +8,7 @@ public final class R {
 		public static final String MainView = "MainView";
 		public static final String ChatToPoint = "ChatToPoint";
 		public static final String PrivateChatItem = "PrivateChatItem";
+		public static final String SearchView = "SearchView";
 	}
 
 	public static class layout {
@@ -24,6 +25,9 @@ public final class R {
 		/** 点对点聊天记录 */
 		public static final String PrivateChatItemLeft = "main/xml/chatItemLeft.fxml";
 		public static final String PrivateChatItemRight = "main/xml/chatItemRight.fxml";
+
+		public static final String SeachFriendView = "query/xml/query.xml.fxml";
+		public static final String RecommendFriendItem = "query/xml/recommend_item.fxml";
 	}
 
 }

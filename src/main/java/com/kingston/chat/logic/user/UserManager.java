@@ -5,6 +5,7 @@ import com.kingston.chat.base.IoBaseService;
 import com.kingston.chat.base.UiBaseService;
 import com.kingston.chat.logic.user.message.req.ReqUserRegisterPacket;
 import com.kingston.chat.logic.user.message.res.ResUserInfoPacket;
+import com.kingston.chat.logic.user.model.UserModel;
 import com.kingston.chat.ui.R;
 import com.kingston.chat.ui.StageController;
 import com.kingston.chat.util.I18n;

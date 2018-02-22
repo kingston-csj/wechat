@@ -17,7 +17,10 @@
 ![](/screenshots/main.png "主界面")　　
 
 单人聊天界面  
-![](/screenshots/privateChat.png "单人聊天界面")　　　
+![](/screenshots/privateChat.png "单人聊天界面")  
+
+好友查询界面  
+![](/screenshots/query.png "好友查询界面")　　　
 
 ### 服务端源代码  
 --> [服务端im](https://github.com/kingston-csj/im)

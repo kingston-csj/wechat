@@ -54,9 +54,6 @@
 			<image>
 				<Image url="@../img/close.png" />
 			</image>
-			<rotationAxis>
-				<Point3D />
-			</rotationAxis>
 		</ImageView>
 		<ImageView fx:id="minBtn" fitHeight="30.0" fitWidth="30.0"
 			layoutX="346.0" onMouseClicked="#min" onMouseEntered="#minEntered"

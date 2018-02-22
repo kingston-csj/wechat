@@ -1,4 +1,4 @@
-package com.kingston.chat.logic.user;
+package com.kingston.chat.logic.user.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
