@@ -5,10 +5,10 @@ import com.kingston.chat.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class ReqUserLoginPacket extends AbstractPacket{
+public class ReqUserLogin extends AbstractPacket {
 
 	private long userId;
-	private String userPwd; 
+	private String userPwd;
 
 	@Override
 	public void writeBody(ByteBuf buf) {
@@ -18,8 +18,8 @@ public class ReqUserLoginPacket extends AbstractPacket{
 
 	@Override
 	public void readBody(ByteBuf buf) {
-		this.userId = buf.readLong();
-		this.userPwd =readUTF8(buf);
+		this.userId  = buf.readLong();
+		this.userPwd = readUTF8(buf);
 
 		System.err.println("id="+userId+",pwd="+userPwd);
 	}
@@ -32,7 +32,7 @@ public class ReqUserLoginPacket extends AbstractPacket{
 	@Override
 	public void execPacket() {
 
-		
+
 	}
 
 	public String getUserPwd() {

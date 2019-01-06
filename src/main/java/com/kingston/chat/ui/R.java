@@ -26,7 +26,7 @@ public final class R {
 		public static final String PrivateChatItemLeft = "main/xml/chatItemLeft.fxml";
 		public static final String PrivateChatItemRight = "main/xml/chatItemRight.fxml";
 
-		public static final String SeachFriendView = "query/xml/query.xml.fxml";
+		public static final String SeachFriendView = "query/xml/query.fxml";
 		public static final String RecommendFriendItem = "query/xml/recommend_item.fxml";
 	}
 

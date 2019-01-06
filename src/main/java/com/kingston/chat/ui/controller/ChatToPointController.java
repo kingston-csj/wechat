@@ -44,7 +44,7 @@ public class ChatToPointController implements ControlledStage {
 
 	@FXML
 	private void close() {
-		UiBaseService.INSTANCE.getStageController().closeStge(R.id.ChatToPoint);
+		UiBaseService.INSTANCE.getStageController().closeStage(R.id.ChatToPoint);
 	}
 
 

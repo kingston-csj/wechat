@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kingston.chat.logic.friend.FriendManager;
-import com.kingston.chat.logic.friend.model.FriendItemVo;
+import com.kingston.chat.logic.friend.message.vo.FriendItemVo;
 import com.kingston.chat.net.message.AbstractPacket;
 import com.kingston.chat.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class ResFriendListPacket extends AbstractPacket {
+public class ResFriendList extends AbstractPacket {
 
 	private List<FriendItemVo> friends;
 

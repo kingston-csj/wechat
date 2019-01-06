@@ -6,7 +6,7 @@ import com.kingston.chat.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class ResChatToUserPacket extends AbstractPacket {
+public class ResChatToUser extends AbstractPacket {
 
 	private long fromUserId;
 

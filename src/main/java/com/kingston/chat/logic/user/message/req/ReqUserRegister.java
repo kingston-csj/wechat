@@ -6,7 +6,7 @@ import com.kingston.chat.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class ReqUserRegisterPacket extends AbstractPacket {
+public class ReqUserRegister extends AbstractPacket {
 
 	/** 性别{@link Constants#SEX_OF_BOY} */
 	private byte sex;

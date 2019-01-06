@@ -5,7 +5,7 @@ import com.kingston.chat.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class ReqChatToGroupPacket extends AbstractPacket {
+public class ReqChatToGroup extends AbstractPacket {
 	
 	private long toUserId;
 	

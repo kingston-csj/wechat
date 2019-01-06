@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.kingston.chat.base.IoBaseService;
+import com.kingston.chat.base.SessionManager;
 import com.kingston.chat.base.UiBaseService;
 import com.kingston.chat.logic.login.LoginManager;
 import com.kingston.chat.ui.ControlledStage;
@@ -68,7 +68,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 		final long useId = Long.parseLong(userId.getText());
 		final String psw = password.getText();
 
-		if (!IoBaseService.INSTANCE.isConnectedSever()) {
+		if (!SessionManager.INSTANCE.isConnectedSever()) {
 			errorPane.setVisible(true);
 			errorTips.setText(I18n.get("login.failToConnect"));
 			return;

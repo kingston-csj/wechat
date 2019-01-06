@@ -3,7 +3,7 @@ package com.kingston.chat.ui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.kingston.chat.base.IoBaseService;
+import com.kingston.chat.base.SessionManager;
 import com.kingston.chat.base.UiBaseService;
 import com.kingston.chat.logic.user.UserManager;
 import com.kingston.chat.ui.ControlledStage;
@@ -44,7 +44,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void register() {
-		if (!IoBaseService.INSTANCE.isConnectedSever()) {
+		if (!SessionManager.INSTANCE.isConnectedSever()) {
 			errorTips.setText(I18n.get("login.failToConnect"));
 			errorTips.setVisible(true);
 			return;

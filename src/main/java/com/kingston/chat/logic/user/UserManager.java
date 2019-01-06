@@ -1,10 +1,10 @@
 package com.kingston.chat.logic.user;
 
 import com.kingston.chat.base.Constants;
-import com.kingston.chat.base.IoBaseService;
+import com.kingston.chat.base.SessionManager;
 import com.kingston.chat.base.UiBaseService;
-import com.kingston.chat.logic.user.message.req.ReqUserRegisterPacket;
-import com.kingston.chat.logic.user.message.res.ResUserInfoPacket;
+import com.kingston.chat.logic.user.message.req.ReqUserRegister;
+import com.kingston.chat.logic.user.message.res.ResUserInfo;
 import com.kingston.chat.logic.user.model.UserModel;
 import com.kingston.chat.ui.R;
 import com.kingston.chat.ui.StageController;
@@ -24,7 +24,7 @@ public class UserManager {
 		return instance;
 	}
 
-	public void updateMyProfile(ResUserInfoPacket userInfo) {
+	public void updateMyProfile(ResUserInfo userInfo) {
 		profile.setSex(userInfo.getSex());
 		profile.setSignature(userInfo.getSignature());
 		profile.setUserId(userInfo.getUserId());
@@ -40,13 +40,13 @@ public class UserManager {
 	}
 
 	public void registerAccount(byte sex, String nickName, String password) {
-		ReqUserRegisterPacket request = new ReqUserRegisterPacket();
+		ReqUserRegister request = new ReqUserRegister();
 		request.setNickName(nickName);
 		request.setPassword(password);
 		request.setSex(sex);
 
 		System.err.println("向服务端发送注册请求");
-		IoBaseService.INSTANCE.sendServerRequest(request);
+		SessionManager.INSTANCE.sendMessage(request);
 	}
 
 	public void handleRegisterResponse(byte resultCode, String message) {

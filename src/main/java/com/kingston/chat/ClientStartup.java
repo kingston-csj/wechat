@@ -3,7 +3,6 @@ package com.kingston.chat;
 import java.io.IOException;
 
 import com.kingston.chat.base.UiBaseService;
-import com.kingston.chat.logic.search.SearchManager;
 import com.kingston.chat.net.message.PacketType;
 import com.kingston.chat.net.transport.SocketClient;
 import com.kingston.chat.ui.R;
@@ -45,7 +44,7 @@ public class ClientStartup extends Application {
 		stageController.loadStage(R.id.ChatToPoint, R.layout.ChatToPoint, StageStyle.UTILITY);
 
 		Stage searchStage = stageController.loadStage(R.id.SearchView, R.layout.SeachFriendView,
-				StageStyle.UNDECORATED);
+				StageStyle.UTILITY);
 
 		//显示MainView舞台
 		stageController.setStage(R.id.LoginView);

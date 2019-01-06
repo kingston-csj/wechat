@@ -91,7 +91,7 @@ public class StageController {
 		return true;
 	}
 
-	public void closeStge(String name) {
+	public void closeStage(String name) {
 		Stage target = getStageBy(name);
 		target.close();
 	}

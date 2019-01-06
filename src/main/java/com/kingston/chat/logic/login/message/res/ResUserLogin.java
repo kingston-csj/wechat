@@ -6,7 +6,7 @@ import com.kingston.chat.net.message.PacketType;
 
 import io.netty.buffer.ByteBuf;
 
-public class ResUserLoginPacket extends AbstractPacket{
+public class ResUserLogin extends AbstractPacket{
 
 	private String alertMsg;
 	private byte isValid;

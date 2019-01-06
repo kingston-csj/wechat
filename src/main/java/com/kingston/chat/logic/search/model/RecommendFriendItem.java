@@ -1,6 +1,10 @@
 package com.kingston.chat.logic.search.model;
 
-public class RecommendFriendItem {
+import com.kingston.chat.net.message.ByteBufBean;
+
+import io.netty.buffer.ByteBuf;
+
+public class RecommendFriendItem extends ByteBufBean {
 
 	private long userId;
 
@@ -22,7 +26,16 @@ public class RecommendFriendItem {
 		this.nickName = nickName;
 	}
 
+	@Override
+	public void writeBody(ByteBuf buf) {
+		buf.writeLong(userId);
+		writeUTF8(buf, nickName);
+	}
 
-
+	@Override
+	public void readBody(ByteBuf buf) {
+		userId = buf.readLong();
+		nickName = readUTF8(buf);
+	}
 
 }

@@ -1,4 +1,4 @@
-package com.kingston.chat.logic.friend.model;
+package com.kingston.chat.logic.friend.message.vo;
 
 import org.apache.commons.lang3.StringUtils;
 

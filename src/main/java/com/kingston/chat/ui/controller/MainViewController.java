@@ -1,9 +1,11 @@
 package com.kingston.chat.ui.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.kingston.chat.base.UiBaseService;
+import com.kingston.chat.logic.search.SearchManager;
 import com.kingston.chat.logic.user.UserManager;
 import com.kingston.chat.logic.user.model.UserModel;
 import com.kingston.chat.ui.ControlledStage;
@@ -128,6 +130,11 @@ public class MainViewController implements ControlledStage, Initializable{
 		shineImage.setVisible(true);
 	}
 
+	@FXML
+	private void queryEvent() {
+		SearchManager.getInstance().refreshRecommendFriends(new ArrayList<>());
+	}
+
 	@Override
 	public Stage getMyStage() {
 		StageController stageController = UiBaseService.INSTANCE.getStageController();
@@ -137,6 +144,5 @@ public class MainViewController implements ControlledStage, Initializable{
 	public void refreshProfileInfo(String name) {
 		userModel.setUserName(name);
 	}
-
 
 }

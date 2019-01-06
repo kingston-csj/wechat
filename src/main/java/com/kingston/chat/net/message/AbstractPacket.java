@@ -1,8 +1,16 @@
 package com.kingston.chat.net.message;
 
+import io.netty.buffer.ByteBuf;
+
 public abstract class AbstractPacket extends ByteBufBean {
 
-	abstract public PacketType  getPacketType();
+	public void writeBody(ByteBuf buf) {
+	}
+
+	public void readBody(ByteBuf buf) {
+	}
+
+	abstract public PacketType getPacketType();
 
 	abstract public void execPacket();
 
@@ -14,6 +22,5 @@ public abstract class AbstractPacket extends ByteBufBean {
 	public boolean isUseCompression() {
 		return false;
 	}
-
 
 }

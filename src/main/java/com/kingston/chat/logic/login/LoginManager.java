@@ -1,11 +1,11 @@
 package com.kingston.chat.logic.login;
 
 import com.kingston.chat.base.Constants;
-import com.kingston.chat.base.IoBaseService;
+import com.kingston.chat.base.SessionManager;
 import com.kingston.chat.base.UiBaseService;
-import com.kingston.chat.logic.login.message.req.ReqHeartBeatPacket;
-import com.kingston.chat.logic.login.message.req.ReqUserLoginPacket;
-import com.kingston.chat.logic.login.message.res.ResUserLoginPacket;
+import com.kingston.chat.logic.login.message.req.ReqHeartBeat;
+import com.kingston.chat.logic.login.message.req.ReqUserLogin;
+import com.kingston.chat.logic.login.message.res.ResUserLogin;
 import com.kingston.chat.ui.R;
 import com.kingston.chat.ui.StageController;
 import com.kingston.chat.util.I18n;
@@ -26,14 +26,14 @@ public class LoginManager {
 	}
 
 	public void beginToLogin(long userId, String password) {
-		ReqUserLoginPacket reqLogin= new ReqUserLoginPacket();
+		ReqUserLogin reqLogin= new ReqUserLogin();
 		reqLogin.setUserId(userId);
 		reqLogin.setUserPwd(password);
 		System.err.println("向服务端发送登录请求");
-		IoBaseService.INSTANCE.sendServerRequest(reqLogin);
+		SessionManager.INSTANCE.sendMessage(reqLogin);
 	}
 
-	public void handleLoginResponse(ResUserLoginPacket resp) {
+	public void handleLoginResponse(ResUserLogin resp) {
 		boolean isSucc = resp.getIsValid() == Constants.TRUE;
 		if (isSucc) {
 			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
@@ -63,7 +63,7 @@ public class LoginManager {
 	 */
 	private void registerHeartTimer() {
 		SchedulerManager.INSTANCE.scheduleAtFixedRate("HEART_BEAT", () -> {
-			IoBaseService.INSTANCE.sendServerRequest(new ReqHeartBeatPacket());
+			SessionManager.INSTANCE.sendMessage(new ReqHeartBeat());
 		}, 0, 5*1000);
 	}
 

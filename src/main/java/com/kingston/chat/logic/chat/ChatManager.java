@@ -3,9 +3,9 @@ package com.kingston.chat.logic.chat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.kingston.chat.base.IoBaseService;
+import com.kingston.chat.base.SessionManager;
 import com.kingston.chat.base.UiBaseService;
-import com.kingston.chat.logic.chat.message.req.ReqChatToUserPacket;
+import com.kingston.chat.logic.chat.message.req.ReqChatToUser;
 import com.kingston.chat.logic.user.UserManager;
 import com.kingston.chat.ui.R;
 import com.kingston.chat.ui.StageController;
@@ -27,11 +27,11 @@ public class ChatManager {
 	}
 
 	public void sendMessageTo(long friendId, String content) {
-		ReqChatToUserPacket request = new ReqChatToUserPacket();
+		ReqChatToUser request = new ReqChatToUser();
 		request.setToUserId(friendId);
 		request.setContent(content);
 
-		IoBaseService.INSTANCE.sendServerRequest(request);
+		SessionManager.INSTANCE.sendMessage(request);
 	}
 
 	public void receiveFriendPrivateMessage(long sourceId, String content) {

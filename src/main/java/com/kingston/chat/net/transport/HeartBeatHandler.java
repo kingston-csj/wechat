@@ -2,7 +2,7 @@ package com.kingston.chat.net.transport;
 
 import java.util.concurrent.TimeUnit;
 
-import com.kingston.chat.logic.login.message.req.ReqHeartBeatPacket;
+import com.kingston.chat.logic.login.message.req.ReqHeartBeat;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -33,7 +33,7 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter  {
 		}
 		@Override
 		public void run() {
-			this.ctx.writeAndFlush(new ReqHeartBeatPacket());
+			this.ctx.writeAndFlush(new ReqHeartBeat());
 		}
 
 	}

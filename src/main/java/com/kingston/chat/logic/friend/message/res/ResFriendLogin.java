@@ -7,10 +7,10 @@ import com.kingston.chat.net.message.PacketType;
 import io.netty.buffer.ByteBuf;
 
 /**
- * 好友注销
+ * 好友登录
  * @author kingston
  */
-public class ResFriendLogoutPacket extends AbstractPacket {
+public class ResFriendLogin extends AbstractPacket {
 
 	private long friendId;
 
@@ -24,12 +24,12 @@ public class ResFriendLogoutPacket extends AbstractPacket {
 
 	@Override
 	public PacketType getPacketType() {
-		return PacketType.ResFriendLogout;
+		return PacketType.ResFriendLogin;
 	}
 
 	@Override
 	public void execPacket() {
-		FriendManager.getInstance().onFriendLogout(this.friendId);
+		FriendManager.getInstance().onFriendLogin(this.friendId);
 	}
 
 	@Override

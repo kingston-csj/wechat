@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import com.kingston.chat.base.Constants;
 import com.kingston.chat.base.UiBaseService;
 import com.kingston.chat.fxextend.event.DoubleClickEventHandler;
-import com.kingston.chat.logic.friend.model.FriendItemVo;
+import com.kingston.chat.logic.friend.message.vo.FriendItemVo;
 import com.kingston.chat.logic.user.UserManager;
 import com.kingston.chat.ui.R;
 import com.kingston.chat.ui.StageController;

@@ -9,7 +9,7 @@ import io.netty.channel.Channel;
  * 提供一些基础服务接口
  * @author kingston
  */
-public enum IoBaseService {
+public enum SessionManager {
 
 	INSTANCE;
 
@@ -21,7 +21,7 @@ public enum IoBaseService {
 		this.session = new IoSession(channel);
 	}
 
-	public void sendServerRequest(AbstractPacket request){
+	public void sendMessage(AbstractPacket request){
 		this.session.sendPacket(request);
 	}
 

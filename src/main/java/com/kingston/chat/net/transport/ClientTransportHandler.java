@@ -1,6 +1,6 @@
 package com.kingston.chat.net.transport;
 
-import com.kingston.chat.base.IoBaseService;
+import com.kingston.chat.base.SessionManager;
 import com.kingston.chat.net.PacketManager;
 import com.kingston.chat.net.message.AbstractPacket;
 
@@ -18,7 +18,7 @@ public class ClientTransportHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx){
 		//注册session
-		IoBaseService.INSTANCE.registerSession(ctx.channel());
+		SessionManager.INSTANCE.registerSession(ctx.channel());
 		
 	}
 
