@@ -10,10 +10,10 @@ import com.kingston.chat.ui.R;
 import com.kingston.chat.ui.StageController;
 import com.kingston.chat.util.I18n;
 import com.kingston.chat.util.SchedulerManager;
-
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.commons.codec.digest.Md5Crypt;
 
 public class LoginManager {
 
@@ -25,12 +25,21 @@ public class LoginManager {
 		return instance;
 	}
 
+	/**
+	 *
+	 * @param userId
+	 * @param password 密码明文
+	 */
 	public void beginToLogin(long userId, String password) {
 		ReqUserLogin reqLogin= new ReqUserLogin();
 		reqLogin.setUserId(userId);
-		reqLogin.setUserPwd(password);
+		reqLogin.setUserPwd(passwordEncryption(userId, password));
 		System.err.println("向服务端发送登录请求");
 		SessionManager.INSTANCE.sendMessage(reqLogin);
+	}
+
+	private String passwordEncryption(long userId, String password) {
+		return Md5Crypt.apr1Crypt(password.getBytes(), String.valueOf(userId));
 	}
 
 	public void handleLoginResponse(ResUserLogin resp) {
