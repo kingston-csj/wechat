@@ -12,7 +12,7 @@
 	minHeight="-Infinity" minWidth="600.0" prefHeight="540.0" prefWidth="600.0"
 	style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.kingston.chat.ui.controller.ChatToPointController">
+	fx:controller="pers.kinson.wechat.ui.controller.ChatToPointController">
 	<children>
 		<VBox>
 			<children>

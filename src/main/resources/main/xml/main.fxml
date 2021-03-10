@@ -11,7 +11,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="300.0"
 	style="-fx-background-color: #169ADA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	 fx:controller="com.kingston.chat.ui.controller.MainViewController">
+	 fx:controller="pers.kinson.wechat.ui.controller.MainViewController">
 	<children>
 		<ImageView layoutX="9.0" layoutY="39.0" onMouseEntered="#headEn" onMouseExited="#headEx">
 			<image>

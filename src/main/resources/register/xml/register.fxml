@@ -18,7 +18,7 @@
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
 	prefWidth="430.0" stylesheets="@../css/register.css" xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.kingston.chat.ui.controller.RegisterViewController">
+	fx:controller="pers.kinson.wechat.ui.controller.RegisterViewController">
 	<children>
 		<Text layoutX="50.0" layoutY="75.0" text="%register.welcom">
 			<font>

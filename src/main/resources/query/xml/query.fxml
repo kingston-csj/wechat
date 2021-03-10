@@ -10,7 +10,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 	minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
 	style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kingston.chat.ui.controller.SearchViewController">
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="pers.kinson.wechat.ui.controller.SearchViewController">
 	<children>
 		<Pane layoutX="-3.0" layoutY="-2.0" prefHeight="32.0" prefWidth="606.0"
 			style="-fx-background-color: blue;">
