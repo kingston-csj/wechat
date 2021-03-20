@@ -12,10 +12,6 @@ public class ResChatToGroup extends AbstractPacket {
 		return PacketType.ResChatToUser;
 	}
 
-	@Override
-	public void execPacket() {
-	}
-
 	public String getContent() {
 		return content;
 	}

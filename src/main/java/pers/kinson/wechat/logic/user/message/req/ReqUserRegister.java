@@ -1,10 +1,9 @@
 package pers.kinson.wechat.logic.user.message.req;
 
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ReqUserRegister extends AbstractPacket {
 
@@ -67,11 +66,6 @@ public class ReqUserRegister extends AbstractPacket {
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.ReqUserRegister;
-	}
-
-	@Override
-	public void execPacket() {
-		// TODO Auto-generated method stub
 	}
 
 }

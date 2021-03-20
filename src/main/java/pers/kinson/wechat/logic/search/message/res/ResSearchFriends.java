@@ -40,11 +40,11 @@ public class ResSearchFriends extends AbstractPacket {
 		}
 	}
 
-	@Override
-	public void execPacket() {
-		UiBaseService.INSTANCE.runTaskInFxThread(() -> {
-			SearchManager.getInstance().refreshRecommendFriends(friends);
-		});
+	public List<RecommendFriendItem> getFriends() {
+		return friends;
 	}
 
+	public void setFriends(List<RecommendFriendItem> friends) {
+		this.friends = friends;
+	}
 }

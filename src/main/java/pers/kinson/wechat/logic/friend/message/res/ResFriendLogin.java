@@ -1,10 +1,8 @@
 package pers.kinson.wechat.logic.friend.message.res;
 
-import pers.kinson.wechat.logic.friend.FriendManager;
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 /**
  * 好友登录
@@ -25,11 +23,6 @@ public class ResFriendLogin extends AbstractPacket {
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.ResFriendLogin;
-	}
-
-	@Override
-	public void execPacket() {
-		FriendManager.getInstance().onFriendLogin(this.friendId);
 	}
 
 	@Override

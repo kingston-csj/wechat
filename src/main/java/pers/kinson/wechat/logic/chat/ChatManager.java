@@ -6,6 +6,7 @@ import java.util.Date;
 import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToUser;
+import pers.kinson.wechat.logic.chat.message.res.ResChatToUser;
 import pers.kinson.wechat.logic.user.UserManager;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -34,7 +35,9 @@ public class ChatManager {
 		SessionManager.INSTANCE.sendMessage(request);
 	}
 
-	public void receiveFriendPrivateMessage(long sourceId, String content) {
+	public void receiveFriendPrivateMessage(ResChatToUser msg) {
+		long sourceId = msg.getFromUserId();
+		String content = msg.getContent();
 		StageController stageController = UiBaseService.INSTANCE.getStageController();
 		Stage stage = stageController.getStageBy(R.id.ChatToPoint);
 		VBox msgContainer = (VBox)stage.getScene().getRoot().lookup("#msgContainer");

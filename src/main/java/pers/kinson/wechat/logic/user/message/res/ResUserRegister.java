@@ -1,10 +1,8 @@
 package pers.kinson.wechat.logic.user.message.res;
 
-import pers.kinson.wechat.logic.user.UserManager;
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ResUserRegister extends AbstractPacket {
 	
@@ -45,11 +43,6 @@ public class ResUserRegister extends AbstractPacket {
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.ResUserRegister;
-	}
-
-	@Override
-	public void execPacket() {
-		UserManager.getInstance().handleRegisterResponse(getResultCode(), getMessage());
 	}
 
 	@Override

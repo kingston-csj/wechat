@@ -1,9 +1,8 @@
 package pers.kinson.wechat.logic.login.message.req;
 
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ReqUserLogin extends AbstractPacket {
 
@@ -27,12 +26,6 @@ public class ReqUserLogin extends AbstractPacket {
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.ReqUserLogin;
-	}
-
-	@Override
-	public void execPacket() {
-
-
 	}
 
 	public String getUserPwd() {

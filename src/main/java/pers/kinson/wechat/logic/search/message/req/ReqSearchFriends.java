@@ -1,9 +1,8 @@
 package pers.kinson.wechat.logic.search.message.req;
 
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ReqSearchFriends extends AbstractPacket {
 
@@ -29,10 +28,6 @@ public class ReqSearchFriends extends AbstractPacket {
 
 	public void setKey(String key) {
 		this.key = key;
-	}
-
-	@Override
-	public void execPacket() {
 	}
 
 }

@@ -1,10 +1,8 @@
 package pers.kinson.wechat.logic.chat.message.res;
 
-import pers.kinson.wechat.logic.chat.ChatManager;
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ResChatToUser extends AbstractPacket {
 
@@ -22,12 +20,6 @@ public class ResChatToUser extends AbstractPacket {
 	public void readBody(ByteBuf buf) {
 		this.fromUserId = buf.readLong();
 		this.content = readUTF8(buf);
-	}
-
-	@Override
-	public void execPacket() {
-		ChatManager.getInstance().receiveFriendPrivateMessage(fromUserId, content);
-
 	}
 
 	public String getContent() {
@@ -50,8 +42,5 @@ public class ResChatToUser extends AbstractPacket {
 	public PacketType getPacketType() {
 		return PacketType.ResChatToUser;
 	}
-
-
-
 
 }

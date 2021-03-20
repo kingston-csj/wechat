@@ -1,11 +1,8 @@
 package pers.kinson.wechat.logic.user.message.res;
 
-import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.logic.user.UserManager;
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ResUserInfo extends AbstractPacket {
 
@@ -20,13 +17,6 @@ public class ResUserInfo extends AbstractPacket {
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.ResUserInfo;
-	}
-
-	@Override
-	public void execPacket() {
-		UiBaseService.INSTANCE.runTaskInFxThread(()->{
-			UserManager.getInstance().updateMyProfile(this);
-		});
 	}
 
 	@Override

@@ -1,10 +1,5 @@
 package pers.kinson.wechat.net.message;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import pers.kinson.wechat.logic.friend.message.res.ResFriendList;
 import pers.kinson.wechat.logic.friend.message.res.ResFriendLogin;
 import pers.kinson.wechat.logic.friend.message.res.ResFriendLogout;
@@ -13,6 +8,11 @@ import pers.kinson.wechat.logic.login.message.res.ResHeartBeat;
 import pers.kinson.wechat.logic.login.message.res.ResUserLogin;
 import pers.kinson.wechat.logic.search.message.req.ReqSearchFriends;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public enum PacketType {
 
@@ -109,7 +109,6 @@ public enum PacketType {
 	public void setPacketClass(Class<? extends AbstractPacket> packetClass) {
 		this.packetClass = packetClass;
 	}
-
 
 	public static Class<? extends AbstractPacket> getPacketClassBy(int packetType){
 		return PACKET_CLASS_MAP.get(packetType);

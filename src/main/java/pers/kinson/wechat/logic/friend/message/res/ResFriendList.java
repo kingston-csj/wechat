@@ -28,12 +28,6 @@ public class ResFriendList extends AbstractPacket {
 	}
 
 	@Override
-	public void execPacket() {
-		FriendManager.getInstance().receiveFriendsList(friends);
-
-	}
-
-	@Override
 	public void writeBody(ByteBuf buf) {
 		buf.writeInt(friends.size());
 		for (FriendItemVo item:friends) {

@@ -1,10 +1,8 @@
 package pers.kinson.wechat.logic.chat.message.req;
 
-import pers.kinson.wechat.logic.chat.ChatManager;
+import io.netty.buffer.ByteBuf;
 import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ReqChatToUser extends AbstractPacket {
 
@@ -45,11 +43,6 @@ public class ReqChatToUser extends AbstractPacket {
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.ReqChatToUser;
-	}
-
-	@Override
-	public void execPacket() {
-		ChatManager.getInstance().receiveFriendPrivateMessage(toUserId, content);
 	}
 
 }

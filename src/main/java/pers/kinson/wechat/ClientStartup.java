@@ -3,6 +3,8 @@ package pers.kinson.wechat;
 import java.io.IOException;
 
 import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.logic.friend.FriendManager;
+import pers.kinson.wechat.logic.user.UserManager;
 import pers.kinson.wechat.net.message.PacketType;
 import pers.kinson.wechat.net.transport.SocketClient;
 import pers.kinson.wechat.ui.R;
@@ -18,6 +20,10 @@ public class ClientStartup extends Application {
 	@Override
 	public void init() throws Exception {
 		PacketType.initPackets();
+
+		// TODO 拙劣的初始化
+		UserManager.getInstance();
+		FriendManager.getInstance();
 	}
 
 	@Override

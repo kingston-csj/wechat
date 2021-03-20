@@ -28,12 +28,6 @@ public class ResUserLogin extends AbstractPacket {
 		return PacketType.RespUserLogin;
 	}
 
-	@Override
-	public void execPacket() {
-		System.err.println("receive login "+ alertMsg);
-		LoginManager.getInstance().handleLoginResponse(this);
-	}
-
 	public String getAlertMsg() {
 		return alertMsg;
 	}

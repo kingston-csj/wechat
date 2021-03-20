@@ -3,7 +3,11 @@ package pers.kinson.wechat.logic.search;
 import java.util.List;
 
 import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
 import pers.kinson.wechat.logic.search.model.RecommendFriendItem;
+import pers.kinson.wechat.net.MessageRouter;
+import pers.kinson.wechat.net.message.AbstractPacket;
+import pers.kinson.wechat.net.message.PacketType;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 
@@ -25,7 +29,18 @@ public class SearchManager {
 		return instance;
 	}
 
-	public void refreshRecommendFriends(List<RecommendFriendItem> items) {
+	private SearchManager() {
+		MessageRouter.INSTANCE.register(PacketType.ResSearchFriends.getType(), msg -> {
+			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
+				SearchManager.getInstance().refreshRecommendFriends(msg);
+			});
+		});
+
+	}
+
+	public void refreshRecommendFriends(AbstractPacket packet) {
+		ResSearchFriends resSearchFriends = (ResSearchFriends)packet;
+		List<RecommendFriendItem> items = resSearchFriends.getFriends();
 		StageController stageController = UiBaseService.INSTANCE.getStageController();
 //		stageController.switchStage(R.id.SearchView, R.id.MainView);
 		Stage stage = stageController.setStage(R.id.SearchView);
