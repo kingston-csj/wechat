@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.logic.login.LoginManager;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -77,7 +77,7 @@ public class LoginViewController implements ControlledStage, Initializable {
 		loginProgress.setVisible(true);
 		login.setVisible(false);
 
-		LoginManager.getInstance().beginToLogin(useId, psw);
+        Context.loginManager.beginToLogin(useId, psw);
 	}
 
 	@FXML

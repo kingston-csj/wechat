@@ -3,9 +3,9 @@ package pers.kinson.wechat.ui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.logic.user.UserManager;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -53,7 +53,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 		String nickName = userName.getText();
 		String psw = password.getText();
 		byte sexCode = Byte.parseByte(sexGroup.getSelectedToggle().getUserData().toString());
-		UserManager.getInstance().registerAccount(Long.parseLong(nickName), sexCode, nickName, psw);
+        Context.userManager.registerAccount(Long.parseLong(nickName), sexCode, nickName, psw);
 	}
 
 	@FXML

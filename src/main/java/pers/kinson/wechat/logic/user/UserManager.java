@@ -4,6 +4,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Constants;
+import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.user.message.req.ReqUserRegister;
@@ -11,26 +13,21 @@ import pers.kinson.wechat.logic.user.message.res.ResUserInfo;
 import pers.kinson.wechat.logic.user.message.res.ResUserRegister;
 import pers.kinson.wechat.logic.user.model.UserModel;
 import pers.kinson.wechat.logic.user.util.PasswordUtil;
-import pers.kinson.wechat.net.MessageRouter;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.I18n;
 
-public class UserManager {
+public class UserManager implements LifeCycle {
 
-    private static UserManager instance = new UserManager();
 
     private UserModel profile = new UserModel();
 
-    public static UserManager getInstance() {
-        return instance;
-    }
-
-    private UserManager() {
-        MessageRouter.INSTANCE.register(PacketType.ReqUserRegister.getType(), this::handleRegisterResponse);
-        MessageRouter.INSTANCE.register(PacketType.ResUserInfo.getType(), this::updateMyProfile);
+    @Override
+    public void init() {
+        Context.messageRouter.registerHandler(CmdConst.ReqUserRegister, this::handleRegisterResponse);
+        Context.messageRouter.registerHandler(CmdConst.ResUserInfo, this::updateMyProfile);
     }
 
     public void updateMyProfile(AbstractPacket packet) {

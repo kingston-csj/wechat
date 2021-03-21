@@ -12,14 +12,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Constants;
+import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
 import pers.kinson.wechat.logic.friend.message.res.ResFriendList;
 import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
-import pers.kinson.wechat.logic.user.UserManager;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.MessageRouter;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.ImageUtil;
@@ -30,9 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class FriendManager {
-
-    private static FriendManager instance = new FriendManager();
+public class FriendManager implements LifeCycle {
 
     private Map<Long, FriendItemVo> friends = new HashMap<>();
 
@@ -42,14 +41,10 @@ public class FriendManager {
      */
     private TreeMap<Integer, List<FriendItemVo>> groupFriends = new TreeMap<>();
 
-    public static FriendManager getInstance() {
-        return instance;
+    @Override
+    public void init() {
+        Context.messageRouter.registerHandler(CmdConst.ResFriendList, this::receiveFriendsList);
     }
-
-    private FriendManager() {
-        MessageRouter.INSTANCE.register(PacketType.ResFriendList.getType(), this::receiveFriendsList);
-    }
-
     /**
      * 好友登录刷新
      *
@@ -188,7 +183,7 @@ public class FriendManager {
                     long friendId = Long.parseLong(userIdUi.getText());
                     FriendItemVo targetFriend = friends.get(friendId);
 
-                    long selfId = UserManager.getInstance().getMyUserId();
+                    long selfId = Context.userManager.getMyUserId();
                     if (friendId == selfId) {
                         //不能跟自己聊天
                         return;
@@ -212,5 +207,6 @@ public class FriendManager {
         userNameUi.setText(targetFriend.getFullName());
         signatureUi.setText(targetFriend.getSignature());
     }
+
 
 }

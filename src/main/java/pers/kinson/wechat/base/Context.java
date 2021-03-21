@@ -1,0 +1,46 @@
+package pers.kinson.wechat.base;
+
+import pers.kinson.wechat.logic.friend.FriendManager;
+import pers.kinson.wechat.logic.login.LoginManager;
+import pers.kinson.wechat.logic.user.UserManager;
+import pers.kinson.wechat.net.MessageRouter;
+
+import java.util.Arrays;
+
+public class Context {
+
+    public static LoginManager loginManager;
+
+    public static MessageRouter messageRouter;
+
+    public static UserManager userManager;
+
+    public static FriendManager friendManager;
+
+    public static void init() {
+        Arrays.stream(Context.class.getDeclaredFields()).forEach(
+                f -> {
+                    try {
+                        Object obj = f.getType().newInstance();
+                        f.set(null, obj);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+
+        Arrays.stream(Context.class.getDeclaredFields()).forEach(
+                f -> {
+                    try {
+                        Object obj = f.get(null);
+                        if (LifeCycle.class.isAssignableFrom(f.getType())) {
+                            ((LifeCycle) obj).init();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+}

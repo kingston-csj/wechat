@@ -1,13 +1,12 @@
 package pers.kinson.wechat.ui.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.search.SearchManager;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
-import pers.kinson.wechat.logic.user.UserManager;
 import pers.kinson.wechat.logic.user.model.UserModel;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
@@ -43,9 +42,9 @@ public class MainViewController implements ControlledStage, Initializable{
 	@FXML
 	private Label signature;
 
-	private UserModel userModel = UserManager.getInstance().getMyProfile();
+	private UserModel userModel = Context.userManager.getMyProfile();
 
-	@Override
+    @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		username.textProperty().bind(userModel.userNameProperty());
 		signature.textProperty().bind(userModel.signaturePropertiy());

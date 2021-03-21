@@ -1,8 +1,8 @@
 package pers.kinson.wechat.logic.friend.message.res;
 
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 
 /**
  * 好友注销
@@ -21,8 +21,8 @@ public class ResFriendLogout extends AbstractPacket {
 	}
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ResFriendLogout;
+	public int getPacketType() {
+		return CmdConst.ResFriendLogout;
 	}
 
 	@Override

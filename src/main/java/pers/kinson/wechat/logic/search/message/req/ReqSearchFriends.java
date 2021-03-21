@@ -1,8 +1,8 @@
 package pers.kinson.wechat.logic.search.message.req;
 
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 
 public class ReqSearchFriends extends AbstractPacket {
 
@@ -10,8 +10,8 @@ public class ReqSearchFriends extends AbstractPacket {
 	private String key;
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ReqSearchFriends;
+	public int getPacketType() {
+		return CmdConst.ReqSearchFriends;
 	}
 
 	public void writeBody(ByteBuf buf) {

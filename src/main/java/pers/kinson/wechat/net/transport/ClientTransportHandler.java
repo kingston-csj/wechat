@@ -1,5 +1,6 @@
 package pers.kinson.wechat.net.transport;
 
+import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.net.MessageRouter;
 import pers.kinson.wechat.net.message.AbstractPacket;
@@ -26,7 +27,7 @@ public class ClientTransportHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception{
 		AbstractPacket  packet = (AbstractPacket)msg;
-		MessageRouter.INSTANCE.execPacket(packet);
+		Context.messageRouter.execPacket(packet);
 	}
 
 	@Override

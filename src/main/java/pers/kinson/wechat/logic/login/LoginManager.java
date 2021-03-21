@@ -4,31 +4,26 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Constants;
+import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.login.message.req.ReqHeartBeat;
 import pers.kinson.wechat.logic.login.message.req.ReqUserLogin;
 import pers.kinson.wechat.logic.login.message.res.ResUserLogin;
 import pers.kinson.wechat.logic.user.util.PasswordUtil;
-import pers.kinson.wechat.net.MessageRouter;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.I18n;
 import pers.kinson.wechat.util.SchedulerManager;
 
-public class LoginManager {
+public class LoginManager implements LifeCycle {
 
-    private static LoginManager instance = new LoginManager();
-
-    private LoginManager() {
-        MessageRouter.INSTANCE.register(PacketType.RespUserLogin.getType(), this::handleLoginResponse);
-
-    }
-
-    public static LoginManager getInstance() {
-        return instance;
+    @Override
+    public void init() {
+        Context.messageRouter.registerHandler(CmdConst.ResUserLogin, this::handleLoginResponse);
     }
 
     /**

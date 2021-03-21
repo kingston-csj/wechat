@@ -1,8 +1,8 @@
 package pers.kinson.wechat.logic.chat.message.req;
 
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 
 public class ReqChatToGroup extends AbstractPacket {
 	
@@ -36,12 +36,11 @@ public class ReqChatToGroup extends AbstractPacket {
 	public void readBody(ByteBuf buf) {
 		this.toUserId = buf.readLong();
 		this.content = readUTF8(buf);
-		
 	}
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ReqChatToGroup;
+	public int getPacketType() {
+		return CmdConst.ReqChatToGroup;
 	}
 
 }

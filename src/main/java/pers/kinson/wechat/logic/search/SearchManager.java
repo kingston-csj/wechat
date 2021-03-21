@@ -1,16 +1,5 @@
 package pers.kinson.wechat.logic.search;
 
-import java.util.List;
-
-import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
-import pers.kinson.wechat.logic.search.model.RecommendFriendItem;
-import pers.kinson.wechat.net.MessageRouter;
-import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
-import pers.kinson.wechat.ui.R;
-import pers.kinson.wechat.ui.StageController;
-
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -20,6 +9,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
+import pers.kinson.wechat.logic.search.model.RecommendFriendItem;
+import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.MessageRouter;
+import pers.kinson.wechat.net.message.AbstractPacket;
+import pers.kinson.wechat.ui.R;
+import pers.kinson.wechat.ui.StageController;
+
+import java.util.List;
 
 public class SearchManager {
 
@@ -30,12 +30,11 @@ public class SearchManager {
 	}
 
 	private SearchManager() {
-		MessageRouter.INSTANCE.register(PacketType.ResSearchFriends.getType(), msg -> {
+		Context.messageRouter.registerHandler(CmdConst.ResSearchFriends, msg -> {
 			UiBaseService.INSTANCE.runTaskInFxThread(() -> {
 				SearchManager.getInstance().refreshRecommendFriends(msg);
 			});
 		});
-
 	}
 
 	public void refreshRecommendFriends(AbstractPacket packet) {

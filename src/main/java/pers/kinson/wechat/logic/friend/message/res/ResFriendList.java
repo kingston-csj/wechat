@@ -1,22 +1,20 @@
 package pers.kinson.wechat.logic.friend.message.res;
 
+import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
+import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.message.AbstractPacket;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import pers.kinson.wechat.logic.friend.FriendManager;
-import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
-import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ResFriendList extends AbstractPacket {
 
 	private List<FriendItemVo> friends;
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ResFriendList;
+	public int getPacketType() {
+		return CmdConst.ResFriendList;
 	}
 
 	public List<FriendItemVo> getFriends() {
@@ -33,7 +31,6 @@ public class ResFriendList extends AbstractPacket {
 		for (FriendItemVo item:friends) {
 			item.writeBody(buf);
 		}
-
 	}
 
 	@Override

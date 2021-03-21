@@ -1,8 +1,8 @@
 package pers.kinson.wechat.logic.user.message.res;
 
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 
 public class ResUserRegister extends AbstractPacket {
 	
@@ -30,7 +30,6 @@ public class ResUserRegister extends AbstractPacket {
 	public void writeBody(ByteBuf buf) {
 		buf.writeByte(resultCode);
 		writeUTF8(buf, message);
-		
 	}
 
 	@Override
@@ -41,8 +40,8 @@ public class ResUserRegister extends AbstractPacket {
 	}
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ResUserRegister;
+	public int getPacketType() {
+		return CmdConst.ResUserRegister;
 	}
 
 	@Override

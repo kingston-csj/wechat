@@ -1,8 +1,8 @@
 package pers.kinson.wechat.logic.user.message.res;
 
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 
 public class ResUserInfo extends AbstractPacket {
 
@@ -15,8 +15,8 @@ public class ResUserInfo extends AbstractPacket {
 	private String signature;
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ResUserInfo;
+	public int getPacketType() {
+		return CmdConst.ResUserInfo;
 	}
 
 	@Override

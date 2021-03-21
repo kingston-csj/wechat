@@ -3,11 +3,11 @@ package pers.kinson.wechat.logic.chat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToUser;
 import pers.kinson.wechat.logic.chat.message.res.ResChatToUser;
-import pers.kinson.wechat.logic.user.UserManager;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 
@@ -44,7 +44,7 @@ public class ChatManager {
 
 		UiBaseService.INSTANCE.runTaskInFxThread(()-> {
 			Pane pane = null;
-			if (sourceId == UserManager.getInstance().getMyUserId()) {
+            if (sourceId == Context.userManager.getMyUserId()) {
 				pane = stageController.load(R.layout.PrivateChatItemRight, Pane.class);
 			}else {
 				pane = stageController.load(R.layout.PrivateChatItemLeft, Pane.class);

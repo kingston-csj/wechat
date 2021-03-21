@@ -1,23 +1,20 @@
 package pers.kinson.wechat.logic.search.message.res;
 
+import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.logic.search.model.RecommendFriendItem;
+import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.message.AbstractPacket;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.logic.search.SearchManager;
-import pers.kinson.wechat.logic.search.model.RecommendFriendItem;
-import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
-
-import io.netty.buffer.ByteBuf;
 
 public class ResSearchFriends extends AbstractPacket {
 
 	private List<RecommendFriendItem> friends;
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ResSearchFriends;
+	public int getPacketType() {
+		return CmdConst.ResSearchFriends;
 	}
 
 	@Override

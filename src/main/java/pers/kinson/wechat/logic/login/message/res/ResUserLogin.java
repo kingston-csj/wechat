@@ -1,10 +1,8 @@
 package pers.kinson.wechat.logic.login.message.res;
 
-import pers.kinson.wechat.logic.login.LoginManager;
-import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
-
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.message.AbstractPacket;
 
 public class ResUserLogin extends AbstractPacket {
 
@@ -24,8 +22,8 @@ public class ResUserLogin extends AbstractPacket {
 	}
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.RespUserLogin;
+	public int getPacketType() {
+		return CmdConst.ResUserLogin;
 	}
 
 	public String getAlertMsg() {

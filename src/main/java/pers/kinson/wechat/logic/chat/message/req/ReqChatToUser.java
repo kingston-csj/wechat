@@ -1,8 +1,8 @@
 package pers.kinson.wechat.logic.chat.message.req;
 
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 
 public class ReqChatToUser extends AbstractPacket {
 
@@ -41,8 +41,8 @@ public class ReqChatToUser extends AbstractPacket {
 	}
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ReqChatToUser;
+	public int getPacketType() {
+		return CmdConst.ReqChatToUser;
 	}
 
 }

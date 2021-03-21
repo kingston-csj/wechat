@@ -1,8 +1,8 @@
 package pers.kinson.wechat.logic.login.message.req;
 
 import io.netty.buffer.ByteBuf;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.message.AbstractPacket;
-import pers.kinson.wechat.net.message.PacketType;
 
 public class ReqHeartBeat extends AbstractPacket {
 
@@ -16,8 +16,8 @@ public class ReqHeartBeat extends AbstractPacket {
 	}
 
 	@Override
-	public PacketType getPacketType() {
-		return PacketType.ReqHeartBeat;
+	public int getPacketType() {
+		return CmdConst.ReqHeartBeat;
 	}
 
 }
