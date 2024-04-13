@@ -1,41 +1,18 @@
 package pers.kinson.wechat.logic.search.model;
 
-import pers.kinson.wechat.net.message.ByteBufBean;
+import lombok.Data;
+import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.message.AbstractPacket;
 
-import io.netty.buffer.ByteBuf;
+@Data
+public class RecommendFriendItem extends AbstractPacket {
 
-public class RecommendFriendItem extends ByteBufBean {
+    private long userId;
 
-	private long userId;
+    private String nickName;
 
-	private String nickName;
-
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	@Override
-	public void writeBody(ByteBuf buf) {
-		buf.writeLong(userId);
-		writeUTF8(buf, nickName);
-	}
-
-	@Override
-	public void readBody(ByteBuf buf) {
-		userId = buf.readLong();
-		nickName = readUTF8(buf);
-	}
-
+    @Override
+    public int getPacketType() {
+        return CmdConst.RecommendFriendVO;
+    }
 }

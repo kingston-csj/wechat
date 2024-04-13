@@ -82,4 +82,7 @@ public interface CmdConst {
     int ResFriendLogout = 5_202;
 
     int ResSearchFriends = 5_203;
+
+    int FriendVo = 5_204;
+    int RecommendFriendVO = 5_205;
 }

@@ -1,16 +1,17 @@
 package pers.kinson.wechat.logic.friend.message.vo;
 
+import lombok.Data;
+
 import org.apache.commons.lang3.StringUtils;
-
 import pers.kinson.wechat.base.Constants;
-import pers.kinson.wechat.net.message.ByteBufBean;
+import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.message.AbstractPacket;
 
-import io.netty.buffer.ByteBuf;
-
-public class FriendItemVo extends ByteBufBean {
+@Data
+public class FriendItemVo extends AbstractPacket {
 
 	private long userId;
-	/** 在线状态 {@link Constants#ONLINE_STATUS} */
+	/** 在线状态 {@link Constants#online_status} */
 	private byte online;
 	/** 昵称 */
 	private String userName;
@@ -25,58 +26,13 @@ public class FriendItemVo extends ByteBufBean {
 	/** 分组备注 */
 	private String groupName;
 
-	public long getUserId() {
-		return userId;
-	}
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remarks) {
-		this.remark = remarks;
-	}
-	public String getSignature() {
-		return signature;
-	}
-	public void setSignature(String signature) {
-		this.signature = signature;
-	}
-	public byte getSex() {
-		return sex;
-	}
-	public void setSex(byte sex) {
-		this.sex = sex;
-	}
-	public int getGroup() {
-		return group;
-	}
-	public void setGroup(int group) {
-		this.group = group;
-	}
-	public String getGroupName() {
-		return groupName;
-	}
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
+	@Override
+	public int getPacketType() {
+		return CmdConst.FriendVo;
 	}
 
-	public byte getOnline() {
-		return online;
-	}
-	public void setOnline(byte online) {
-		this.online = online;
-	}
-
-	public boolean isOnlie() {
-		return this.online == Constants.ONLINE_STATUS;
+	public boolean isOnline() {
+		return online == Constants.ONLINE_STATUS;
 	}
 
 	public String getFullName() {
@@ -87,33 +43,10 @@ public class FriendItemVo extends ByteBufBean {
 	}
 
 	@Override
-	public void writeBody(ByteBuf buf) {
-		buf.writeLong(userId);
-		writeUTF8(buf, userName);
-		buf.writeByte(online);
-		writeUTF8(buf, remark);
-		writeUTF8(buf, signature);
-		buf.writeByte(sex);
-		buf.writeInt(group);
-		writeUTF8(buf, groupName);
-	}
-
-	@Override
-	public void readBody(ByteBuf buf) {
-		this.userId = buf.readLong();
-		this.userName = readUTF8(buf);
-		this.online = buf.readByte();
-		this.remark = readUTF8(buf);
-		this.signature = readUTF8(buf);
-		this.sex = buf.readByte();
-		this.group = buf.readInt();
-		this.groupName = readUTF8(buf);
-	}
-
-	@Override
 	public String toString() {
 		return "FriendItemVo [userId=" + userId + ", online=" + online + ", userName=" + userName + ", remark=" + remark
 				+ ", signature=" + signature + ", sex=" + sex + ", group=" + group + ", groupName=" + groupName + "]";
 	}
 
 }
+

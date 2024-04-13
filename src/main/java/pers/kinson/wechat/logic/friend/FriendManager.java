@@ -136,7 +136,7 @@ public class FriendManager implements LifeCycle {
         int onlineCount = 0;
         StageController stageController = UiBaseService.INSTANCE.getStageController();
         for (FriendItemVo item : friendItems) {
-            if (item.isOnlie()) {
+            if (item.isOnline()) {
                 onlineCount++;
             }
             Pane pane = stageController.load(R.layout.FriendItem, Pane.class);
@@ -162,7 +162,7 @@ public class FriendManager implements LifeCycle {
 
         ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
 
-        if (!friendVo.isOnlie()) {
+        if (!friendVo.isOnline()) {
             headImage.setImage(ImageUtil.convertToGray(headImage.getImage()));
         }
 
