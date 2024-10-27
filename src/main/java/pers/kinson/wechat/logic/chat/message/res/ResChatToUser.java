@@ -1,19 +1,15 @@
 package pers.kinson.wechat.logic.chat.message.res;
 
+import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
 
 @Data
-public class ResChatToUser extends AbstractPacket {
+@MessageMeta(cmd = CmdConst.ResChatToUser)
+public class ResChatToUser  {
 
 	private long fromUserId;
 
 	private String content;
-
-	@Override
-	public int getPacketType() {
-		return CmdConst.ResChatToUser;
-	}
 
 }

@@ -19,8 +19,6 @@ import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
 import pers.kinson.wechat.logic.friend.message.res.ResFriendList;
 import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.MessageRouter;
-import pers.kinson.wechat.net.message.AbstractPacket;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.ImageUtil;
@@ -73,7 +71,7 @@ public class FriendManager implements LifeCycle {
         }
     }
 
-    private void receiveFriendsList(AbstractPacket packet) {
+    private void receiveFriendsList(Object packet) {
         ResFriendList resFriends = (ResFriendList) packet;
         UiBaseService.INSTANCE.runTaskInFxThread(() -> {
             receiveFriendsList(resFriends.getFriends());

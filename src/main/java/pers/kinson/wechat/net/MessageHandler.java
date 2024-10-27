@@ -1,9 +1,7 @@
 package pers.kinson.wechat.net;
 
-import pers.kinson.wechat.net.message.AbstractPacket;
-
 @FunctionalInterface
-public interface MessageHandler<T extends AbstractPacket> {
+public interface MessageHandler<T> {
 
-     void action(T data);
+    void action(T data);
 }

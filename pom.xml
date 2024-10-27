@@ -12,7 +12,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<message.dir.rel>i18n</message.dir.rel>
 		<netty.version>4.1.107.Final</netty.version>
-		<jforgame.version>1.1.0</jforgame.version>
+		<jforgame.version>2.0.0</jforgame.version>
 		<lombok.version>1.18.30</lombok.version>
 	</properties>
 
@@ -27,7 +27,16 @@
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>io.github.jforgame</groupId>
+			<artifactId>jforgame-commons</artifactId>
+			<version>${jforgame.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.jforgame</groupId>
+			<artifactId>jforgame-socket-netty</artifactId>
+			<version>${jforgame.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.github.jforgame</groupId>
 			<artifactId>jforgame-codec-struct</artifactId>

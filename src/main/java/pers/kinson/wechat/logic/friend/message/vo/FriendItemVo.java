@@ -1,14 +1,14 @@
 package pers.kinson.wechat.logic.friend.message.vo;
 
+import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
-
 import org.apache.commons.lang3.StringUtils;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
 
 @Data
-public class FriendItemVo extends AbstractPacket {
+@MessageMeta(cmd = CmdConst.FriendVo)
+public class FriendItemVo  {
 
 	private long userId;
 	/** 在线状态 {@link Constants#online_status} */
@@ -26,11 +26,6 @@ public class FriendItemVo extends AbstractPacket {
 	/** 分组备注 */
 	private String groupName;
 
-	@Override
-	public int getPacketType() {
-		return CmdConst.FriendVo;
-	}
-
 	public boolean isOnline() {
 		return online == Constants.ONLINE_STATUS;
 	}
@@ -40,12 +35,6 @@ public class FriendItemVo extends AbstractPacket {
 			return this.userName;
 		}
 		return this.userName + "(" + this.remark + ")";
-	}
-
-	@Override
-	public String toString() {
-		return "FriendItemVo [userId=" + userId + ", online=" + online + ", userName=" + userName + ", remark=" + remark
-				+ ", signature=" + signature + ", sex=" + sex + ", group=" + group + ", groupName=" + groupName + "]";
 	}
 
 }

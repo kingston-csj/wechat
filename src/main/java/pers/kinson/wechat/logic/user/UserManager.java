@@ -6,7 +6,6 @@ import javafx.stage.Stage;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
-import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.user.message.req.ReqUserRegister;
 import pers.kinson.wechat.logic.user.message.res.ResUserInfo;
@@ -14,7 +13,8 @@ import pers.kinson.wechat.logic.user.message.res.ResUserRegister;
 import pers.kinson.wechat.logic.user.model.UserModel;
 import pers.kinson.wechat.logic.user.util.PasswordUtil;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
+import pers.kinson.wechat.net.IOUtil;
+import pers.kinson.wechat.net.SimpleRequestCallback;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.I18n;
@@ -26,11 +26,10 @@ public class UserManager implements LifeCycle {
 
     @Override
     public void init() {
-        Context.messageRouter.registerHandler(CmdConst.ReqUserRegister, this::handleRegisterResponse);
         Context.messageRouter.registerHandler(CmdConst.ResUserInfo, this::updateMyProfile);
     }
 
-    public void updateMyProfile(AbstractPacket packet) {
+    public void updateMyProfile(Object packet) {
         UiBaseService.INSTANCE.runTaskInFxThread(() -> {
             ResUserInfo userInfo = (ResUserInfo) packet;
             profile.setSex(userInfo.getSex());
@@ -58,11 +57,15 @@ public class UserManager implements LifeCycle {
         request.setSex(sex);
 
         System.err.println("向服务端发送注册请求");
-        SessionManager.INSTANCE.sendMessage(request);
+        IOUtil.callback(request, new SimpleRequestCallback<ResUserRegister>() {
+            @Override
+            public void onSuccess(ResUserRegister callBack) {
+                handleRegisterResponse(callBack);
+            }
+        });
     }
 
-    public void handleRegisterResponse(AbstractPacket packet) {
-        ResUserRegister data = (ResUserRegister) packet;
+    public void handleRegisterResponse(ResUserRegister data) {
         byte resultCode = data.getResultCode();
         String message = data.getMessage();
         boolean isSucc = resultCode == Constants.TRUE;

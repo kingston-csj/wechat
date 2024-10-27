@@ -1,19 +1,14 @@
 package pers.kinson.wechat.logic.login.message.req;
 
+import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
 
 @Data
-public class ReqUserLogin extends AbstractPacket {
+@MessageMeta(cmd = CmdConst.ReqUserLogin)
+public class ReqUserLogin  {
 
 	private long userId;
 	private String userPwd;
-
-	@Override
-	public int getPacketType() {
-		return CmdConst.ReqUserLogin;
-	}
-
 
 }

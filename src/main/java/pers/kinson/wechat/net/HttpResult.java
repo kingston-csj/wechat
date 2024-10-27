@@ -1,10 +1,11 @@
 package pers.kinson.wechat.net;
 
+import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
-import pers.kinson.wechat.net.message.AbstractPacket;
 
 @Data
-public class HttpResult extends AbstractPacket {
+@MessageMeta(cmd = CmdConst.ResCommon)
+public class HttpResult  {
 
     /**
      * 0表示成功，非0代表错误
@@ -21,8 +22,4 @@ public class HttpResult extends AbstractPacket {
      */
     private String data;
 
-    @Override
-    public int getPacketType() {
-        return CmdConst.ResCommon;
-    }
 }

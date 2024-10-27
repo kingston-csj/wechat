@@ -2,6 +2,7 @@ package pers.kinson.wechat.base;
 
 import jforgame.codec.MessageCodec;
 import jforgame.codec.struct.StructMessageCodec;
+import jforgame.socket.client.SocketClient;
 import pers.kinson.wechat.logic.friend.FriendManager;
 import pers.kinson.wechat.logic.login.LoginManager;
 import pers.kinson.wechat.logic.user.UserManager;
@@ -13,13 +14,13 @@ public class Context {
 
     public static LoginManager loginManager;
 
-    public static MessageRouter messageRouter;
-
     public static UserManager userManager;
 
     public static FriendManager friendManager;
 
     public static MessageCodec messageCodec = new StructMessageCodec();
+
+    public static MessageRouter messageRouter;
 
 
     public static void init() {

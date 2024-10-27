@@ -1,5 +1,7 @@
 package pers.kinson.wechat.util;
 
+import jforgame.commons.thread.NamedThreadFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +20,7 @@ public enum SchedulerManager {
 
 	INSTANCE;
 
-	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(new NameadThreadFactory("Scheduler-service"));
+	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("Scheduler-service"));
 
 	/** 名字不能重复的tasks */
 	private ConcurrentMap<String, ScheduledFuture> uniqueTasks = new ConcurrentHashMap<>();

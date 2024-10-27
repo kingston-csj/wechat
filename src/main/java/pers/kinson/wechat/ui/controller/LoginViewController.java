@@ -1,19 +1,5 @@
 package pers.kinson.wechat.ui.controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.SessionManager;
-import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.ui.ControlledStage;
-import pers.kinson.wechat.ui.R;
-import pers.kinson.wechat.ui.StageController;
-import pers.kinson.wechat.ui.container.ResourceContainer;
-import pers.kinson.wechat.util.I18n;
-import pers.kinson.wechat.util.NumberUtil;
-
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +13,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.ui.ControlledStage;
+import pers.kinson.wechat.ui.R;
+import pers.kinson.wechat.ui.StageController;
+import pers.kinson.wechat.ui.container.ResourceContainer;
+import pers.kinson.wechat.util.I18n;
+import pers.kinson.wechat.util.NumberUtil;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class LoginViewController implements ControlledStage, Initializable {
 
@@ -68,11 +66,11 @@ public class LoginViewController implements ControlledStage, Initializable {
 		final long useId = Long.parseLong(userId.getText());
 		final String psw = password.getText();
 
-		if (!SessionManager.INSTANCE.isConnectedSever()) {
-			errorPane.setVisible(true);
-			errorTips.setText(I18n.get("login.failToConnect"));
-			return;
-		}
+//		if (!SessionManager.INSTANCE.isConnectedSever()) {
+//			errorPane.setVisible(true);
+//			errorTips.setText(I18n.get("login.failToConnect"));
+//			return;
+//		}
 
 		loginProgress.setVisible(true);
 		login.setVisible(false);

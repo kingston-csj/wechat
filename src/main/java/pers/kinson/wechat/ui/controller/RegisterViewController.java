@@ -1,17 +1,5 @@
 package pers.kinson.wechat.ui.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.SessionManager;
-import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.ui.ControlledStage;
-import pers.kinson.wechat.ui.R;
-import pers.kinson.wechat.ui.StageController;
-import pers.kinson.wechat.ui.container.ResourceContainer;
-import pers.kinson.wechat.util.I18n;
-
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +12,15 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.ui.ControlledStage;
+import pers.kinson.wechat.ui.R;
+import pers.kinson.wechat.ui.StageController;
+import pers.kinson.wechat.ui.container.ResourceContainer;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class RegisterViewController implements ControlledStage, Initializable {
 
@@ -44,11 +41,11 @@ public class RegisterViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void register() {
-		if (!SessionManager.INSTANCE.isConnectedSever()) {
-			errorTips.setText(I18n.get("login.failToConnect"));
-			errorTips.setVisible(true);
-			return;
-		}
+//		if (!SessionManager.INSTANCE.isConnectedSever()) {
+//			errorTips.setText(I18n.get("login.failToConnect"));
+//			errorTips.setVisible(true);
+//			return;
+//		}
 
 		String nickName = userName.getText();
 		String psw = password.getText();

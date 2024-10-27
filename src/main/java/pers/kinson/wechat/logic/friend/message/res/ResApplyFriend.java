@@ -4,14 +4,12 @@ import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
 import pers.kinson.wechat.net.CmdConst;
 
-/**
- * 好友注销
- */
 @Data
-@MessageMeta(cmd = CmdConst.ResFriendLogout)
-public class ResFriendLogout  {
+@MessageMeta(cmd = CmdConst.ResApplyFriend)
+public class ResApplyFriend {
 
-	private long friendId;
-
-
+    /**
+     * 0表示申请成功
+     */
+    private int code;
 }

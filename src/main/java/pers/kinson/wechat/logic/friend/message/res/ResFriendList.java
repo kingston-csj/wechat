@@ -1,20 +1,16 @@
 package pers.kinson.wechat.logic.friend.message.res;
 
+import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
 import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
 
 import java.util.List;
 
 @Data
-public class ResFriendList extends AbstractPacket {
+@MessageMeta(cmd = CmdConst.ResFriendList)
+public class ResFriendList  {
 
 	private List<FriendItemVo> friends;
-
-	@Override
-	public int getPacketType() {
-		return CmdConst.ResFriendList;
-	}
 
 }

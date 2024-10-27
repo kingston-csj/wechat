@@ -6,14 +6,13 @@ import javafx.stage.Stage;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
-import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.login.message.req.ReqHeartBeat;
 import pers.kinson.wechat.logic.login.message.req.ReqUserLogin;
 import pers.kinson.wechat.logic.login.message.res.ResUserLogin;
 import pers.kinson.wechat.logic.user.util.PasswordUtil;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
+import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.I18n;
@@ -35,10 +34,10 @@ public class LoginManager implements LifeCycle {
         reqLogin.setUserId(userId);
         reqLogin.setUserPwd(PasswordUtil.passwordEncryption(userId, password));
         System.err.println("向服务端发送登录请求");
-        SessionManager.INSTANCE.sendMessage(reqLogin);
+        IOUtil.send(reqLogin);
     }
 
-    public void handleLoginResponse(AbstractPacket packet) {
+    public void handleLoginResponse(Object packet) {
         ResUserLogin resp = (ResUserLogin) packet;
         boolean isSucc = resp.getIsValid() == Constants.TRUE;
         if (isSucc) {
@@ -69,7 +68,7 @@ public class LoginManager implements LifeCycle {
      */
     private void registerHeartTimer() {
         SchedulerManager.INSTANCE.scheduleAtFixedRate("HEART_BEAT", () -> {
-            SessionManager.INSTANCE.sendMessage(new ReqHeartBeat());
+            IOUtil.send(new ReqHeartBeat());
         }, 0, 5 * 1000);
     }
 

@@ -1,4 +1,4 @@
-package pers.kinson.wechat.net.transport;
+package pers.kinson.wechat.net;
 
 public class ClientConfigs {
 

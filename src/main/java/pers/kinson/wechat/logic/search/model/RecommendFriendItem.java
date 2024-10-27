@@ -1,18 +1,15 @@
 package pers.kinson.wechat.logic.search.model;
 
+import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
 
 @Data
-public class RecommendFriendItem extends AbstractPacket {
+@MessageMeta(cmd = CmdConst.RecommendFriendVO)
+public class RecommendFriendItem  {
 
     private long userId;
 
     private String nickName;
 
-    @Override
-    public int getPacketType() {
-        return CmdConst.RecommendFriendVO;
-    }
 }

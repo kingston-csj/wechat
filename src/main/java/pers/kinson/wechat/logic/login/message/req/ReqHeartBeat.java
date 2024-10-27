@@ -1,13 +1,9 @@
 package pers.kinson.wechat.logic.login.message.req;
 
+import jforgame.socket.share.annotation.MessageMeta;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.message.AbstractPacket;
 
-public class ReqHeartBeat extends AbstractPacket {
-
-	@Override
-	public int getPacketType() {
-		return CmdConst.ReqHeartBeat;
-	}
+@MessageMeta(cmd = CmdConst.ReqHeartBeat)
+public class ReqHeartBeat  {
 
 }

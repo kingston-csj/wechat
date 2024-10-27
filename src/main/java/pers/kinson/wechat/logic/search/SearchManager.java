@@ -11,14 +11,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.SessionManager;
 import pers.kinson.wechat.base.UiBaseService;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyFriend;
+import pers.kinson.wechat.logic.friend.message.res.ResApplyFriend;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
 import pers.kinson.wechat.logic.search.model.RecommendFriendItem;
-import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.MessageRouter;
-import pers.kinson.wechat.net.message.AbstractPacket;
+import pers.kinson.wechat.net.IOUtil;
+import pers.kinson.wechat.net.SimpleRequestCallback;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 
@@ -32,16 +31,7 @@ public class SearchManager {
         return instance;
     }
 
-    private SearchManager() {
-        Context.messageRouter.registerHandler(CmdConst.ResSearchFriends, msg -> {
-            UiBaseService.INSTANCE.runTaskInFxThread(() -> {
-                SearchManager.getInstance().refreshRecommendFriends(msg);
-            });
-        });
-    }
-
-    public void refreshRecommendFriends(AbstractPacket packet) {
-        ResSearchFriends resSearchFriends = (ResSearchFriends) packet;
+    public void refreshRecommendFriends(ResSearchFriends resSearchFriends) {
         List<RecommendFriendItem> items = resSearchFriends.getFriends();
         StageController stageController = UiBaseService.INSTANCE.getStageController();
 //		stageController.switchStage(R.id.SearchView, R.id.MainView);
@@ -94,7 +84,11 @@ public class SearchManager {
             ReqApplyFriend reqApply = new ReqApplyFriend();
             reqApply.setFrom(Context.userManager.getMyProfile().getUserId());
             reqApply.setTo(item.getUserId());
-            SessionManager.INSTANCE.sendMessage(reqApply);
+            IOUtil.callback(reqApply, new SimpleRequestCallback<ResApplyFriend>() {
+                @Override
+                public void onSuccess(ResApplyFriend callBack) {
+                }
+            });
         });
     }
 
