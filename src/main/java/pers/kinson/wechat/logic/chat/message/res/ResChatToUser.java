@@ -8,7 +8,9 @@ import pers.kinson.wechat.net.CmdConst;
 @MessageMeta(cmd = CmdConst.ResChatToUser)
 public class ResChatToUser  {
 
-	private long fromUserId;
+	private Long fromUserId;
+
+	private Long toUserId;
 
 	private String content;
 

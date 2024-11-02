@@ -12,14 +12,8 @@
 				<Image url="@../img/head.png" />
 			</image>
 		</ImageView>
-		<Label layoutX="68.0" layoutY="8.0" visible="false">
-			<font>
-				<Font size="20.0" />
-			</font>
-		</Label>
-		<Label fx:id="signature" layoutX="72.0" layoutY="31.0" prefHeight="26.0" prefWidth="200.0" text="用户签名" textFill="#808080" />
+		<Label fx:id="remark" layoutX="72.0" layoutY="31.0" prefHeight="26.0" prefWidth="200.0" text="备注" textFill="#808080" />
 		<Label fx:id="friendId" layoutX="206.0" layoutY="23.0" visible="false" />
-		<Label fx:id="netStatus" layoutX="206.0" layoutY="16.0" text="在线状态" visible="false" />
 		<Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="50.0" layoutX="180.0" layoutY="26.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: #f00;" text="99" textAlignment="CENTER" textFill="WHITE" visible="false">
 			<font>
 				<Font name="System Bold" size="13.0" />
@@ -35,5 +29,9 @@
 				<Font size="18.0" />
 			</font>
 		</Hyperlink>
+		<Button fx:id="agreeBtn"  text="同意" layoutX="200.0" visible="false" layoutY="6.0"/>
+		<Button fx:id="rejectBtn" text="拒绝" layoutX="200.0" visible="false" layoutY="33.0"/>
+
+		<Label fx:id="status" layoutX="200.0" layoutY="10.0"  prefHeight="26.0" prefWidth="50.0"  textFill="#808080" visible="false" />
 	</children>
 </Pane>

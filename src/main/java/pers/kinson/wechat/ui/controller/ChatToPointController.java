@@ -2,8 +2,8 @@ package pers.kinson.wechat.ui.controller;
 
 import java.io.IOException;
 
-import pers.kinson.wechat.base.UiBaseService;
-import pers.kinson.wechat.logic.chat.ChatManager;
+import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -29,22 +29,20 @@ public class ChatToPointController implements ControlledStage {
 	private void sendMessage() throws IOException {
 		final long userId = Long.parseLong(userIdUi.getText());
 		String message = msgInput.getText();
-
-		System.out.println("----send message---" + message);
-
-		ChatManager.getInstance().sendMessageTo(userId, message);
+		Context.chatManager.sendMessageTo(userId, message);
+		msgInput.setText("");
 	}
 
 
 	@Override
 	public Stage getMyStage() {
-		StageController stageController = UiBaseService.INSTANCE.getStageController();
+		StageController stageController = UiContext.stageController;
 		return stageController.getStageBy(R.id.ChatToPoint);
 	}
 
 	@FXML
 	private void close() {
-		UiBaseService.INSTANCE.getStageController().closeStage(R.id.ChatToPoint);
+		UiContext.stageController.closeStage(R.id.ChatToPoint);
 	}
 
 

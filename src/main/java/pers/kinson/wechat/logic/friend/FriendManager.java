@@ -1,5 +1,6 @@
 package pers.kinson.wechat.logic.friend;
 
+import com.google.common.eventbus.Subscribe;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
@@ -11,38 +12,45 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
+import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
+import pers.kinson.wechat.logic.constant.RedPointId;
+import pers.kinson.wechat.logic.friend.message.req.ReqApplyResult;
+import pers.kinson.wechat.logic.friend.message.res.ResApplyFriendList;
 import pers.kinson.wechat.logic.friend.message.res.ResFriendList;
+import pers.kinson.wechat.logic.friend.message.vo.FriendApplyVo;
 import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
+import pers.kinson.wechat.logic.redpoint.RedPointEvent;
 import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.ImageUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class FriendManager implements LifeCycle {
 
-    private Map<Long, FriendItemVo> friends = new HashMap<>();
+    private Map<Long, FriendItemVo> friends = new LinkedHashMap<>();
 
-    private Map<Integer, String> groupNames = new HashMap<>();
-    /**
-     * 分组好友视图
-     */
-    private TreeMap<Integer, List<FriendItemVo>> groupFriends = new TreeMap<>();
+    private Map<Integer, String> groupNames = new LinkedHashMap<>();
 
     @Override
     public void init() {
         Context.messageRouter.registerHandler(CmdConst.ResFriendList, this::receiveFriendsList);
+        Context.messageRouter.registerHandler(CmdConst.ResApplyFriendList, this::refreshFriendApplyView);
+
+        EventDispatcher.eventBus.register(this);
     }
+
     /**
      * 好友登录刷新
      *
@@ -73,9 +81,7 @@ public class FriendManager implements LifeCycle {
 
     private void receiveFriendsList(Object packet) {
         ResFriendList resFriends = (ResFriendList) packet;
-        UiBaseService.INSTANCE.runTaskInFxThread(() -> {
-            receiveFriendsList(resFriends.getFriends());
-        });
+        receiveFriendsList(resFriends.getFriends());
     }
 
     public void receiveFriendsList(List<FriendItemVo> friendItems) {
@@ -83,26 +89,23 @@ public class FriendManager implements LifeCycle {
         for (FriendItemVo item : friendItems) {
             friends.put(item.getUserId(), item);
         }
-        rangeToGroupFriends(friendItems);
 
-        UiBaseService.INSTANCE.runTaskInFxThread(() -> {
-            refreshMyFriendsView(friendItems);
-        });
-
+           UiContext.runTaskInFxThread(this::refreshMyFriendsView);
     }
 
     public FriendItemVo queryFriend(long friendId) {
         return this.friends.get(friendId);
     }
 
-    public void refreshMyFriendsView(List<FriendItemVo> friendItems) {
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+    public void refreshMyFriendsView() {
+        StageController stageController = UiContext.stageController;
         Stage stage = stageController.getStageBy(R.id.MainView);
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#friendSp");
         Accordion friendGroup = (Accordion) scrollPane.getContent();
         friendGroup.getPanes().clear();
 
-        for (Map.Entry<Integer, List<FriendItemVo>> entry : groupFriends.entrySet()) {
+        Map<Integer, List<FriendItemVo>> friendsByGroup = rangeToGroupFriends();
+        for (Map.Entry<Integer, List<FriendItemVo>> entry : friendsByGroup.entrySet()) {
             int groupId = entry.getKey();
             String groupName = this.groupNames.get(groupId);
             decorateFriendGroup(friendGroup, groupName, entry.getValue());
@@ -112,27 +115,22 @@ public class FriendManager implements LifeCycle {
     /**
      * 调整成好友分组结构
      */
-    private void rangeToGroupFriends(List<FriendItemVo> friendItems) {
-        this.groupFriends.clear();
-        TreeMap<Integer, List<FriendItemVo>> groupFriends = new TreeMap<>();
-        for (FriendItemVo item : friendItems) {
+    private Map<Integer, List<FriendItemVo>> rangeToGroupFriends() {
+        Map<Integer, List<FriendItemVo>> groupFriends = new LinkedHashMap<>();
+        for (FriendItemVo item : friends.values()) {
             int groupId = item.getGroup();
-            List<FriendItemVo> frendsByGroup = groupFriends.get(groupId);
-            if (frendsByGroup == null) {
-                frendsByGroup = new ArrayList<>();
-                groupFriends.put(groupId, frendsByGroup);
-            }
+            List<FriendItemVo> friendsByGroup = groupFriends.computeIfAbsent(groupId, k -> new ArrayList<>());
             this.groupNames.put(groupId, item.getGroupName());
-            frendsByGroup.add(item);
+            friendsByGroup.add(item);
         }
-        this.groupFriends = groupFriends;
+        return groupFriends;
     }
 
 
     private void decorateFriendGroup(Accordion container, String groupName, List<FriendItemVo> friendItems) {
-        ListView<Node> listView = new ListView<Node>();
+        ListView<Node> listView = new ListView<>();
         int onlineCount = 0;
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         for (FriendItemVo item : friendItems) {
             if (item.isOnline()) {
                 onlineCount++;
@@ -143,7 +141,7 @@ public class FriendManager implements LifeCycle {
         }
 
         bindDoubleClickEvent(listView);
-        String groupInfo = groupName + " " + onlineCount + "/" + friendItems.size();
+        String groupInfo = StringUtils.isEmpty(groupName) ? "未分组": groupName + " " + onlineCount + "/" + friendItems.size();
         TitledPane tp = new TitledPane(groupInfo, listView);
         container.getPanes().add(tp);
     }
@@ -163,8 +161,80 @@ public class FriendManager implements LifeCycle {
         if (!friendVo.isOnline()) {
             headImage.setImage(ImageUtil.convertToGray(headImage.getImage()));
         }
-
     }
+
+    @Subscribe
+    public void onEvent(RedPointEvent event) {
+        if (event.getPoints().containsKey(RedPointId.FRIEND_APPLY)) {
+            System.out.println("------onEvent-------");
+        }
+    }
+
+    public void refreshFriendApplyView(Object message) {
+        ResApplyFriendList resApplyFriendList = (ResApplyFriendList) message;
+        StageController stageController = UiContext.stageController;
+        Stage stage = stageController.getStageBy(R.id.MainView);
+        ListView applyListView = (ListView) stage.getScene().getRoot().lookup("#applies");
+        applyListView.getItems().clear();
+        decorateApplyItem(applyListView, resApplyFriendList.getRecords());
+    }
+
+
+    @SuppressWarnings("all")
+    private void decorateApplyItem(ListView listView, List<FriendApplyVo> friendItems) {
+        StageController stageController = UiContext.stageController;
+        Long myUserId = Context.userManager.getMyUserId();
+        for (FriendApplyVo item : friendItems) {
+            Pane pane = stageController.load(R.layout.ApplyItem, Pane.class);
+            Node agreeBtn = pane.lookup("#agreeBtn");
+            Node rejectBtn = pane.lookup("#rejectBtn");
+            Label statusLabel = (Label) pane.lookup("#status");
+            Label remarkLabel = (Label) pane.lookup("#remark");
+            remarkLabel.setText(item.getRemark());
+            Hyperlink userNameLink = (Hyperlink) pane.lookup("#userName");
+
+            // 未处理
+            if (item.getStatus() == 0) {
+                // 别人申请添加我为好友
+                if (item.getToId() == myUserId) {
+                    agreeBtn.setVisible(true);
+                    rejectBtn.setVisible(true);
+                    userNameLink.setText(item.getFromName());
+                    ReqApplyResult reqApplyResult = new ReqApplyResult();
+                    reqApplyResult.setApplyId(item.getId());
+                    agreeBtn.setOnMouseClicked(e -> {
+                        agreeBtn.setVisible(false);
+                        rejectBtn.setVisible(false);
+                        reqApplyResult.setStatus((byte) 1);
+                        statusLabel.setVisible(true);
+                        statusLabel.setText("已同意");
+                        IOUtil.send(reqApplyResult);
+                    });
+
+                    rejectBtn.setOnMouseClicked(e -> {
+                        agreeBtn.setVisible(false);
+                        rejectBtn.setVisible(false);
+                        reqApplyResult.setStatus((byte) 2);
+                        statusLabel.setVisible(true);
+                        statusLabel.setText("已拒绝");
+                        IOUtil.send(reqApplyResult);
+                    });
+                } else {
+                    // 我申请添加别人为好友
+                    userNameLink.setText(item.getToName());
+                    statusLabel.setVisible(true);
+                    statusLabel.setText("正在审核");
+                }
+            } else {
+                // 已处理
+                statusLabel.setVisible(true);
+                statusLabel.setText(item.getStatus() == 1 ? "已同意" : "已拒绝");
+            }
+
+            listView.getItems().add(pane);
+        }
+    }
+
 
     private void bindDoubleClickEvent(ListView<Node> listView) {
         listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
@@ -195,7 +265,7 @@ public class FriendManager implements LifeCycle {
     }
 
     private void openChat2PointPanel(FriendItemVo targetFriend) {
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         Stage chatStage = stageController.setStage(R.id.ChatToPoint);
 
         Label userIdUi = (Label) chatStage.getScene().getRoot().lookup("#userIdUi");
@@ -204,7 +274,15 @@ public class FriendManager implements LifeCycle {
         Label signatureUi = (Label) chatStage.getScene().getRoot().lookup("#signature");
         userNameUi.setText(targetFriend.getFullName());
         signatureUi.setText(targetFriend.getSignature());
+
+        Context.chatManager.refreshFriendPrivateMessage(targetFriend.getUserId());
     }
 
+    public String getUserName(Long userId) {
+        if (userId == Context.userManager.getMyUserId()) {
+            return Context.userManager.getMyProfile().getUserName();
+        }
+        return friends.get(userId).getUserName();
+    }
 
 }

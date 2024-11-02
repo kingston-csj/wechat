@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyFriend;
 import pers.kinson.wechat.logic.friend.message.res.ResApplyFriend;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
@@ -33,7 +33,7 @@ public class SearchManager {
 
     public void refreshRecommendFriends(ResSearchFriends resSearchFriends) {
         List<RecommendFriendItem> items = resSearchFriends.getFriends();
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
 //		stageController.switchStage(R.id.SearchView, R.id.MainView);
         Stage stage = stageController.setStage(R.id.SearchView);
         GridPane scrollPane = lookUpFriendsContainer();
@@ -61,7 +61,7 @@ public class SearchManager {
     }
 
     private GridPane lookUpFriendsContainer() {
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         // 使用SplitPane有坑，由于SplitPane没有children子标签，所以这样需要间接lookup
         Stage stage = stageController.getStageBy(R.id.SearchView);
         SplitPane splitPane = (SplitPane) stage.getScene().getRoot().lookup("#friendsSplitPane");

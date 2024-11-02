@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.search.SearchManager;
 import pers.kinson.wechat.logic.search.message.req.ReqSearchFriends;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
@@ -41,7 +41,7 @@ public class SearchViewController implements ControlledStage, Initializable {
         IOUtil.callback(req, new SimpleRequestCallback<ResSearchFriends>() {
             @Override
             public void onSuccess(ResSearchFriends callBack) {
-                UiBaseService.INSTANCE.runTaskInFxThread(() -> {
+                   UiContext.runTaskInFxThread(() -> {
                     SearchManager.getInstance().refreshRecommendFriends(callBack);
                 });
             }
@@ -51,13 +51,13 @@ public class SearchViewController implements ControlledStage, Initializable {
 
     @FXML
     private void close() {
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         stageController.closeStage(R.id.SearchView);
     }
 
     @Override
     public Stage getMyStage() {
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         return stageController.getStageBy(R.id.SearchView);
     }
 

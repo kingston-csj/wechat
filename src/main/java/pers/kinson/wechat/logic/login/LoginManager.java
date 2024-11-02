@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.login.message.req.ReqHeartBeat;
 import pers.kinson.wechat.logic.login.message.req.ReqUserLogin;
 import pers.kinson.wechat.logic.login.message.res.ResUserLogin;
@@ -41,25 +41,20 @@ public class LoginManager implements LifeCycle {
         ResUserLogin resp = (ResUserLogin) packet;
         boolean isSucc = resp.getIsValid() == Constants.TRUE;
         if (isSucc) {
-            UiBaseService.INSTANCE.runTaskInFxThread(() -> {
-                redirecToMainPanel();
-            });
-
-            registerHeartTimer();
+            redirecToMainPanel();
+//            registerHeartTimer();
         } else {
-            UiBaseService.INSTANCE.runTaskInFxThread(() -> {
-                StageController stageController = UiBaseService.INSTANCE.getStageController();
-                Stage stage = stageController.getStageBy(R.id.LoginView);
-                Pane errPane = (Pane) stage.getScene().getRoot().lookup("#errorPane");
-                errPane.setVisible(true);
-                Label errTips = (Label) stage.getScene().getRoot().lookup("#errorTips");
-                errTips.setText(I18n.get("login.operateFailed"));
-            });
+            StageController stageController = UiContext.stageController;
+            Stage stage = stageController.getStageBy(R.id.LoginView);
+            Pane errPane = (Pane) stage.getScene().getRoot().lookup("#errorPane");
+            errPane.setVisible(true);
+            Label errTips = (Label) stage.getScene().getRoot().lookup("#errorTips");
+            errTips.setText(I18n.get("login.operateFailed"));
         }
     }
 
     private void redirecToMainPanel() {
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         stageController.switchStage(R.id.MainView, R.id.LoginView);
     }
 

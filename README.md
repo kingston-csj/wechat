@@ -8,7 +8,6 @@
 目前只完成部分界面，效果图如下:  
 登录界面  
 ![](/screenshots/login.png "登录界面")　  
-  
 
 注册界面  
 ![](/screenshots/register.png "注册界面")  

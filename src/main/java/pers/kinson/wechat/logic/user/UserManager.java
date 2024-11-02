@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.user.message.req.ReqUserRegister;
 import pers.kinson.wechat.logic.user.message.res.ResUserInfo;
 import pers.kinson.wechat.logic.user.message.res.ResUserRegister;
@@ -30,13 +30,11 @@ public class UserManager implements LifeCycle {
     }
 
     public void updateMyProfile(Object packet) {
-        UiBaseService.INSTANCE.runTaskInFxThread(() -> {
-            ResUserInfo userInfo = (ResUserInfo) packet;
-            profile.setSex(userInfo.getSex());
-            profile.setSignature(userInfo.getSignature());
-            profile.setUserId(userInfo.getUserId());
-            profile.setUserName(userInfo.getUserName());
-        });
+        ResUserInfo userInfo = (ResUserInfo) packet;
+        profile.setSex(userInfo.getSex());
+        profile.setSignature(userInfo.getSignature());
+        profile.setUserId(userInfo.getUserId());
+        profile.setUserName(userInfo.getUserName());
     }
 
     public UserModel getMyProfile() {
@@ -69,18 +67,18 @@ public class UserManager implements LifeCycle {
         byte resultCode = data.getResultCode();
         String message = data.getMessage();
         boolean isSucc = resultCode == Constants.TRUE;
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         Stage stage = stageController.getStageBy(R.id.RegisterView);
         Label errorTips = (Label) stage.getScene().getRoot().lookup("#errorTips");
         if (isSucc) {
-            UiBaseService.INSTANCE.runTaskInFxThread(() -> {
+               UiContext.runTaskInFxThread(() -> {
                 errorTips.setVisible(true);
                 errorTips.setText(I18n.get("register.operateSucc"));
                 long userId = Long.parseLong(message);
                 gotoLoginPanel(userId);
             });
         } else {
-            UiBaseService.INSTANCE.runTaskInFxThread(() -> {
+               UiContext.runTaskInFxThread(() -> {
                 errorTips.setVisible(true);
                 errorTips.setText(I18n.get("register.nickUsed"));
             });
@@ -88,7 +86,7 @@ public class UserManager implements LifeCycle {
     }
 
     private void gotoLoginPanel(long userId) {
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         stageController.switchStage(R.id.LoginView, R.id.RegisterView);
         Stage stage = stageController.getStageBy(R.id.LoginView);
         TextField userIdField = (TextField) stage.getScene().getRoot().lookup("#userId");

@@ -21,7 +21,7 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="contentUi" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" layoutX="7.0" layoutY="23.0" maxWidth="525.0" prefHeight="32.0" prefWidth="370.0" style="-fx-background-color: #3b84ea; -fx-background-radius: 10;" textAlignment="RIGHT" textFill="WHITE" wrapText="true">
+      <Label fx:id="contentUi" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" layoutX="7.0" layoutY="23.0" maxWidth="525.0" prefHeight="32.0" prefWidth="370.0" style="-fx-background-color: #ACD9F8; -fx-background-radius: 10;" textAlignment="RIGHT" textFill="WHITE" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>

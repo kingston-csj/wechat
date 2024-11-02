@@ -14,12 +14,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.ui.container.ResourceContainer;
-import pers.kinson.wechat.util.I18n;
 import pers.kinson.wechat.util.NumberUtil;
 
 import java.io.IOException;
@@ -134,13 +133,13 @@ public class LoginViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void gotoRegister() {
-		StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
 		stageController.switchStage(R.id.RegisterView, R.id.LoginView);
 	}
 
 	@Override
 	public Stage getMyStage() {
-		StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
 		return stageController.getStageBy(R.id.LoginView);
 	}
 

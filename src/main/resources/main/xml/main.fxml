@@ -1,176 +1,198 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="300.0"
-	style="-fx-background-color: #169ADA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	 fx:controller="pers.kinson.wechat.ui.controller.MainViewController">
-	<children>
-		<ImageView layoutX="9.0" layoutY="39.0" onMouseEntered="#headEn" onMouseExited="#headEx">
-			<image>
-				<Image url="@../../login/img/headimag.png" />
-			</image>
-			<cursor>
-				<Cursor fx:constant="HAND" />
-			</cursor>
-		</ImageView>
-		<HBox layoutX="99.0" layoutY="89.0" prefHeight="25.0" prefWidth="189.0" spacing="6.0">
-			<children>
-				<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-					<image>
-						<Image url="@../img/top/1.png" />
-					</image>
-				</ImageView>
-			</children>
-			<children>
-				<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-					<image>
-						<Image url="@../img/top/2.png" />
-					</image>
-				</ImageView>
-			</children>
-			<children>
-				<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-					<image>
-						<Image url="@../img/top/3.png" />
-					</image>
-				</ImageView>
-			</children>
-			<children>
-				<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-					<image>
-						<Image url="@../img/top/6.png" />
-					</image>
-				</ImageView>
-			</children>
-		</HBox>
-		<HBox layoutY="124.0" prefHeight="30.0" prefWidth="300.0" style="-fx-background-color: lightblue;">
-			<children>
-				<TextField prefHeight="28.0" prefWidth="260.0"  styleClass="-fx-prompt-text-fill:#000000;" text="%main.head.seach" />
-				<ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"
-				onMouseClicked="#queryEvent">
-					<image>
-						<Image url="@../img/seach/search_icon.png" />
-					</image>
-				</ImageView>
-			</children>
-		</HBox>
-		<TabPane layoutY="153.0" prefHeight="519.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE">
-			<tabs>
-				<Tab text="%main.tab.friend">
-					<content>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="469.0" prefWidth="300.0" style="-fx-background-color: #E4E4E4;">
-							<children>
-								<ScrollPane fx:id="friendSp" fitToHeight="true" fitToWidth="true" prefHeight="490.0" prefWidth="300.0">
-									<content>
-										<Accordion fx:id="friends" prefHeight="475.0" prefWidth="298.0" />
-									</content>
-								</ScrollPane>
-							</children>
-						</AnchorPane>
-					</content>
-				</Tab>
-				<Tab text="%main.tab.group">
-					<content>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="282.0" style="-fx-background-color: #E4E4E4;">
-							<children>
-								<ScrollPane fitToWidth="true" prefHeight="480.0" prefWidth="282.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-									<content>
-										<ListView prefHeight="488.0" prefWidth="282.0" />
-									</content>
-								</ScrollPane>
-							</children>
-						</AnchorPane>
-					</content>
-				</Tab>
-				<Tab text="%main.tab.recent">
-					<content>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #E4E4E4;" />
-					</content>
-				</Tab>
-			</tabs>
-		</TabPane>
-		<ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="241.0" layoutY="-1.0" onMouseClicked="#min" onMouseEntered="#minEntered" onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true">
-			<image>
-				<Image url="@../../login/img/min.png" />
-			</image>
-		</ImageView>
-		<ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="271.0" layoutY="-1.0" onMouseClicked="#close" onMouseEntered="#closeEntered" onMouseExited="#closeExited" pickOnBounds="true" preserveRatio="true">
-			<image>
-				<Image url="@../../login/img/close.png" />
-			</image>
-		</ImageView>
-		<Label fx:id="username" contentDisplay="CENTER" layoutX="95.0" layoutY="39.0" onMouseEntered="#username_entered" onMouseExited="#username_exited" text="username" textFill="WHITE">
-			<font>
-				<Font size="20.0" />
-			</font>
-			<padding>
-				<Insets bottom="-1.0" left="5.0" right="5.0" top="-1.0" />
-			</padding>
-		</Label>
-		<Label fx:id="signature" layoutX="95.0" layoutY="66.0" onMouseEntered="#autograph_entered" onMouseExited="#autograph_exited" prefHeight="18.0" prefWidth="193.0" text="" textFill="WHITE">
-			<font>
-				<Font size="17.0" />
-			</font>
-			<padding>
-				<Insets bottom="-1.0" left="5.0" right="5.0" top="-1.0" />
-			</padding>
-		</Label>
-		<ImageView fx:id="shineImage" layoutX="4.0" layoutY="34.0" visible="false">
-			<image>
-				<Image url="@../img/80-80shine-white.png" />
-			</image>
-		</ImageView>
-		<HBox alignment="CENTER_LEFT" layoutX="1.0" layoutY="672.0" minWidth="280.0" prefHeight="26.0" prefWidth="300.0" spacing="33.0" style="-fx-background-color: white;">
-			<children>
-				<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-					<image>
-						<Image url="@../img/bottom/menu_btn_normal.png" />
-					</image>
-				</ImageView>
-				<HBox alignment="CENTER_RIGHT" layoutX="1.0" minHeight="20.0" minWidth="180.0" prefHeight="20.0" prefWidth="180.0" spacing="20.0">
-					<children>
-						<ImageView fitHeight="20.0" fitWidth="20.0" layoutX="200.0" pickOnBounds="true" preserveRatio="true" x="10.0">
-							<image>
-								<Image url="@../img/app/2.png" />
-							</image>
-						</ImageView>
-						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../img/app/9.png" />
-							</image>
-						</ImageView>
-						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../img/app/4.png" />
-							</image>
-						</ImageView>
-						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../img/app/11.png" />
-							</image>
-						</ImageView>
-						<ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../img/app/7.png" />
-							</image>
-						</ImageView>
-					</children>
-				</HBox>
-				<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-					<image>
-						<Image url="@../img/bottom/appbox_mgr_btn.png" />
-					</image>
-				</ImageView>
-			</children>
-		</HBox>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+      prefWidth="300.0"
+      style="-fx-background-color: #169ADA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pers.kinson.wechat.ui.controller.MainViewController">
+    <children>
+        <ImageView layoutX="9.0" layoutY="39.0" onMouseEntered="#headEn" onMouseExited="#headEx">
+            <image>
+                <Image url="@../../login/img/headimag.png"/>
+            </image>
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </ImageView>
+        <HBox layoutX="99.0" layoutY="89.0" prefHeight="25.0" prefWidth="189.0" spacing="6.0">
+            <children>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/top/1.png"/>
+                    </image>
+                </ImageView>
+            </children>
+            <children>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/top/2.png"/>
+                    </image>
+                </ImageView>
+            </children>
+            <children>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/top/3.png"/>
+                    </image>
+                </ImageView>
+            </children>
+            <children>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/top/6.png"/>
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
+        <HBox layoutY="124.0" prefHeight="30.0" prefWidth="300.0" style="-fx-background-color: lightblue;">
+            <children>
+                <TextField prefHeight="28.0" prefWidth="260.0" styleClass="-fx-prompt-text-fill:#000000;"
+                           text="%main.head.seach"/>
+                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"
+                           onMouseClicked="#queryEvent">
+                    <image>
+                        <Image url="@../img/seach/search_icon.png"/>
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
+        <TabPane layoutY="153.0" prefHeight="519.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="%main.tab.friend">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="469.0" prefWidth="300.0"
+                                    style="-fx-background-color: #E4E4E4;">
+                            <children>
+                                <ScrollPane fx:id="friendSp" fitToHeight="true" fitToWidth="true" prefHeight="490.0"
+                                            prefWidth="300.0">
+                                    <content>
+                                        <Accordion fx:id="friends" prefHeight="475.0" prefWidth="298.0"/>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="%main.tab.group" >
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="282.0"
+                                    style="-fx-background-color: #E4E4E4;">
+                            <children>
+                                <ScrollPane fitToWidth="true" prefHeight="480.0" prefWidth="282.0"
+                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <content>
+                                        <ListView prefHeight="488.0" prefWidth="282.0"/>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="联系人" onSelectionChanged="#onApplyTabSelected">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
+                                    style="-fx-background-color: #E4E4E4;">
+                            <children>
+                                <ScrollPane fx:id="applySp" fitToHeight="true" fitToWidth="true" prefHeight="490.0"
+                                            prefWidth="300.0">
+                                    <content>
+                                        <ListView fx:id="applies" prefHeight="475.0" prefWidth="298.0"/>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+        <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="241.0" layoutY="-1.0" onMouseClicked="#min"
+                   onMouseEntered="#minEntered" onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../login/img/min.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="271.0" layoutY="-1.0" onMouseClicked="#close"
+                   onMouseEntered="#closeEntered" onMouseExited="#closeExited" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../login/img/close.png"/>
+            </image>
+        </ImageView>
+        <Label fx:id="username" contentDisplay="CENTER" layoutX="95.0" layoutY="39.0" onMouseEntered="#username_entered"
+               onMouseExited="#username_exited" text="username" textFill="WHITE">
+            <font>
+                <Font size="20.0"/>
+            </font>
+            <padding>
+                <Insets bottom="-1.0" left="5.0" right="5.0" top="-1.0"/>
+            </padding>
+        </Label>
+        <Label fx:id="signature" layoutX="95.0" layoutY="66.0" onMouseEntered="#autograph_entered"
+               onMouseExited="#autograph_exited" prefHeight="18.0" prefWidth="193.0" text="" textFill="WHITE">
+            <font>
+                <Font size="17.0"/>
+            </font>
+            <padding>
+                <Insets bottom="-1.0" left="5.0" right="5.0" top="-1.0"/>
+            </padding>
+        </Label>
+        <ImageView fx:id="shineImage" layoutX="4.0" layoutY="34.0" visible="false">
+            <image>
+                <Image url="@../img/80-80shine-white.png"/>
+            </image>
+        </ImageView>
+        <HBox alignment="CENTER_LEFT" layoutX="1.0" layoutY="672.0" minWidth="280.0" prefHeight="26.0" prefWidth="300.0"
+              spacing="33.0" style="-fx-background-color: white;">
+            <children>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/bottom/menu_btn_normal.png"/>
+                    </image>
+                </ImageView>
+                <HBox alignment="CENTER_RIGHT" layoutX="1.0" minHeight="20.0" minWidth="180.0" prefHeight="20.0"
+                      prefWidth="180.0" spacing="20.0">
+                    <children>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="200.0" pickOnBounds="true"
+                                   preserveRatio="true" x="10.0">
+                            <image>
+                                <Image url="@../img/app/2.png"/>
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/app/9.png"/>
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/app/4.png"/>
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/app/11.png"/>
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/app/7.png"/>
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/bottom/appbox_mgr_btn.png"/>
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
 
-	</children>
+    </children>
 </Pane>

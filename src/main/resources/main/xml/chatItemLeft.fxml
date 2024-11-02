@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -21,7 +20,7 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="contentUi" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" layoutX="66.0" layoutY="23.0" maxWidth="525.0" prefHeight="32.0" prefWidth="370.0" style="-fx-background-color: #ACD9F8; -fx-background-radius: 10;" text="234234" textAlignment="RIGHT" textFill="#070707" wrapText="true">
+      <Label fx:id="contentUi" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" layoutX="66.0" layoutY="23.0" maxWidth="525.0" prefHeight="32.0" prefWidth="370.0" style="-fx-background-color: #d8d8da; -fx-background-radius: 10;" text="234234" textAlignment="RIGHT" textFill="black" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>

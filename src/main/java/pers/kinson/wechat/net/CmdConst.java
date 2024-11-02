@@ -1,5 +1,6 @@
 package pers.kinson.wechat.net;
 
+
 public interface CmdConst {
 
     /*
@@ -20,6 +21,8 @@ public interface CmdConst {
      * 推送--通用响应
      */
     int ResCommon = 1_201;
+    int ResRedPoint = 1_202;
+    int RedPointVo = 1_203;
 
 
 
@@ -74,7 +77,9 @@ public interface CmdConst {
      */
     int ReqSearchFriends = 5_000;
 
-    int ReqApplyFriend = 5_001;
+    int ReqApplyFriendList = 5_001;
+    int ReqApplyFriend = 5_002;
+    int ReqApplyResult = 5_003;
     /**
      * 推送--好友列表
      */
@@ -94,6 +99,9 @@ public interface CmdConst {
     int FriendVo = 5_204;
     int RecommendFriendVO = 5_205;
     int ResApplyFriend = 5_206;
+    int ApplyFriendVo = 5_207;
+    int ResApplyFriendList = 5_208;
+    int ResApplyResult = 5_209;
 
 
     /*

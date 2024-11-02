@@ -3,6 +3,7 @@ package pers.kinson.wechat.net;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pers.kinson.wechat.base.LifeCycle;
+import pers.kinson.wechat.base.UiContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,10 @@ public class MessageRouter implements LifeCycle {
             if (handler == null) {
                 logger.error("消息路由[{}]未注册", pact.getClass().getSimpleName());
             }
-            handler.action(pact);
+            // 基本都是ui操作，直接切ui线程吧
+               UiContext.runTaskInFxThread(() -> {
+                handler.action(pact);
+            });
         } catch (Exception e) {
             logger.error("", e);
         }

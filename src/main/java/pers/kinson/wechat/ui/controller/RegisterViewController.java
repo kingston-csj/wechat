@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -87,7 +87,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	@FXML
 	private void gotoLogin() {
 		clearFields();
-		StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
 		stageController.switchStage(R.id.LoginView, R.id.RegisterView);
 	}
 
@@ -128,7 +128,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 
 	@Override
 	public Stage getMyStage() {
-		StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
 		return stageController.getStageBy(R.id.RegisterView);
 	}
 

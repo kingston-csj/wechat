@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -18,7 +18,6 @@ public class ClientStartup extends Application {
     @Override
     public void init() throws Exception {
 
-
         Context.init();
     }
 
@@ -26,7 +25,7 @@ public class ClientStartup extends Application {
     public void start(final Stage stage) throws IOException {
         //与服务端建立连接
         connectToServer();
-        StageController stageController = UiBaseService.INSTANCE.getStageController();
+        StageController stageController = UiContext.stageController;
         stageController.setPrimaryStage("root", stage);
 
         Stage loginStage = stageController.loadStage(R.id.LoginView, R.layout.LoginView,
@@ -34,7 +33,7 @@ public class ClientStartup extends Application {
         loginStage.setTitle("QQ");
 
         stageController.loadStage(R.id.RegisterView, R.layout.RegisterView, StageStyle.UNDECORATED);
-        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UNDECORATED);
+        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UTILITY);
 
         //把主界面放在右上方
         Screen screen = Screen.getPrimary();

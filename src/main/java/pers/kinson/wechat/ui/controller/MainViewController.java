@@ -4,10 +4,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.base.UiBaseService;
+import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.logic.friend.message.req.ReqApplyFriendList;
 import pers.kinson.wechat.logic.search.SearchManager;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
 import pers.kinson.wechat.logic.user.model.UserModel;
+import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -131,13 +133,19 @@ public class MainViewController implements ControlledStage, Initializable{
 	}
 
 	@FXML
+	private void onApplyTabSelected() {
+		// 查询好友申请列表
+		IOUtil.send(new ReqApplyFriendList());
+	}
+
+	@FXML
 	private void queryEvent() {
 		SearchManager.getInstance().refreshRecommendFriends(new ResSearchFriends());
 	}
 
 	@Override
 	public Stage getMyStage() {
-		StageController stageController = UiBaseService.INSTANCE.getStageController();
+		StageController stageController = UiContext.stageController;
 		return stageController.getStageBy(R.id.MainView);
 	}
 
