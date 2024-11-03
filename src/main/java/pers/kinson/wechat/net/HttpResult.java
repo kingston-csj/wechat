@@ -22,4 +22,8 @@ public class HttpResult  {
      */
     private String data;
 
+    public boolean isOk() {
+        return code == 0;
+    }
+
 }

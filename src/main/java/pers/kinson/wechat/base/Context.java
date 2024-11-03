@@ -9,6 +9,7 @@ import pers.kinson.wechat.logic.login.LoginManager;
 import pers.kinson.wechat.logic.redpoint.RedPointManager;
 import pers.kinson.wechat.logic.user.UserManager;
 import pers.kinson.wechat.net.MessageRouter;
+import pers.kinson.wechat.util.HttpClientManager;
 
 import java.util.Arrays;
 
@@ -28,6 +29,7 @@ public class Context {
 
     public static ChatManager chatManager;
 
+    public static HttpClientManager httpClientManager;
 
     public static void init() {
         Arrays.stream(Context.class.getDeclaredFields()).forEach(

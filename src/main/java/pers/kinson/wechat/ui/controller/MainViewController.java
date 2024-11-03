@@ -3,6 +3,7 @@ package pers.kinson.wechat.ui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.scene.control.Hyperlink;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyFriendList;
@@ -29,6 +30,8 @@ import javafx.stage.Stage;
 
 public class MainViewController implements ControlledStage, Initializable{
 
+	@FXML
+	private ImageView headImg;
 	@FXML
 	private ImageView close;
 	@FXML
@@ -136,6 +139,12 @@ public class MainViewController implements ControlledStage, Initializable{
 	private void onApplyTabSelected() {
 		// 查询好友申请列表
 		IOUtil.send(new ReqApplyFriendList());
+	}
+
+	@FXML
+	private void onClickSetting() {
+		StageController stageController = UiContext.stageController;
+		Stage chatStage = stageController.setStage(R.id.PersonSettingView);
 	}
 
 	@FXML

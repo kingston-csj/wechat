@@ -85,6 +85,7 @@ public class StageController {
             return null;
         }
         stage.show();
+        controllers.get(name).onStageShown();
         openedStages.add(name);
         return stage;
     }

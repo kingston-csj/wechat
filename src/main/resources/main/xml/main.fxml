@@ -12,7 +12,7 @@
       style="-fx-background-color: #169ADA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pers.kinson.wechat.ui.controller.MainViewController">
     <children>
-        <ImageView layoutX="9.0" layoutY="39.0" onMouseEntered="#headEn" onMouseExited="#headEx">
+        <ImageView fx:id="headImg" layoutX="3.0" layoutY="30.0" onMouseEntered="#headEn" onMouseExited="#headEx" onMouseClicked="#onClickSetting"  fitWidth="90" fitHeight="90">
             <image>
                 <Image url="@../../login/img/headimag.png"/>
             </image>

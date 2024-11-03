@@ -4,6 +4,9 @@ import javafx.stage.Stage;
 
 public interface ControlledStage {
 
-	Stage getMyStage();
+    Stage getMyStage();
+
+    default void onStageShown() {
+    }
 
 }

@@ -6,6 +6,7 @@ public final class R {
 		public static final String RegisterView = "RegisterView";
 		public static final String LoginView = "Login_View";
 		public static final String MainView = "MainView";
+		public static final String PersonSettingView = "PersonSettingView";
 		public static final String ChatToPoint = "ChatToPoint";
 		public static final String PrivateChatItem = "PrivateChatItem";
 		public static final String SearchView = "SearchView";
@@ -18,6 +19,7 @@ public final class R {
 		public static final String LoginView = "login/xml/login.fxml";
 		/** 主界面 */
 		public static final String MainView = "main/xml/main.fxml";
+		public static final String PersonSettingView = "main/xml/personalSetting.fxml";
 		/** 好友单项 */
 		public static final String FriendItem = "main/xml/friendItem.fxml";
 		/** 好友申请单项 */

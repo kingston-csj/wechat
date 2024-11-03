@@ -35,6 +35,7 @@ public class UserManager implements LifeCycle {
         profile.setSignature(userInfo.getSignature());
         profile.setUserId(userInfo.getUserId());
         profile.setUserName(userInfo.getUserName());
+        profile.setAvatar(userInfo.getAvatar());
     }
 
     public UserModel getMyProfile() {
