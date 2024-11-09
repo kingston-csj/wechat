@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0"
+      prefWidth="480.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pers.kinson.wechat.ui.controller.CreateDiscussionController">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="20">
+            <Label text="选择联系人"/>
+            <ScrollPane fitToWidth="true" prefHeight="330.0" prefWidth="450.0">
+                <content>
+                    <TableView fx:id="tableView" layoutX="100" layoutY="20"/>
+                </content>
+            </ScrollPane>
+            <Button text="完成" onAction="#handleComplete" layoutX="100" layoutY="20"/>
+        </VBox>
+    </children>
+</Pane>

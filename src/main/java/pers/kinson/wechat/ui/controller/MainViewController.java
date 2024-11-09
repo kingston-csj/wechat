@@ -158,8 +158,4 @@ public class MainViewController implements ControlledStage, Initializable{
 		return stageController.getStageBy(R.id.MainView);
 	}
 
-	public void refreshProfileInfo(String name) {
-		userModel.setUserName(name);
-	}
-
 }

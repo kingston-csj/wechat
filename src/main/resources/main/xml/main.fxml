@@ -53,7 +53,7 @@
         <HBox layoutY="124.0" prefHeight="30.0" prefWidth="300.0" style="-fx-background-color: lightblue;">
             <children>
                 <TextField prefHeight="28.0" prefWidth="260.0" styleClass="-fx-prompt-text-fill:#000000;"
-                           text="%main.head.seach"/>
+                           text="搜索"/>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"
                            onMouseClicked="#queryEvent">
                     <image>
@@ -88,7 +88,7 @@
                                             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <content>
-                                        <ListView prefHeight="488.0" prefWidth="282.0"/>
+                                        <ListView fx:id="groups" prefHeight="488.0" prefWidth="282.0"/>
                                     </content>
                                 </ScrollPane>
                             </children>

@@ -53,9 +53,9 @@ public class LoginViewController implements ControlledStage, Initializable {
 		//验证规则：　userId非空且为数字　password非空
 		login.disableProperty().bind(
 			Bindings.createBooleanBinding(
-				() -> userId.getText().length() == 0 ||
+				() -> userId.getText().isEmpty() ||
 					  !NumberUtil.isInteger(userId.getText()) ||
-					  password.getText().length() == 0,
+                        password.getText().isEmpty(),
 				userId.textProperty(),
 				password.textProperty()));
 	}

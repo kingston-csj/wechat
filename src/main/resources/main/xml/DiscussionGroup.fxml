@@ -10,7 +10,7 @@
       minHeight="-Infinity" minWidth="600.0" prefHeight="540.0" prefWidth="600.0"
       style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="pers.kinson.wechat.ui.controller.ChatToPointController">
+      fx:controller="pers.kinson.wechat.ui.controller.DiscussionGroupController">
     <children>
         <VBox>
             <children>
@@ -26,32 +26,7 @@
                                 <Image url="@../../login/img/close.png"/>
                             </image>
                         </ImageView>
-                        <Label id="signature" fx:id="autograph" layoutX="76.0"
-                               layoutY="50.0" text="autograph" textFill="#575757">
-                            <font>
-                                <Font size="22.0"/>
-                            </font>
-                        </Label>
-                        <ImageView id="headIcon" fx:id="headImage" layoutY="11.0">
-                            <image>
-                                <Image url="@../img/head.png"/>
-                            </image>
-                        </ImageView>
-                        <ImageView id="minBtn" fx:id="min" fitHeight="30.0"
-                                   fitWidth="30.0" layoutX="520.0" pickOnBounds="true"
-                                   preserveRatio="true" visible="false">
-                            <image>
-                                <Image url="@../../login/img/min.png"/>
-                            </image>
-                        </ImageView>
-                        <Hyperlink id="userName" layoutX="69.0" layoutY="8.0"
-                                   text="username">
-                            <font>
-                                <Font size="25.0"/>
-                            </font>
-                        </Hyperlink>
-                        <Label fx:id="userIdUi" layoutX="282.0" layoutY="22.0" text="userid"
-                               visible="false">
+                        <Label fx:id="name" layoutX="282.0" layoutY="22.0">
                             <font>
                                 <Font size="20.0"/>
                             </font>
@@ -69,8 +44,6 @@
                                            layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
                                            prefHeight="300.0" prefWidth="450.0">
                                     <items>
-                                        <Button mnemonicParsing="false" prefHeight="1.0"
-                                                text="%chat.loadmore"/>
                                         <ScrollPane fitToWidth="true" layoutY="20.0"
                                                     maxWidth="600.0">
                                             <content>
@@ -100,12 +73,11 @@
                         <Pane id="right" layoutX="330.0" minHeight="460.0"
                               prefHeight="460.0" prefWidth="150.0">
                             <children>
-                                <ImageView fx:id="showImg" fitHeight="460.0"
-                                           fitWidth="150.0" layoutX="-0.0">
-                                    <image>
-                                        <Image url="@../img/elegant.png"/>
-                                    </image>
-                                </ImageView>
+                                <ScrollPane fitToWidth="true" prefHeight="480.0" prefWidth="282.0"
+                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <ListView fx:id="members" prefHeight="488.0" prefWidth="282.0"/>
+                                </ScrollPane>
                             </children>
                         </Pane>
                     </children>

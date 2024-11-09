@@ -33,6 +33,7 @@ import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.ImageUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class FriendManager implements LifeCycle {
             friends.put(item.getUserId(), item);
         }
 
-           UiContext.runTaskInFxThread(this::refreshMyFriendsView);
+        refreshMyFriendsView();
     }
 
     public FriendItemVo queryFriend(long friendId) {
@@ -141,7 +142,7 @@ public class FriendManager implements LifeCycle {
         }
 
         bindDoubleClickEvent(listView);
-        String groupInfo = StringUtils.isEmpty(groupName) ? "未分组": groupName + " " + onlineCount + "/" + friendItems.size();
+        String groupInfo = StringUtils.isEmpty(groupName) ? "未分组" : groupName + " " + onlineCount + "/" + friendItems.size();
         TitledPane tp = new TitledPane(groupInfo, listView);
         container.getPanes().add(tp);
     }
@@ -283,6 +284,10 @@ public class FriendManager implements LifeCycle {
             return Context.userManager.getMyProfile().getUserName();
         }
         return friends.get(userId).getUserName();
+    }
+
+    public Collection<FriendItemVo> getFriends() {
+        return friends.values();
     }
 
 }

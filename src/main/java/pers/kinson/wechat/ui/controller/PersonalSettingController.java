@@ -3,14 +3,11 @@ package pers.kinson.wechat.ui.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jforgame.commons.JsonUtil;
@@ -122,7 +119,6 @@ public class PersonalSettingController implements ControlledStage, Initializable
         params.put("name", newName);
         params.put("remark", newRemark);
         params.put("avatar", newAvatar);
-        // TODO 中文乱码
         try {
             HttpResult httpResult = Context.httpClientManager.post(ClientConfigs.REMOTE_HTTP_SERVER + "/user/profile", params, HttpResult.class);
             if (httpResult.isOk()) {

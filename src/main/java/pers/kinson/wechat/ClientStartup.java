@@ -44,8 +44,9 @@ public class ClientStartup extends Application {
         mainStage.setY(rightTopY);
 
         stageController.loadStage(R.id.ChatToPoint, R.layout.ChatToPoint, StageStyle.UTILITY);
+        stageController.loadStage(R.id.CreateDiscussion, R.layout.CreateDiscussion, StageStyle.UTILITY);
 
-        Stage searchStage = stageController.loadStage(R.id.SearchView, R.layout.SeachFriendView,
+        Stage searchStage = stageController.loadStage(R.id.SearchView, R.layout.SearchFriendView,
                 StageStyle.UTILITY);
 
         //显示MainView舞台

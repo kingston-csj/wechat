@@ -1,23 +1,23 @@
 package pers.kinson.wechat.ui.controller;
 
-import java.io.IOException;
-
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
+import java.io.IOException;
 
-public class ChatToPointController implements ControlledStage {
+public class DiscussionGroupController implements ControlledStage {
 
 	@FXML
-	private Label userIdUi;
+	private Label name;
 
 	@FXML
 	private TextArea msgInput;
@@ -26,12 +26,7 @@ public class ChatToPointController implements ControlledStage {
 	private ScrollPane outputMsgUi;
 
 	@FXML
-	private void sendMessage() throws IOException {
-		final long userId = Long.parseLong(userIdUi.getText());
-		String message = msgInput.getText();
-		Context.chatManager.sendMessageTo(userId, message);
-		msgInput.setText("");
-	}
+	private ListView members;
 
 
 	@Override
@@ -51,6 +46,11 @@ public class ChatToPointController implements ControlledStage {
 		stageController.setStage(R.id.CreateDiscussion);
 	}
 
+
+	@FXML
+	private void sendMessage() {
+
+	}
 
 }
 

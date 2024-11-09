@@ -70,14 +70,16 @@ public class HttpClientManager implements LifeCycle {
         HttpPost httpPost = new HttpPost(url);
         if (params != null && !params.isEmpty()) {
             String json = JsonUtil.object2String(params);
-            StringEntity entity = new StringEntity(json);
+            StringEntity entity = new StringEntity(json, "UTF-8");
             entity.setContentType("application/json");
             httpPost.setEntity(entity);
         }
         if (headers != null && !headers.isEmpty()) {
             headers.forEach(httpPost::addHeader);
         }
-        httpPost.addHeader("Content-Type","application/json;charset=UTF-8");
+//        httpPost.addHeader("accept","application/json, text/plain, */*");
+//        httpPost.addHeader("Content-Type","application/json; charset=UTF-8");
+//        httpPost.addHeader("accept-language:","zh-CN,zh;q=0.9,en;q=0.8");
         //发送请求，接受响应结果
         HttpResponse response = httpClient.execute(httpPost);
         int statusCode = response.getStatusLine().getStatusCode();
