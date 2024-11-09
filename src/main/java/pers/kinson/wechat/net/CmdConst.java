@@ -1,6 +1,5 @@
 package pers.kinson.wechat.net;
 
-
 public interface CmdConst {
 
     /*
@@ -23,6 +22,7 @@ public interface CmdConst {
     int ResCommon = 1_201;
     int ResRedPoint = 1_202;
     int RedPointVo = 1_203;
+
 
 
     /**
@@ -49,6 +49,9 @@ public interface CmdConst {
     int ResUserInfo = 3_202;
 
 
+
+
+
     /**
      * 请求--单聊
      */
@@ -67,7 +70,8 @@ public interface CmdConst {
     int ReqJoinDiscussion = 4_003;
 
     int ReqViewDiscussionList = 4_004;
-    int DiscussionGroupVo = 4_005;
+
+    int ReqViewDiscussionMembers = 4_006;
 
     /**
      * 推送--单聊
@@ -79,6 +83,9 @@ public interface CmdConst {
     int ResChatToGroup = 4_201;
 
     int ResViewDiscussionList = 4_202;
+    int DiscussionGroupVo = 4_203;
+    int DiscussionGroupMemberVo = 4_204;
+    int ResViewDiscussionMembers = 4_205;
 
     /*
      * ------------------好友开始----------------------------
@@ -122,4 +129,5 @@ public interface CmdConst {
 
 
 }
+
 

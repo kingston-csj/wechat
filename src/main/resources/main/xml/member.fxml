@@ -5,12 +5,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ImageView fitHeight="16.0" fitWidth="16.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="20.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="41.0" layoutY="3.0" text="username" />
-      <Label layoutX="107.0" layoutY="3.0" text="userid" visible="false" />
-      <Label layoutX="112.0" layoutY="3.0" text="在线" visible="false" />
-   </children>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0"
+      prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <ImageView fitHeight="16.0" fitWidth="16.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true"/>
+   <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="20.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true"/>
+   <Label layoutX="41.0" layoutY="3.0" text="username"/>
+   <Label layoutX="107.0" layoutY="3.0" text="userid" visible="false"/>
+   <Label layoutX="112.0" layoutY="3.0" text="在线" visible="false"/>
 </Pane>

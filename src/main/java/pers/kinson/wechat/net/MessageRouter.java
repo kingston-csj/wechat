@@ -32,6 +32,7 @@ public class MessageRouter implements LifeCycle {
             MessageHandler handler = handlers.get(cmd);
             if (handler == null) {
                 logger.error("消息路由[{}]未注册", pact.getClass().getSimpleName());
+                return;
             }
             // 基本都是ui操作，直接切ui线程吧
                UiContext.runTaskInFxThread(() -> {

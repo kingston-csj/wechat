@@ -18,8 +18,15 @@
 单人聊天界面  
 ![](/screenshots/privateChat.png "单人聊天界面")  
 
+讨论组界面  
+![](/screenshots/discussion.jpg "讨论组界面")  
+
 好友查询界面  
 ![](/screenshots/query.png "好友查询界面")　　　
+
+
+联系人界面  
+![](/screenshots/contact.jpg "联系人界面")　　
 
 ### 服务端源代码  
 --> [服务端im](https://github.com/kingston-csj/im)

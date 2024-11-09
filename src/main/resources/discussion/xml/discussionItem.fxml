@@ -10,7 +10,7 @@
     <children>
         <ImageView id="headIcon" fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="5.0">
             <image>
-                <Image url="@../img/head.png"/>
+                <Image url="@../../main/img/head.png"/>
             </image>
         </ImageView>
         <Label fx:id="discussionId" layoutX="206.0" layoutY="23.0" visible="false" />

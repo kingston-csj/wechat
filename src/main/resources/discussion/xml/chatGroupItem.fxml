@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="5.0">
          <image>
-            <Image url="@../img/head.png" />
+            <Image url="@../../main/img/head.png" />
          </image>
       </ImageView>
       <Label layoutX="68.0" layoutY="9.0" text="groupname">

@@ -20,12 +20,10 @@
 
             <HBox>
                 <Label text="头像："/>
-                <children>
-                    <Button text="上传图片" onAction="#chooseAvatar"/>
-                    <ImageView fx:id="avatarImageView" onMouseClicked="#chooseAvatar" fitWidth="100" fitHeight="100">
-                        <Image url="@../../login/img/headimag.png"/>
-                    </ImageView>
-                </children>
+                <Button text="上传图片" onAction="#chooseAvatar"/>
+                <ImageView fx:id="avatarImageView" onMouseClicked="#chooseAvatar" fitWidth="100" fitHeight="100">
+                    <Image url="@../../login/img/headimag.png"/>
+                </ImageView>
             </HBox>
             <HBox>
                 <Label text="签名："/>

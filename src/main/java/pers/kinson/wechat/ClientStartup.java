@@ -33,8 +33,8 @@ public class ClientStartup extends Application {
         loginStage.setTitle("QQ");
 
         stageController.loadStage(R.id.RegisterView, R.layout.RegisterView, StageStyle.UNDECORATED);
-        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UTILITY);
-        stageController.loadStage(R.id.PersonSettingView, R.layout.PersonSettingView, StageStyle.UTILITY);
+        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UNDECORATED);
+        stageController.loadStage(R.id.PersonSettingView, R.layout.PersonSettingView, StageStyle.UNDECORATED);
 
         //把主界面放在右上方
         Screen screen = Screen.getPrimary();
@@ -45,6 +45,7 @@ public class ClientStartup extends Application {
 
         stageController.loadStage(R.id.ChatToPoint, R.layout.ChatToPoint, StageStyle.UTILITY);
         stageController.loadStage(R.id.CreateDiscussion, R.layout.CreateDiscussion, StageStyle.UTILITY);
+        stageController.loadStage(R.id.DiscussionGroup, R.layout.DiscussionGroup, StageStyle.UTILITY);
 
         Stage searchStage = stageController.loadStage(R.id.SearchView, R.layout.SearchFriendView,
                 StageStyle.UTILITY);

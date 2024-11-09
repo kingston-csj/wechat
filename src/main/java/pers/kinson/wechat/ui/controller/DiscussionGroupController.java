@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
@@ -26,7 +27,7 @@ public class DiscussionGroupController implements ControlledStage {
 	private ScrollPane outputMsgUi;
 
 	@FXML
-	private ListView members;
+	private TilePane members;
 
 
 	@Override

@@ -60,17 +60,6 @@ public class MainViewController implements ControlledStage, Initializable{
 		System.exit(1);
 	}
 
-	@FXML
-	private void closeEntered() {
-		Image image = ResourceContainer.getClose_1();
-		close.setImage(image);
-	}
-
-	@FXML
-	private void closeExited() {
-		Image image = ResourceContainer.getClose();
-		close.setImage(image);
-	}
 
 	@FXML
 	private void minEntered() {
@@ -144,7 +133,7 @@ public class MainViewController implements ControlledStage, Initializable{
 	@FXML
 	private void onClickSetting() {
 		StageController stageController = UiContext.stageController;
-		Stage chatStage = stageController.setStage(R.id.PersonSettingView);
+		stageController.setStage(R.id.PersonSettingView);
 	}
 
 	@FXML
