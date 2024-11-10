@@ -12,6 +12,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import lombok.Getter;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
@@ -36,6 +37,7 @@ public class DiscussionManager implements LifeCycle {
 
     private Map<Long, Map<Long, DiscussionMemberVo>> groupMembers = new HashMap<>();
 
+    @Getter
     private Long selectedGroupId;
 
     @Override
