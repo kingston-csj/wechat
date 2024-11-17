@@ -32,6 +32,7 @@ import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
+import pers.kinson.wechat.util.ImageUtil;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -144,6 +145,9 @@ public class DiscussionManager implements LifeCycle {
                 Label label = new Label(vo.getNickName());
                 label.setMaxWidth(50);
                 label.setFont(new Font(20));
+                if (vo.getOnline() == 0) {
+                    head.setImage(ImageUtil.convertToGray(head.getImage()));
+                }
                 vBox.getChildren().add(label);
                 groupListView.getChildren().add(vBox);
             });
@@ -153,38 +157,48 @@ public class DiscussionManager implements LifeCycle {
 
     private void notifyNewMessage(Object packet) {
         ResNewMessageNotify message = (ResNewMessageNotify) packet;
-        DiscussionGroupVo targetDiscussionGroup = discussionGroups.get(NumberUtil.longValue(message.getTopic()));
-        if (targetDiscussionGroup != null) {
-            ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
-            reqFetchNewMessage.setChannel(Constants.CHANNEL_DISCUSSION);
-            reqFetchNewMessage.setTopic("" + targetDiscussionGroup.getId());
-            reqFetchNewMessage.setMaxSeq(targetDiscussionGroup.getMaxSeq());
-            IOUtil.send(reqFetchNewMessage);
+        ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
+        // 这里先写点丑代码，后续优化
+        if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
+            DiscussionGroupVo targetDiscussionGroup = discussionGroups.get(NumberUtil.longValue(message.getTopic()));
+            if (targetDiscussionGroup != null) {
+                reqFetchNewMessage.setChannel(Constants.CHANNEL_DISCUSSION);
+                reqFetchNewMessage.setTopic(targetDiscussionGroup.getId());
+                reqFetchNewMessage.setMaxSeq(targetDiscussionGroup.getMaxSeq());
+
+            }
+        } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
+
         }
+        IOUtil.send(reqFetchNewMessage);
+
     }
 
     private void refreshNewMessage(Object packet) {
         ResNewMessage message = (ResNewMessage) packet;
-        long discussionId = NumberUtil.longValue(message.getTopic());
-        discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
-
         long maxSeq = 0;
         for (ChatMessage e : message.getMessages()) {
             e.setContent(Context.messageContentFactory.parse(e.getType(), e.getJson()));
             maxSeq = Math.max(maxSeq, e.getSeq());
         }
 
-        discussionGroups.get(discussionId).setMaxSeq(maxSeq);
-        discussionMessages.get(discussionId).addAll(message.getMessages());
+        // 这里先写点丑代码，后续优化
+        if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
+            long discussionId = message.getTopic();
+            discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
+            discussionGroups.get(discussionId).setMaxSeq(maxSeq);
+            discussionMessages.get(discussionId).addAll(message.getMessages());
 
-        Stage stage = UiContext.stageController.getStageBy(R.id.DiscussionGroup);
-        VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-        if (UiContext.stageController.isStageShown(R.id.DiscussionGroup)) {
-            message.getMessages().forEach(e -> {
-                Pane pane = decorateChatRecord(e);
-                msgContainer.getChildren().add(pane);
-            });
+            Stage stage = UiContext.stageController.getStageBy(R.id.DiscussionGroup);
+            VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
+            if (UiContext.stageController.isStageShown(R.id.DiscussionGroup)) {
+                message.getMessages().forEach(e -> {
+                    Pane pane = decorateChatRecord(e);
+                    msgContainer.getChildren().add(pane);
+                });
+            }
         }
+
     }
 
 

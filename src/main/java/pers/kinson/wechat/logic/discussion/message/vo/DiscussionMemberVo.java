@@ -21,4 +21,6 @@ public class DiscussionMemberVo {
      * 职位
      */
     private byte position;
+
+    private byte online;
 }

@@ -10,7 +10,7 @@ public class ReqFetchNewMessage {
 
     private byte channel;
 
-    private String topic;
+    private long topic;
 
     private long maxSeq;
 
