@@ -16,4 +16,13 @@ public class Constants {
 	/** 在线状态 */
 	public static final byte ONLINE_STATUS = 1;
 
+
+	public static final byte CHANNEL_PERSON = 0;
+
+	public static final byte CHANNEL_DISCUSSION = 1;
+
+	public static byte MESSAGE_NORMAL  = 0;
+
+
+
 }

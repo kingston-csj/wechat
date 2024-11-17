@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
+import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToGroup;
@@ -55,6 +56,7 @@ public class DiscussionGroupController implements ControlledStage {
     private void sendMessage() {
         String message = msgInput.getText();
         ReqChatToGroup request = new ReqChatToGroup();
+        request.setChannel(Constants.CHANNEL_DISCUSSION);
         request.setToUserId(Context.discussionManager.getSelectedGroupId());
         request.setContent(message);
 

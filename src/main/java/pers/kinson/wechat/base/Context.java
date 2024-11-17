@@ -4,6 +4,7 @@ import jforgame.codec.MessageCodec;
 import jforgame.codec.struct.StructMessageCodec;
 import jforgame.socket.client.SocketClient;
 import pers.kinson.wechat.logic.chat.ChatManager;
+import pers.kinson.wechat.logic.chat.MessageContentFactory;
 import pers.kinson.wechat.logic.discussion.DiscussionManager;
 import pers.kinson.wechat.logic.friend.FriendManager;
 import pers.kinson.wechat.logic.login.LoginManager;
@@ -33,6 +34,8 @@ public class Context {
     public static DiscussionManager discussionManager;
 
     public static HttpClientManager httpClientManager;
+
+    public static MessageContentFactory messageContentFactory;
 
     public static void init() {
         Arrays.stream(Context.class.getDeclaredFields()).forEach(
