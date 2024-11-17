@@ -5,11 +5,13 @@ import lombok.Data;
 import pers.kinson.wechat.net.CmdConst;
 
 @Data
-@MessageMeta(cmd = CmdConst.ReqChatToUser)
-public class ReqChatToUser  {
+@MessageMeta(cmd = CmdConst.ReqMarkNewMessage)
+public class ReqMarkNewMessage {
 
-	private long toUserId;
+    private byte channel;
 
-	private String content;
+    private long topic;
+
+    private long maxSeq;
 
 }

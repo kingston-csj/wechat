@@ -7,6 +7,7 @@ import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
 import pers.kinson.wechat.logic.user.message.req.ReqUserRegister;
 import pers.kinson.wechat.logic.user.message.res.ResUserInfo;
 import pers.kinson.wechat.logic.user.message.res.ResUserRegister;
@@ -36,6 +37,12 @@ public class UserManager implements LifeCycle {
         profile.setUserId(userInfo.getUserId());
         profile.setUserName(userInfo.getUserName());
         profile.setAvatar(userInfo.getAvatar());
+        profile.setChatMaxSeq(userInfo.getMaxChatSeq());
+
+        // 拉取私聊列表
+        ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
+        reqFetchNewMessage.setMaxSeq(Context.userManager.getMyProfile().getChatMaxSeq());
+        IOUtil.send(reqFetchNewMessage);
     }
 
     public UserModel getMyProfile() {

@@ -3,7 +3,6 @@ package pers.kinson.wechat.ui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.Hyperlink;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyFriendList;
@@ -52,7 +51,7 @@ public class MainViewController implements ControlledStage, Initializable{
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		username.textProperty().bind(userModel.userNameProperty());
-		signature.textProperty().bind(userModel.signaturePropertiy());
+		signature.textProperty().bind(userModel.signatureProperty());
 	}
 
 	@FXML

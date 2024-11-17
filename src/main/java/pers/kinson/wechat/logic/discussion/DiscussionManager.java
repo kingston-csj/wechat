@@ -20,6 +20,7 @@ import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
+import pers.kinson.wechat.logic.chat.message.req.ReqMarkNewMessage;
 import pers.kinson.wechat.logic.chat.message.res.ResNewMessage;
 import pers.kinson.wechat.logic.chat.message.res.ResNewMessageNotify;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
@@ -168,26 +169,34 @@ public class DiscussionManager implements LifeCycle {
 
             }
         } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
-
+            reqFetchNewMessage.setTopic(Context.userManager.getMyUserId());
+            reqFetchNewMessage.setMaxSeq(Context.userManager.getMyProfile().getChatMaxSeq());
         }
         IOUtil.send(reqFetchNewMessage);
-
     }
 
     private void refreshNewMessage(Object packet) {
         ResNewMessage message = (ResNewMessage) packet;
+        if (message.getMessages() == null || message.getMessages().isEmpty()) {
+            return;
+        }
         long maxSeq = 0;
         for (ChatMessage e : message.getMessages()) {
             e.setContent(Context.messageContentFactory.parse(e.getType(), e.getJson()));
-            maxSeq = Math.max(maxSeq, e.getSeq());
+            maxSeq = Math.max(maxSeq, e.getId());
         }
 
+        ReqMarkNewMessage reqMarkNewMessage = new ReqMarkNewMessage();
+        reqMarkNewMessage.setChannel(message.getChannel());
+        reqMarkNewMessage.setMaxSeq(maxSeq);
         // 这里先写点丑代码，后续优化
         if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
             long discussionId = message.getTopic();
             discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
             discussionGroups.get(discussionId).setMaxSeq(maxSeq);
             discussionMessages.get(discussionId).addAll(message.getMessages());
+
+            reqMarkNewMessage.setTopic(discussionId);
 
             Stage stage = UiContext.stageController.getStageBy(R.id.DiscussionGroup);
             VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
@@ -197,13 +206,18 @@ public class DiscussionManager implements LifeCycle {
                     msgContainer.getChildren().add(pane);
                 });
             }
+        } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
+            Context.userManager.getMyProfile().setChatMaxSeq(maxSeq);
+            Context.chatManager.receiveFriendPrivateMessage(message.getMessages());
         }
 
+        // 收到消息之后再通知服务器，保证不丢消息
+       IOUtil.send(reqMarkNewMessage);
     }
 
 
     private Pane decorateChatRecord(ChatMessage message) {
-        boolean fromMe = message.getUserId() == Context.userManager.getMyUserId();
+        boolean fromMe = message.getSenderId() == Context.userManager.getMyUserId();
         StageController stageController = UiContext.stageController;
         Pane chatRecord = null;
         if (fromMe) {
@@ -216,7 +230,7 @@ public class DiscussionManager implements LifeCycle {
         if (fromMe) {
             nameUi.setText(Context.userManager.getMyProfile().getUserName());
         } else {
-            nameUi.setText(Context.friendManager.getUserName(message.getUserId()));
+            nameUi.setText(Context.friendManager.getUserName(message.getSenderId()));
         }
         nameUi.setVisible(false);
         Label _createTime = (Label) chatRecord.lookup("#timeUi");

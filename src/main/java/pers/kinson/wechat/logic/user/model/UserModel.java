@@ -32,6 +32,12 @@ public class UserModel {
      */
     private String avatar;
 
+    /**
+     * 私聊最大流水号
+     */
+    private long chatMaxSeq;
+
+
     public final StringProperty userNameProperty() {
         return userName;
     }
@@ -52,7 +58,7 @@ public class UserModel {
         this.signature.set(signature);
     }
 
-    public final StringProperty signaturePropertiy() {
+    public final StringProperty signatureProperty() {
         return this.signature;
     }
 

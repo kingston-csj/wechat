@@ -12,6 +12,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
@@ -43,6 +44,9 @@ public class FriendManager implements LifeCycle {
     private Map<Long, FriendItemVo> friends = new LinkedHashMap<>();
 
     private Map<Integer, String> groupNames = new LinkedHashMap<>();
+
+    @Getter
+    private long activatedFriendId;
 
     @Override
     public void init() {
@@ -276,7 +280,8 @@ public class FriendManager implements LifeCycle {
         userNameUi.setText(targetFriend.getFullName());
         signatureUi.setText(targetFriend.getSignature());
 
-        Context.chatManager.refreshFriendPrivateMessage(targetFriend.getUserId());
+        activatedFriendId = targetFriend.getUserId();
+        Context.chatManager.showFriendPrivateMessage(targetFriend.getUserId());
     }
 
     public String getUserName(Long userId) {

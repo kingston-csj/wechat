@@ -9,12 +9,13 @@ import pers.kinson.wechat.net.CmdConst;
 @Data
 public class ChatMessage {
 
-    private long seq;
+    private long id;
 
-    private Long userId;
+    private long senderId;
+    private String senderName;
 
-    private String userName;
-
+    private long receiverId;
+    private String receiverName;
 
     private byte type;
     private String json;

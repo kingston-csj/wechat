@@ -6,14 +6,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jforgame.commons.DateUtil;
+import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
-import pers.kinson.wechat.logic.chat.message.req.ReqChatToUser;
-import pers.kinson.wechat.logic.chat.message.res.ResChatToUser;
+import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
+import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
 import pers.kinson.wechat.logic.chat.message.vo.MessageVo;
-import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -21,6 +21,7 @@ import pers.kinson.wechat.ui.StageController;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class ChatManager implements LifeCycle {
@@ -30,51 +31,47 @@ public class ChatManager implements LifeCycle {
 
     @Override
     public void init() {
-        Context.messageRouter.registerHandler(CmdConst.ResChatToUser, this::receiveFriendPrivateMessage);
-
         EventDispatcher.eventBus.register(this);
     }
 
     public void sendMessageTo(long friendId, String content) {
-        ReqChatToUser request = new ReqChatToUser();
+        ReqChatToChannel request = new ReqChatToChannel();
+        request.setChannel(Constants.CHANNEL_PERSON);
         request.setToUserId(friendId);
         request.setContent(content);
 
         IOUtil.send(request);
     }
 
-    public void refreshFriendPrivateMessage(Long friendId) {
+    public void showFriendPrivateMessage(long friendId) {
+        if (friendId <= 0) {
+            return;
+        }
         StageController stageController = UiContext.stageController;
         Stage stage = stageController.getStageBy(R.id.ChatToPoint);
         VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-
+        msgContainer.getChildren().clear();
         LinkedList<MessageVo> messages = friendMessage.getOrDefault(friendId, new LinkedList<>());
         if (messages.isEmpty()) {
             return;
         }
-        msgContainer.getChildren().clear();
         messages.forEach(e -> {
             Pane pane = decorateChatRecord(e);
             msgContainer.getChildren().add(pane);
         });
     }
 
-    public void receiveFriendPrivateMessage(Object packet) {
-        ResChatToUser msg = (ResChatToUser) packet;
-        Long sourceId = msg.getFromUserId();
-        if (sourceId == Context.userManager.getMyUserId()) {
-            sourceId = msg.getToUserId();
+    public void receiveFriendPrivateMessage(List<ChatMessage> messages) {
+        for (ChatMessage msg : messages) {
+            long sourceId = msg.getSenderId();
+            if (sourceId == Context.userManager.getMyUserId()) {
+                sourceId = msg.getReceiverId();
+            }
+            MessageVo messageVo = MessageVo.builder().fromId(msg.getSenderId()).toId(msg.getReceiverId()).content(msg.getContent().getContent()).date(DateUtil.format(new Date())).build();
+            friendMessage.putIfAbsent(sourceId, new LinkedList<>());
+            friendMessage.get(sourceId).add(messageVo);
         }
-        MessageVo messageVo = MessageVo.builder().fromId(msg.getFromUserId()).toId(msg.getToUserId()).content(msg.getContent()).date(DateUtil.format(new Date())).build();
-        friendMessage.putIfAbsent(sourceId, new LinkedList<>());
-        friendMessage.get(sourceId).add(messageVo);
-
-        Stage stage = UiContext.stageController.getStageBy(R.id.ChatToPoint);
-        VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-        if (UiContext.stageController.isStageShown(R.id.ChatToPoint)) {
-            Pane pane = decorateChatRecord(messageVo);
-            msgContainer.getChildren().add(pane);
-        }
+        showFriendPrivateMessage(Context.friendManager.getActivatedFriendId());
     }
 
     private Pane decorateChatRecord(MessageVo message) {

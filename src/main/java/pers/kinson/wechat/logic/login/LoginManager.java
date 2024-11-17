@@ -41,7 +41,7 @@ public class LoginManager implements LifeCycle {
         ResUserLogin resp = (ResUserLogin) packet;
         boolean isSucc = resp.getIsValid() == Constants.TRUE;
         if (isSucc) {
-            redirecToMainPanel();
+            redirectToMainPanel();
 //            registerHeartTimer();
         } else {
             StageController stageController = UiContext.stageController;
@@ -53,7 +53,7 @@ public class LoginManager implements LifeCycle {
         }
     }
 
-    private void redirecToMainPanel() {
+    private void redirectToMainPanel() {
         StageController stageController = UiContext.stageController;
         stageController.switchStage(R.id.MainView, R.id.LoginView);
     }

@@ -59,7 +59,7 @@ public interface CmdConst {
     /**
      * 请求--群聊
      */
-    int ReqChatToGroup = 4_001;
+    int ReqChatToChannel = 4_001;
     /**
      * 请求--创建讨论组
      */
@@ -74,7 +74,7 @@ public interface CmdConst {
     int ReqViewDiscussionMembers = 4_006;
 
     int ReqFetchNewMessage = 4_007;
-
+    int ReqMarkNewMessage = 4_008;
     /**
      * 推送--单聊
      */
