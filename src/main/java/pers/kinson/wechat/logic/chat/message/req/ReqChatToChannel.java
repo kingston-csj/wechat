@@ -13,7 +13,10 @@ public class ReqChatToChannel {
 	 */
 	private byte channel;
 
-	private long toUserId;
+	/**
+	 * 接收目标，可以是用户id或者讨论组id
+	 */
+	private long target;
 
 	private byte contentType;
 	

@@ -16,8 +16,7 @@
 ![](/screenshots/main.png "主界面")　　
 
 聊天界面  
-![](/screenshots/privateChat.png "单人聊天界面")  
-![](/screenshots/emoji.jpeg "表情包界面")
+![](/screenshots/privateChat.jpg "单人聊天界面")  
 
 讨论组界面  
 ![](/screenshots/discussion.jpg "讨论组界面")  

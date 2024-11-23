@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import pers.kinson.wechat.base.Constants;
+import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
@@ -171,7 +171,6 @@ public class FriendManager implements LifeCycle {
     @Subscribe
     public void onEvent(RedPointEvent event) {
         if (event.getPoints().containsKey(RedPointId.FRIEND_APPLY)) {
-            System.out.println("------onEvent-------");
         }
     }
 
@@ -245,7 +244,7 @@ public class FriendManager implements LifeCycle {
         listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                if (this.checkVaild()) {
+                if (this.checkValid()) {
                     ListView<Node> view = (ListView<Node>) event.getSource();
                     Node selectedItem = view.getSelectionModel().getSelectedItem();
                     if (selectedItem == null)

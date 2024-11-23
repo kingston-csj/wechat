@@ -1,6 +1,5 @@
-package pers.kinson.wechat.logic.chat;
+package pers.kinson.wechat.util;
 
-import lombok.Getter;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
 import pers.kinson.wechat.logic.chat.struct.ContentElemNode;
@@ -9,7 +8,6 @@ import pers.kinson.wechat.logic.chat.struct.TextElemNode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -47,9 +47,15 @@
                     <Button layoutX="360.0" layoutY="123.0"
                             mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
                             text="%chat.send" onMouseClicked="#sendMessage"/>
-                    <Button fx:id="emojiBtn" layoutX="289.0" layoutY="123.0"
+                    <Button layoutX="140.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="文件" onMouseClicked="#sendFileResource"/>
+                    <Button layoutX="215.0" layoutY="123.0"
                             mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
                             text="表情" onMouseClicked="#showFacePanel"/>
+                    <Button layoutX="290.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="图片" onMouseClicked="#sendImageResource"/>
                 </Pane>
             </VBox>
             <Pane id="right"

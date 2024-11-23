@@ -33,7 +33,7 @@
             <ImageView id="headIcon" fx:id="headImage" layoutY="11.0">
                 <Image url="@../img/head.png"/>
             </ImageView>
-            <ImageView id="minBtn" fx:id="min" fitHeight="30.0"
+            <ImageView id="minBtn" fitHeight="30.0"
                        fitWidth="30.0" layoutX="520.0" pickOnBounds="true"
                        preserveRatio="true" visible="false">
                 <Image url="@../../login/img/min.png"/>
@@ -58,11 +58,8 @@
                            prefHeight="300.0" prefWidth="450.0">
                     <Button mnemonicParsing="false" prefHeight="1.0"
                             text="%chat.loadmore"/>
-                    <ScrollPane fitToWidth="true" layoutY="20.0"
-                                maxWidth="600.0">
-                        <VBox fx:id="msgContainer" fillWidth="false" maxWidth="625.0"
-                              prefHeight="273.0"
-                              prefWidth="625.0"/>
+                    <ScrollPane fitToWidth="true" layoutY="20.0">
+                        <VBox fx:id="msgContainer" fillWidth="false"/>
                     </ScrollPane>
                 </SplitPane>
                 <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
@@ -73,14 +70,20 @@
                     <Button layoutX="360.0" layoutY="123.0"
                             mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
                             text="%chat.send" onMouseClicked="#sendMessage"/>
-                    <Button fx:id="emojiBtn" layoutX="289.0" layoutY="123.0"
+                    <Button layoutX="140.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="文件" onMouseClicked="#sendFileResource"/>
+                    <Button layoutX="215.0" layoutY="123.0"
                             mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
                             text="表情" onMouseClicked="#showFacePanel"/>
+                    <Button layoutX="290.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="图片" onMouseClicked="#sendImageResource"/>
                 </Pane>
             </VBox>
             <Pane id="right" layoutX="330.0" minHeight="460.0"
                   prefHeight="460.0" prefWidth="150.0">
-                <ImageView fx:id="showImg" fitHeight="460.0"
+                <ImageView fitHeight="460.0"
                            fitWidth="150.0" layoutX="-0.0">
                     <Image url="@../img/elegant.png"/>
                 </ImageView>

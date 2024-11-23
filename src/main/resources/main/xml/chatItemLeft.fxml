@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0"
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <Hyperlink fx:id="nameUi" layoutX="70.0" layoutY="-2.0" text="张三">
         <font>
@@ -21,7 +21,7 @@
             <Font size="15.0"/>
         </font>
     </Label>
-    <FlowPane fx:id="contentUi" layoutX="66.0" layoutY="23.0" maxWidth="525.0" prefHeight="32.0" prefWidth="370.0"
+    <FlowPane fx:id="contentUi" layoutX="66.0" layoutY="23.0"  prefHeight="32.0" prefWidth="370.0"
               style="-fx-background-color: #d8d8da;  ">
 
     </FlowPane>

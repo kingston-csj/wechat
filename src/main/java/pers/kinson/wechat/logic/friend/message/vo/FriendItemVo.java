@@ -3,7 +3,7 @@ package pers.kinson.wechat.logic.friend.message.vo;
 import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
-import pers.kinson.wechat.base.Constants;
+import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.net.CmdConst;
 
 @Data

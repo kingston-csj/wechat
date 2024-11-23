@@ -95,9 +95,9 @@ public class PersonalSettingController implements ControlledStage, Initializable
             try {
                 HttpResult httpResponse = JsonUtil.string2Object(EntityUtils.toString(entity), HttpResult.class);
                 ResUploadFile resUploadFile = JsonUtil.string2Object(httpResponse.getData(), ResUploadFile.class);
-                avatarUrl = resUploadFile.getUrl();
-                avatarImageView.setImage(new Image(resUploadFile.getUrl()));
-                Context.userManager.getMyProfile().setAvatar(resUploadFile.getUrl());
+                avatarUrl = resUploadFile.getCdnUrl();
+                avatarImageView.setImage(new Image(resUploadFile.getCdnUrl()));
+                Context.userManager.getMyProfile().setAvatar(resUploadFile.getCdnUrl());
             } catch (Exception e) {
                 e.printStackTrace();
 //                LoggerUtil.error(String.format("json %s 解析错误", JsonUtil.object2String(entity)), e);

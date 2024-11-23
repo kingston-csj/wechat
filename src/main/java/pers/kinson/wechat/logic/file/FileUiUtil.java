@@ -1,0 +1,154 @@
+package pers.kinson.wechat.logic.file;
+
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+import jforgame.commons.JsonUtil;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
+import pers.kinson.wechat.logic.chat.struct.FileMessageContent;
+import pers.kinson.wechat.logic.chat.struct.ImageMessageContent;
+import pers.kinson.wechat.net.ClientConfigs;
+import pers.kinson.wechat.net.HttpResult;
+import pers.kinson.wechat.net.IOUtil;
+import pers.kinson.wechat.ui.R;
+import pers.kinson.wechat.ui.StageController;
+import pers.kinson.wechat.ui.controller.ProgressFileEntity;
+import pers.kinson.wechat.ui.controller.ProgressMonitor;
+import pers.kinson.wechat.util.SchedulerManager;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+public class FileUiUtil {
+
+
+    public static ResUploadFile uploadFile(File file, Map<String, String> params) throws IOException {
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(ClientConfigs.REMOTE_HTTP_SERVER + "/file/upload");
+        // 使用MultipartEntityBuilder构建多部分表单
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addTextBody("file", file.getName());
+        builder.addTextBody("type", params.get("type"));
+        // 临时方法
+        builder.addTextBody("params", JsonUtil.object2String(params));
+        HttpEntity httpEntity = builder.build();
+        httpPost.setEntity(httpEntity);
+
+        // 执行请求并获得响应
+        HttpResponse response = httpClient.execute(httpPost);
+        HttpEntity entity = response.getEntity();
+        HttpResult httpResponse = JsonUtil.string2Object(EntityUtils.toString(entity), HttpResult.class);
+        return JsonUtil.string2Object(httpResponse.getData(), ResUploadFile.class);
+    }
+
+    public static void sendImageResource(Window window, ReqChatToChannel request) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        // 设置文件选择器的标题和过滤器
+        fileChooser.setTitle("选择图片");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("图片文件", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+
+        // 显示文件选择器
+        File file = fileChooser.showOpenDialog(window);
+        if (file == null) {
+            return;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "1");
+        ResUploadFile resUploadFile = FileUiUtil.uploadFile(file, params);
+
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        // 创建PUT请求
+        HttpPut httpPut = new HttpPut(resUploadFile.getPresignedUrl());
+        // 设置请求体为图片文件，并指定Content-type为image/jpeg
+        HttpEntity entity = new FileEntity(file, ContentType.IMAGE_JPEG);
+        httpPut.setEntity(entity);
+        // 执行请求
+        HttpResponse response = httpClient.execute(httpPut);
+        // 根据响应状态码等进行后续处理，这里简单打印响应状态码
+        System.out.println("Response Status Code: " + response.getStatusLine().getStatusCode());
+        ImageMessageContent content = new ImageMessageContent();
+        content.setUrl(resUploadFile.getCdnUrl());
+    }
+
+    public static void sendFileResource(Window window, ReqChatToChannel request) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        // 设置文件选择器的标题和过滤器
+        fileChooser.setTitle("选择文件");
+        // 显示文件选择器
+        File file = fileChooser.showOpenDialog(window);
+        if (file == null) {
+            return;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "1");
+        ResUploadFile resUploadFile = FileUiUtil.uploadFile(file, params);
+
+        // 临时创建一个消息面板来显示文件进度
+        VBox msgContainer = (VBox) window.getScene().getRoot().lookup("#msgContainer");
+        StageController stageController = UiContext.stageController;
+        Pane pane = stageController.load(R.layout.PrivateChatItemRight, Pane.class);
+        FlowPane nameUi = (FlowPane) pane.lookup("#contentUi");
+        ProgressBar progressBar = new ProgressBar();
+        nameUi.getChildren().add(progressBar);
+        msgContainer.getChildren().add(pane);
+
+
+        // 使用javafx的task，执行进度刷新任务
+        Task<Void> uploadTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                HttpClient httpClient = HttpClientBuilder.create().build();
+                // 创建PUT请求
+                HttpPut httpPut = new HttpPut(resUploadFile.getPresignedUrl());
+                ProgressMonitor monitor = new ProgressMonitor() {
+                    @Override
+                    public void updateTransferred(long changed) {
+                        super.updateTransferred(changed);
+                        updateProgress(getProgress(), getMaximum());
+                    }
+                };
+                monitor.setMaximum(file.length());
+
+                // 设置请求体为图片文件，并指定Content-type为image/jpeg
+                HttpEntity entity = new ProgressFileEntity(monitor, file, ContentType.DEFAULT_BINARY);
+                httpPut.setEntity(entity);
+                // 执行请求
+                HttpResponse response = httpClient.execute(httpPut);
+                // 根据响应状态码等进行后续处理，这里简单打印响应状态码
+                System.out.println("Response Status Code: " + response.getStatusLine().getStatusCode());
+                FileMessageContent content = new FileMessageContent();
+                content.setName(file.getName());
+                content.setSize(file.length());
+                content.setUrl(resUploadFile.getCdnUrl());
+                request.setContent(JsonUtil.object2String(content));
+                request.setContentType(content.getType());
+
+                IOUtil.send(request);
+                return null;
+            }
+        };
+        // 绑定进度条进度与任务进度
+        progressBar.progressProperty().bind(uploadTask.progressProperty());
+        SchedulerManager.INSTANCE.runNow(uploadTask);
+    }
+
+
+}

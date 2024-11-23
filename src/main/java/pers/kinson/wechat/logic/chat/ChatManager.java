@@ -7,20 +7,24 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jforgame.commons.JsonUtil;
-import jforgame.commons.TimeUtil;
+import jforgame.commons.NumberUtil;
 import lombok.Getter;
-import pers.kinson.wechat.base.Constants;
+import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
+import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
+import pers.kinson.wechat.logic.chat.message.req.ReqMarkNewMessage;
+import pers.kinson.wechat.logic.chat.message.res.ResNewMessage;
+import pers.kinson.wechat.logic.chat.message.res.ResNewMessageNotify;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
 import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
-import pers.kinson.wechat.logic.chat.message.vo.MessageVo;
-import pers.kinson.wechat.logic.chat.struct.ContentElemNode;
 import pers.kinson.wechat.logic.chat.struct.MessageContent;
+import pers.kinson.wechat.logic.discussion.message.vo.DiscussionGroupVo;
 import pers.kinson.wechat.net.ClientConfigs;
+import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
@@ -45,9 +49,12 @@ public class ChatManager implements LifeCycle {
 
     @Override
     public void init() {
+        Context.messageRouter.registerHandler(CmdConst.ResNewMessageNotify, this::notifyNewMessage);
+        Context.messageRouter.registerHandler(CmdConst.ResNewMessage, this::refreshNewMessage);
+
         EventDispatcher.eventBus.register(this);
 
-        SchedulerManager.INSTANCE.registerUniqueTimeoutTask("fetchEmoji", () -> {
+        SchedulerManager.INSTANCE.runNow(() -> {
             try {
                 HttpResult httpResult = Context.httpClientManager.get(ClientConfigs.REMOTE_HTTP_SERVER + "/emoji/list", new HashMap<>(), HttpResult.class);
                 @SuppressWarnings("all")
@@ -56,16 +63,16 @@ public class ChatManager implements LifeCycle {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }, TimeUtil.MILLIS_PER_SECOND);
+        });
 
     }
 
     public void sendMessageTo(long friendId, MessageContent content) {
         ReqChatToChannel request = new ReqChatToChannel();
         request.setChannel(Constants.CHANNEL_PERSON);
-        request.setToUserId(friendId);
+        request.setTarget(friendId);
         request.setContent(JsonUtil.object2String(content));
-
+        request.setContentType(content.getType());
         IOUtil.send(request);
     }
 
@@ -93,8 +100,6 @@ public class ChatManager implements LifeCycle {
             if (sourceId == Context.userManager.getMyUserId()) {
                 sourceId = msg.getReceiverId();
             }
-//            MessageVo messageVo = MessageVo.builder().fromId(msg.getSenderId()).toId(msg.getReceiverId())
-//                    .messageContent(msg.getContent()).date(msg.getDate()).build();
             friendMessage.putIfAbsent(sourceId, new LinkedList<>());
             friendMessage.get(sourceId).add(msg);
         }
@@ -121,13 +126,58 @@ public class ChatManager implements LifeCycle {
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
         FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
-        if (message.getContent().getType() == MessageContentFactory.TYPE_NORMAL) {
-            List<ContentElemNode> nodes = MessageTextUiEditor.parseMessage(message.getContent().getContent());
-            for (ContentElemNode node : nodes) {
-                _body.getChildren().add(node.toUi());
-            }
-        }
+
+        Context.messageContentFactory.displayUi(message.getContent().getType(), _body, message);
+//        chatRecord.setStyle("-fx-border-color: red");
+//        _body.setStyle("-fx-border-color: blue");
         return chatRecord;
+    }
+
+    private void notifyNewMessage(Object packet) {
+        ResNewMessageNotify message = (ResNewMessageNotify) packet;
+        ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
+        // 这里先写点丑代码，后续优化
+        if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
+            DiscussionGroupVo targetDiscussionGroup = Context.discussionManager.getDiscussionGroupVo(NumberUtil.longValue(message.getTopic()));
+            if (targetDiscussionGroup != null) {
+                reqFetchNewMessage.setChannel(Constants.CHANNEL_DISCUSSION);
+                reqFetchNewMessage.setTopic(targetDiscussionGroup.getId());
+                reqFetchNewMessage.setMaxSeq(targetDiscussionGroup.getMaxSeq());
+
+            }
+        } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
+            reqFetchNewMessage.setTopic(Context.userManager.getMyUserId());
+            reqFetchNewMessage.setMaxSeq(Context.userManager.getMyProfile().getChatMaxSeq());
+        }
+        IOUtil.send(reqFetchNewMessage);
+    }
+
+    private void refreshNewMessage(Object packet) {
+        ResNewMessage message = (ResNewMessage) packet;
+        if (message.getMessages() == null || message.getMessages().isEmpty()) {
+            return;
+        }
+        long maxSeq = 0;
+        for (ChatMessage e : message.getMessages()) {
+            e.setContent(Context.messageContentFactory.parse(e.getType(), e.getJson()));
+            maxSeq = Math.max(maxSeq, e.getId());
+        }
+
+        ReqMarkNewMessage reqMarkNewMessage = new ReqMarkNewMessage();
+        reqMarkNewMessage.setChannel(message.getChannel());
+        reqMarkNewMessage.setMaxSeq(maxSeq);
+        // 根据消息来源进行分发
+        if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
+            long discussionId = message.getMessages().get(0).getReceiverId();
+            reqMarkNewMessage.setTopic(discussionId);
+            Context.discussionManager.receiveDiscussionMessages(maxSeq, message.getMessages());
+        } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
+            Context.userManager.getMyProfile().setChatMaxSeq(maxSeq);
+            Context.chatManager.receiveFriendPrivateMessage(message.getMessages());
+        }
+
+        // 收到消息之后再通知服务器，保证不丢消息
+        IOUtil.send(reqMarkNewMessage);
     }
 
 }

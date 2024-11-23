@@ -1,4 +1,4 @@
-package pers.kinson.wechat.base;
+package pers.kinson.wechat.logic.constant;
 
 public class Constants {
 
@@ -20,9 +20,6 @@ public class Constants {
 	public static final byte CHANNEL_PERSON = 0;
 
 	public static final byte CHANNEL_DISCUSSION = 1;
-
-	public static byte MESSAGE_NORMAL  = 0;
-
 
 
 }

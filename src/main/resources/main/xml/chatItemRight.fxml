@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<Pane maxHeight="-Infinity" maxWidth="525.0" minHeight="-Infinity" minWidth="-Infinity"
       prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <Hyperlink fx:id="nameUi" layoutX="70.0" layoutY="-2.0" text="张三">
+    <Hyperlink fx:id="nameUi" layoutX="70.0" layoutY="-2.0" >
         <font>
             <Font size="16.0"/>
         </font>
     </Hyperlink>
+    <ImageView fx:id="headImage1" fitHeight="50.0" fitWidth="50.0" layoutX="390.0" layoutY="3.0">
+        <Image url="@../img/head.png"/>
+    </ImageView>
     <Label fx:id="timeUi" layoutX="121.0" layoutY="3.0" text="2015年6月8日 13:30:31">
         <padding>
             <Insets left="10.0"/>
@@ -22,13 +26,11 @@
             <Font size="15.0"/>
         </font>
     </Label>
-    <FlowPane fx:id="contentUi" alignment="BOTTOM_RIGHT" layoutX="7.0" layoutY="23.0" maxWidth="525.0"
+    <FlowPane fx:id="contentUi" alignment="BOTTOM_RIGHT" layoutX="7.0" layoutY="23.0" maxWidth="425.0"
               prefHeight="32.0" prefWidth="370.0" style="-fx-background-color: #ACD9F8; -fx-background-radius: 10;">
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
         </padding>
     </FlowPane>
-    <ImageView fx:id="headImage1" fitHeight="50.0" fitWidth="50.0" layoutX="390.0" layoutY="3.0">
-        <Image url="@../img/head.png"/>
-    </ImageView>
+
 </Pane>

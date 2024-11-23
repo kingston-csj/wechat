@@ -13,21 +13,14 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import jforgame.commons.NumberUtil;
 import lombok.Getter;
-import pers.kinson.wechat.base.Constants;
+import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
-import pers.kinson.wechat.logic.chat.MessageContentFactory;
-import pers.kinson.wechat.logic.chat.MessageTextUiEditor;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
-import pers.kinson.wechat.logic.chat.message.req.ReqMarkNewMessage;
-import pers.kinson.wechat.logic.chat.message.res.ResNewMessage;
-import pers.kinson.wechat.logic.chat.message.res.ResNewMessageNotify;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
-import pers.kinson.wechat.logic.chat.struct.ContentElemNode;
 import pers.kinson.wechat.logic.discussion.message.req.ReqViewDiscussionMembers;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionList;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionMembersList;
@@ -60,8 +53,6 @@ public class DiscussionManager implements LifeCycle {
     public void init() {
         Context.messageRouter.registerHandler(CmdConst.ResViewDiscussionList, this::receiveGroupList);
         Context.messageRouter.registerHandler(CmdConst.ResViewDiscussionMembers, this::refreshGroupMembers);
-        Context.messageRouter.registerHandler(CmdConst.ResNewMessageNotify, this::notifyNewMessage);
-        Context.messageRouter.registerHandler(CmdConst.ResNewMessage, this::refreshNewMessage);
     }
 
     private void receiveGroupList(Object packet) {
@@ -95,7 +86,7 @@ public class DiscussionManager implements LifeCycle {
         listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                if (this.checkVaild()) {
+                if (this.checkValid()) {
                     ListView<Node> view = (ListView<Node>) event.getSource();
                     Node selectedItem = view.getSelectionModel().getSelectedItem();
                     if (selectedItem == null)
@@ -122,6 +113,13 @@ public class DiscussionManager implements LifeCycle {
         ReqViewDiscussionMembers req = new ReqViewDiscussionMembers();
         req.setDiscussionId(selectedGroupId);
         IOUtil.send(req);
+
+        // 拉取讨论组聊天内容
+        ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
+        reqFetchNewMessage.setMaxSeq(discussionGroups.get(groupVo.getId()).getMaxSeq());
+        reqFetchNewMessage.setChannel(Constants.CHANNEL_DISCUSSION);
+        reqFetchNewMessage.setTopic(groupVo.getId());
+        IOUtil.send(reqFetchNewMessage);
     }
 
     private void refreshGroupMembers(Object packet) {
@@ -157,63 +155,23 @@ public class DiscussionManager implements LifeCycle {
 
     }
 
-    private void notifyNewMessage(Object packet) {
-        ResNewMessageNotify message = (ResNewMessageNotify) packet;
-        ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
-        // 这里先写点丑代码，后续优化
-        if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
-            DiscussionGroupVo targetDiscussionGroup = discussionGroups.get(NumberUtil.longValue(message.getTopic()));
-            if (targetDiscussionGroup != null) {
-                reqFetchNewMessage.setChannel(Constants.CHANNEL_DISCUSSION);
-                reqFetchNewMessage.setTopic(targetDiscussionGroup.getId());
-                reqFetchNewMessage.setMaxSeq(targetDiscussionGroup.getMaxSeq());
-
-            }
-        } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
-            reqFetchNewMessage.setTopic(Context.userManager.getMyUserId());
-            reqFetchNewMessage.setMaxSeq(Context.userManager.getMyProfile().getChatMaxSeq());
-        }
-        IOUtil.send(reqFetchNewMessage);
-    }
-
-    private void refreshNewMessage(Object packet) {
-        ResNewMessage message = (ResNewMessage) packet;
-        if (message.getMessages() == null || message.getMessages().isEmpty()) {
-            return;
-        }
-        long maxSeq = 0;
-        for (ChatMessage e : message.getMessages()) {
-            e.setContent(Context.messageContentFactory.parse(e.getType(), e.getJson()));
-            maxSeq = Math.max(maxSeq, e.getId());
-        }
-
-        ReqMarkNewMessage reqMarkNewMessage = new ReqMarkNewMessage();
-        reqMarkNewMessage.setChannel(message.getChannel());
-        reqMarkNewMessage.setMaxSeq(maxSeq);
-        // 这里先写点丑代码，后续优化
-        if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
-            long discussionId = message.getTopic();
+    public void receiveDiscussionMessages(long maxSeq, List<ChatMessage> messages) {
+        for (ChatMessage message : messages) {
+            long discussionId = message.getReceiverId();
             discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
             discussionGroups.get(discussionId).setMaxSeq(maxSeq);
-            discussionMessages.get(discussionId).addAll(message.getMessages());
-
-            reqMarkNewMessage.setTopic(discussionId);
-
-            Stage stage = UiContext.stageController.getStageBy(R.id.DiscussionGroup);
-            VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-            if (UiContext.stageController.isStageShown(R.id.DiscussionGroup)) {
-                message.getMessages().forEach(e -> {
-                    Pane pane = decorateChatRecord(e);
-                    msgContainer.getChildren().add(pane);
-                });
-            }
-        } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
-            Context.userManager.getMyProfile().setChatMaxSeq(maxSeq);
-            Context.chatManager.receiveFriendPrivateMessage(message.getMessages());
+            discussionMessages.get(discussionId).add(message);
         }
 
-        // 收到消息之后再通知服务器，保证不丢消息
-       IOUtil.send(reqMarkNewMessage);
+        if (UiContext.stageController.isStageShown(R.id.DiscussionGroup)) {
+            Stage stage = UiContext.stageController.getStageBy(R.id.DiscussionGroup);
+            VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
+            msgContainer.getChildren().clear();
+            messages.forEach(e -> {
+                Pane pane = decorateChatRecord(e);
+                msgContainer.getChildren().add(pane);
+            });
+        }
     }
 
 
@@ -237,13 +195,13 @@ public class DiscussionManager implements LifeCycle {
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
         FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
-        if (message.getContent().getType() == MessageContentFactory.TYPE_NORMAL) {
-            List<ContentElemNode> nodes = MessageTextUiEditor.parseMessage(message.getContent().getContent());
-            for (ContentElemNode node : nodes) {
-                _body.getChildren().add(node.toUi());
-            }
-        }
+
+        Context.messageContentFactory.displayUi(message.getContent().getType(), _body, message);
 
         return chatRecord;
+    }
+
+    public DiscussionGroupVo getDiscussionGroupVo(long discussionId) {
+        return discussionGroups.get(discussionId);
     }
 }
