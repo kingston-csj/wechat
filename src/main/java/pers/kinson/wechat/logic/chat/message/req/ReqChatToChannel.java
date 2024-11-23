@@ -14,6 +14,8 @@ public class ReqChatToChannel {
 	private byte channel;
 
 	private long toUserId;
+
+	private byte contentType;
 	
 	private String content;
 	

@@ -6,10 +6,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
+import jforgame.commons.JsonUtil;
 import pers.kinson.wechat.base.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
+import pers.kinson.wechat.logic.chat.struct.MessageContent;
+import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
@@ -22,9 +25,6 @@ public class DiscussionGroupController implements ControlledStage {
 
     @FXML
     private TextArea msgInput;
-
-    @FXML
-    private ScrollPane outputMsgUi;
 
     @FXML
     private TilePane members;
@@ -54,11 +54,20 @@ public class DiscussionGroupController implements ControlledStage {
         ReqChatToChannel request = new ReqChatToChannel();
         request.setChannel(Constants.CHANNEL_DISCUSSION);
         request.setToUserId(Context.discussionManager.getSelectedGroupId());
-        request.setContent(message);
+        MessageContent content = new MessageContent();
+        content.setContent(message);
+        request.setContent(JsonUtil.object2String(content));
 
         IOUtil.send(request);
         msgInput.setText("");
     }
+
+    @FXML
+    private void showFacePanel() {
+        EmojiPopup emojiPopup = new EmojiPopup(msgInput);
+        emojiPopup.show(getMyStage().getScene().getWindow());
+    }
+
 
 }
 

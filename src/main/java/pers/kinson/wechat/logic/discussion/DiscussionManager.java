@@ -7,6 +7,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -19,11 +20,14 @@ import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
+import pers.kinson.wechat.logic.chat.MessageContentFactory;
+import pers.kinson.wechat.logic.chat.MessageTextUiEditor;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
 import pers.kinson.wechat.logic.chat.message.req.ReqMarkNewMessage;
 import pers.kinson.wechat.logic.chat.message.res.ResNewMessage;
 import pers.kinson.wechat.logic.chat.message.res.ResNewMessageNotify;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
+import pers.kinson.wechat.logic.chat.struct.ContentElemNode;
 import pers.kinson.wechat.logic.discussion.message.req.ReqViewDiscussionMembers;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionList;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionMembersList;
@@ -115,8 +119,6 @@ public class DiscussionManager implements LifeCycle {
 
         Label userNameUi = (Label) chatStage.getScene().getRoot().lookup("#name");
         userNameUi.setText(groupVo.getName());
-
-//        Context.chatManager.refreshFriendPrivateMessage(groupVo.getUserId());
         ReqViewDiscussionMembers req = new ReqViewDiscussionMembers();
         req.setDiscussionId(selectedGroupId);
         IOUtil.send(req);
@@ -135,7 +137,6 @@ public class DiscussionManager implements LifeCycle {
             groupListView.getChildren().clear();
 
             groupListView.setPadding(new Insets(10, 10, 10, 10)); // 上，右，下，左
-
 
             members.forEach((key, vo) -> {
                 VBox vBox = new VBox();
@@ -235,8 +236,13 @@ public class DiscussionManager implements LifeCycle {
         nameUi.setVisible(false);
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
-        Label _body = (Label) chatRecord.lookup("#contentUi");
-        _body.setText(message.getContent().getContent());
+        FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
+        if (message.getContent().getType() == MessageContentFactory.TYPE_NORMAL) {
+            List<ContentElemNode> nodes = MessageTextUiEditor.parseMessage(message.getContent().getContent());
+            for (ContentElemNode node : nodes) {
+                _body.getChildren().add(node.toUi());
+            }
+        }
 
         return chatRecord;
     }

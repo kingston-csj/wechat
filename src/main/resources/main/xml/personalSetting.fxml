@@ -11,27 +11,29 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
       prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pers.kinson.wechat.ui.controller.PersonalSettingController">
-    <children>
-        <VBox spacing="10">
-            <HBox>
-                <Label text="昵称："/>
-                <TextField fx:id="nameField" promptText="输入昵称"/>
-            </HBox>
+    <ImageView   fitHeight="30.0" fitWidth="30.0" layoutX="271.0" layoutY="-1.0" onMouseClicked="#close"
+               pickOnBounds="true" preserveRatio="true">
+        <Image url="@../../login/img/close.png"/>
+    </ImageView>
+    <VBox spacing="10">
+        <HBox>
+            <Label text="昵称："/>
+            <TextField fx:id="nameField" promptText="输入昵称"/>
+        </HBox>
 
-            <HBox>
-                <Label text="头像："/>
-                <Button text="上传图片" onAction="#chooseAvatar"/>
-                <ImageView fx:id="avatarImageView" onMouseClicked="#chooseAvatar" fitWidth="100" fitHeight="100">
-                    <Image url="@../../login/img/headimag.png"/>
-                </ImageView>
-            </HBox>
-            <HBox>
-                <Label text="签名："/>
-                <TextField fx:id="remarkField" promptText="输入修改签名"/>
-            </HBox>
-            <HBox alignment="TOP_RIGHT">
-                <Button text="保存" fx:id="saveButton" onAction="#saveProfile"/>
-            </HBox>
-        </VBox>
-    </children>
+        <HBox>
+            <Label text="头像："/>
+            <Button text="上传图片" onAction="#chooseAvatar"/>
+            <ImageView fx:id="avatarImageView" onMouseClicked="#chooseAvatar" fitWidth="100" fitHeight="100">
+                <Image url="@../../login/img/headimag.png"/>
+            </ImageView>
+        </HBox>
+        <HBox>
+            <Label text="签名："/>
+            <TextField fx:id="remarkField" promptText="输入修改签名"/>
+        </HBox>
+        <HBox alignment="TOP_RIGHT">
+            <Button text="保存" fx:id="saveButton" onAction="#saveProfile"/>
+        </HBox>
+    </VBox>
 </Pane>

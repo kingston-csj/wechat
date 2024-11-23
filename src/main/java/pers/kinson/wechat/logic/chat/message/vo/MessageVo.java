@@ -12,8 +12,6 @@ public class MessageVo {
 
     private Long toId;
 
-    private String content;
-
     private String date;
 
     private MessageContent messageContent;

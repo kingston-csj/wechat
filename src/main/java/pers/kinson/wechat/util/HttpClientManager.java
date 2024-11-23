@@ -29,11 +29,11 @@ public class HttpClientManager implements LifeCycle {
         httpClient = HttpClients.createDefault();
     }
 
-    public String get(String url, Map<String, Object> params) throws IOException {
-        return get(url, null, params);
+    public <T> T get(String url, Map<String, Object> params, Class<T> responseClazz) throws IOException {
+        return get(url, null, params, responseClazz);
     }
 
-    public String get(String url, Map<String, String> headers, Map<String, Object> params) throws IOException {
+    public <T> T get(String url, Map<String, String> headers, Map<String, Object> params, Class<T> responseClazz) throws IOException {
         try {
             URIBuilder uriBuilder = new URIBuilder(url);
             List<NameValuePair> urlParam = new ArrayList<>();
@@ -54,11 +54,15 @@ public class HttpClientManager implements LifeCycle {
 //                LoggerUtil.info(LoggerFunction.REQUEST, "module", "get_bad_status", "url", url, "params", JsonUtil.object2String(params));
             }
             HttpEntity entity = response.getEntity();
-            return EntityUtils.toString(entity);
-
+            try {
+                return JsonUtil.string2Object(EntityUtils.toString(entity), responseClazz);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (URISyntaxException e) {
             throw new IOException(e);
         }
+        return null;
     }
 
     public <T> T post(String url, Map<String, Object> params, Class<T> responseClazz) throws IOException {

@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MessageContentFactory implements LifeCycle {
 
-    final static byte TYPE_NORMAL = 0;
+    public final static byte TYPE_NORMAL = 0;
 
     Map<Byte, Class<MessageContent>> mapper = new HashMap<>();
 

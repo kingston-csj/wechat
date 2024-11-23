@@ -101,11 +101,11 @@
             <artifactId>httpcore</artifactId>
             <version>4.4.13</version>
         </dependency>
-        <dependency>
-            <groupId>org.controlsfx</groupId>
-            <artifactId>controlsfx</artifactId>
-            <version>8.40.12</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.openjfx</groupId>-->
+<!--            <artifactId>javafx-controls</artifactId>-->
+<!--            <version>17.0.1</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

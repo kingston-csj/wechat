@@ -68,17 +68,6 @@ public class StageController {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T load(String resource, Class<T> clazz, ResourceBundle resources) {
-        try {
-            URL url = Thread.currentThread().getContextClassLoader().getResource(resource);
-            return (T) FXMLLoader.load(url, resources);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public Stage setStage(String name) {
         Stage stage = this.getStageBy(name);
         if (stage == null) {

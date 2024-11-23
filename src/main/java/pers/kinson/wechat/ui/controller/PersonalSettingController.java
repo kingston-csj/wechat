@@ -158,4 +158,9 @@ public class PersonalSettingController implements ControlledStage, Initializable
         return stageController.getStageBy(R.id.PersonSettingView);
     }
 
+    @FXML
+    private void close() {
+        UiContext.stageController.closeStage(R.id.PersonSettingView);
+    }
+
 }

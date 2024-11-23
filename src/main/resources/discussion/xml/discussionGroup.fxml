@@ -11,59 +11,55 @@
       style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pers.kinson.wechat.ui.controller.DiscussionGroupController">
-    <children>
-        <VBox>
-            <children>
-                <Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="600.0">
-                    <VBox.margin>
-                        <Insets/>
-                    </VBox.margin>
-                    <ImageView id="closeBtn" fitHeight="30.0"
-                               fitWidth="30.0" layoutX="554.0" pickOnBounds="true"
-                               preserveRatio="true" onMouseClicked="#close" visible="false">
-                        <Image url="@../../login/img/close.png"/>
-                    </ImageView>
-                    <Label fx:id="name" layoutX="5.0" layoutY="0">
-                        <font>
-                            <Font size="20.0"/>
-                        </font>
-                    </Label>
+    <VBox>
+        <Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="600.0">
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <ImageView id="closeBtn" fitHeight="30.0"
+                       fitWidth="30.0" layoutX="554.0" pickOnBounds="true"
+                       preserveRatio="true" onMouseClicked="#close" visible="false">
+                <Image url="@../../login/img/close.png"/>
+            </ImageView>
+            <Label fx:id="name" layoutX="5.0">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </Label>
+        </Pane>
+        <HBox layoutX="3.0" layoutY="8.0" minHeight="460.0" prefHeight="400.0">
+            <VBox id="left" prefWidth="450.0">
+                <SplitPane id="outputArea" dividerPositions="0.5"
+                           layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
+                           prefHeight="300.0" prefWidth="450.0">
+                    <ScrollPane fitToWidth="true" layoutY="20.0"
+                                maxWidth="600.0">
+                        <VBox fx:id="msgContainer" fillWidth="false" maxWidth="625.0"
+                              prefHeight="273.0"
+                              prefWidth="625.0"/>
+                    </ScrollPane>
+                </SplitPane>
+                <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
+                      prefHeight="200.0" prefWidth="450.0">
+                    <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
+                              minHeight="111.0" minWidth="400.0" prefHeight="163.0"
+                              prefWidth="450.0" text="hello?"/>
+                    <Button layoutX="360.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="%chat.send" onMouseClicked="#sendMessage"/>
+                    <Button fx:id="emojiBtn" layoutX="289.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="表情" onMouseClicked="#showFacePanel"/>
                 </Pane>
-                <HBox layoutX="3.0" layoutY="8.0" minHeight="460.0" prefHeight="400.0">
-                    <VBox id="left" prefWidth="450.0">
-                        <SplitPane id="outputArea" dividerPositions="0.5"
-                                   layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
-                                   prefHeight="300.0" prefWidth="450.0">
-                            <ScrollPane fitToWidth="true" layoutY="20.0"
-                                        maxWidth="600.0">
-                                <VBox fx:id="msgContainer" fillWidth="false" maxWidth="625.0"
-                                      prefHeight="273.0"
-                                      prefWidth="625.0"/>
-                            </ScrollPane>
-                        </SplitPane>
-                        <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
-                              prefHeight="200.0" prefWidth="450.0">
-                            <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
-                                      minHeight="111.0" minWidth="400.0" prefHeight="163.0"
-                                      prefWidth="450.0" text="hello?"/>
-                            <Button layoutX="360.0" layoutY="123.0"
-                                    mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                                    text="%chat.send" onMouseClicked="#sendMessage"/>
-                            <Button layoutX="289.0" layoutY="123.0"
-                                    mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                                    text="%chat.close"/>
-                        </Pane>
-                    </VBox>
-                    <Pane id="right"
-                          prefHeight="460.0" prefWidth="150.0">
-                        <ScrollPane fitToWidth="true" prefHeight="480.0" prefWidth="182.0"
-                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <TilePane fx:id="members"  hgap="5" vgap="5" />
-                        </ScrollPane>
-                    </Pane>
-                </HBox>
-            </children>
-        </VBox>
-    </children>
+            </VBox>
+            <Pane id="right"
+                  prefHeight="460.0" prefWidth="150.0">
+                <ScrollPane fitToWidth="true" prefHeight="480.0" prefWidth="182.0"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <TilePane fx:id="members" hgap="5" vgap="5"/>
+                </ScrollPane>
+            </Pane>
+        </HBox>
+    </VBox>
 </Pane>

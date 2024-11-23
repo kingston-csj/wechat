@@ -11,106 +11,80 @@
       style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pers.kinson.wechat.ui.controller.ChatToPointController">
-    <children>
-        <VBox>
-            <children>
-                <Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="600.0">
-                    <children>
-                        <Button layoutX="500.0"
-                                mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                                text="创建讨论组" onMouseClicked="#createDiscussion"/>
-                        <ImageView id="closeBtn" fitHeight="30.0"
-                                   fitWidth="30.0" layoutX="554.0" pickOnBounds="true"
-                                   preserveRatio="true" onMouseClicked="#close" visible="false">
-                            <image>
-                                <Image url="@../../login/img/close.png"/>
-                            </image>
-                        </ImageView>
-                        <Label id="signature" fx:id="autograph" layoutX="76.0"
-                               layoutY="50.0" text="autograph" textFill="#575757">
-                            <font>
-                                <Font size="22.0"/>
-                            </font>
-                        </Label>
-                        <ImageView id="headIcon" fx:id="headImage" layoutY="11.0">
-                            <image>
-                                <Image url="@../img/head.png"/>
-                            </image>
-                        </ImageView>
-                        <ImageView id="minBtn" fx:id="min" fitHeight="30.0"
-                                   fitWidth="30.0" layoutX="520.0" pickOnBounds="true"
-                                   preserveRatio="true" visible="false">
-                            <image>
-                                <Image url="@../../login/img/min.png"/>
-                            </image>
-                        </ImageView>
-                        <Hyperlink id="userName" layoutX="69.0" layoutY="8.0"
-                                   text="username">
-                            <font>
-                                <Font size="25.0"/>
-                            </font>
-                        </Hyperlink>
-                        <Label fx:id="userIdUi" layoutX="282.0" layoutY="22.0" text="userid"
-                               visible="false">
-                            <font>
-                                <Font size="20.0"/>
-                            </font>
-                        </Label>
-                    </children>
-                    <VBox.margin>
-                        <Insets/>
-                    </VBox.margin>
+    <VBox>
+        <Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="600.0">
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <Button layoutX="500.0"
+                    mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                    text="创建讨论组" onMouseClicked="#createDiscussion"/>
+            <ImageView id="closeBtn" fitHeight="30.0"
+                       fitWidth="30.0" layoutX="554.0" pickOnBounds="true"
+                       preserveRatio="true" onMouseClicked="#close" visible="false">
+                <Image url="@../../login/img/close.png"/>
+            </ImageView>
+            <Label id="signature" fx:id="autograph" layoutX="76.0"
+                   layoutY="50.0" text="autograph" textFill="#575757">
+                <font>
+                    <Font size="22.0"/>
+                </font>
+            </Label>
+            <ImageView id="headIcon" fx:id="headImage" layoutY="11.0">
+                <Image url="@../img/head.png"/>
+            </ImageView>
+            <ImageView id="minBtn" fx:id="min" fitHeight="30.0"
+                       fitWidth="30.0" layoutX="520.0" pickOnBounds="true"
+                       preserveRatio="true" visible="false">
+                <Image url="@../../login/img/min.png"/>
+            </ImageView>
+            <Hyperlink id="userName" layoutX="69.0" layoutY="8.0"
+                       text="username">
+                <font>
+                    <Font size="25.0"/>
+                </font>
+            </Hyperlink>
+            <Label fx:id="userIdUi" layoutX="282.0" layoutY="22.0" text="userid"
+                   visible="false">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </Label>
+        </Pane>
+        <HBox layoutX="3.0" layoutY="8.0" minHeight="460.0" prefHeight="400.0">
+            <VBox id="left" prefWidth="450.0">
+                <SplitPane id="outputArea" dividerPositions="0.5"
+                           layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
+                           prefHeight="300.0" prefWidth="450.0">
+                    <Button mnemonicParsing="false" prefHeight="1.0"
+                            text="%chat.loadmore"/>
+                    <ScrollPane fitToWidth="true" layoutY="20.0"
+                                maxWidth="600.0">
+                        <VBox fx:id="msgContainer" fillWidth="false" maxWidth="625.0"
+                              prefHeight="273.0"
+                              prefWidth="625.0"/>
+                    </ScrollPane>
+                </SplitPane>
+                <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
+                      prefHeight="200.0" prefWidth="450.0">
+                    <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
+                              minHeight="111.0" minWidth="400.0" prefHeight="163.0"
+                              prefWidth="450.0" text="hello?"/>
+                    <Button layoutX="360.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="%chat.send" onMouseClicked="#sendMessage"/>
+                    <Button fx:id="emojiBtn" layoutX="289.0" layoutY="123.0"
+                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                            text="表情" onMouseClicked="#showFacePanel"/>
                 </Pane>
-                <HBox layoutX="3.0" layoutY="8.0" minHeight="460.0" prefHeight="400.0">
-                    <children>
-                        <VBox id="left" prefWidth="450.0">
-                            <children>
-                                <SplitPane id="outputArea" dividerPositions="0.5"
-                                           layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
-                                           prefHeight="300.0" prefWidth="450.0">
-                                    <items>
-                                        <Button mnemonicParsing="false" prefHeight="1.0"
-                                                text="%chat.loadmore"/>
-                                        <ScrollPane fitToWidth="true" layoutY="20.0"
-                                                    maxWidth="600.0">
-                                            <content>
-                                                <VBox fx:id="msgContainer" fillWidth="false" maxWidth="625.0"
-                                                      prefHeight="273.0"
-                                                      prefWidth="625.0"/>
-                                            </content>
-                                        </ScrollPane>
-                                    </items>
-                                </SplitPane>
-                                <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
-                                      prefHeight="200.0" prefWidth="450.0">
-                                    <children>
-                                        <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
-                                                  minHeight="111.0" minWidth="400.0" prefHeight="163.0"
-                                                  prefWidth="450.0" text="hello?"/>
-                                        <Button layoutX="360.0" layoutY="123.0"
-                                                mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                                                text="%chat.send" onMouseClicked="#sendMessage"/>
-                                        <Button layoutX="289.0" layoutY="123.0"
-                                                mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                                                text="%chat.close"/>
-                                    </children>
-                                </Pane>
-                            </children>
-                        </VBox>
-                        <Pane id="right" layoutX="330.0" minHeight="460.0"
-                              prefHeight="460.0" prefWidth="150.0">
-                            <children>
-                                <ImageView fx:id="showImg" fitHeight="460.0"
-                                           fitWidth="150.0" layoutX="-0.0">
-                                    <image>
-                                        <Image url="@../img/elegant.png"/>
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </Pane>
-                    </children>
-                </HBox>
-            </children>
-        </VBox>
-    </children>
+            </VBox>
+            <Pane id="right" layoutX="330.0" minHeight="460.0"
+                  prefHeight="460.0" prefWidth="150.0">
+                <ImageView fx:id="showImg" fitHeight="460.0"
+                           fitWidth="150.0" layoutX="-0.0">
+                    <Image url="@../img/elegant.png"/>
+                </ImageView>
+            </Pane>
+        </HBox>
+    </VBox>
 </Pane>

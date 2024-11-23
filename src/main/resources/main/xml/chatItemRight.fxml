@@ -7,32 +7,28 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Hyperlink fx:id="nameUi" layoutX="70.0" layoutY="-2.0" text="张三">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Hyperlink>
-      <Label fx:id="timeUi" layoutX="121.0" layoutY="3.0" text="2015年6月8日 13:30:31">
-         <padding>
-            <Insets left="10.0" />
-         </padding>
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label fx:id="contentUi" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" layoutX="7.0" layoutY="23.0" maxWidth="525.0" prefHeight="32.0" prefWidth="370.0" style="-fx-background-color: #ACD9F8; -fx-background-radius: 10;" textAlignment="RIGHT" textFill="WHITE" wrapText="true">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </Label>
-      <ImageView fx:id="headImage1" fitHeight="50.0" fitWidth="50.0" layoutX="390.0" layoutY="3.0">
-         <image>
-            <Image url="@../img/head.png" />
-         </image>
-      </ImageView>
-   </children>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0"
+      prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <Hyperlink fx:id="nameUi" layoutX="70.0" layoutY="-2.0" text="张三">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Hyperlink>
+    <Label fx:id="timeUi" layoutX="121.0" layoutY="3.0" text="2015年6月8日 13:30:31">
+        <padding>
+            <Insets left="10.0"/>
+        </padding>
+        <font>
+            <Font size="15.0"/>
+        </font>
+    </Label>
+    <FlowPane fx:id="contentUi" alignment="BOTTOM_RIGHT" layoutX="7.0" layoutY="23.0" maxWidth="525.0"
+              prefHeight="32.0" prefWidth="370.0" style="-fx-background-color: #ACD9F8; -fx-background-radius: 10;">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+    </FlowPane>
+    <ImageView fx:id="headImage1" fitHeight="50.0" fitWidth="50.0" layoutX="390.0" layoutY="3.0">
+        <Image url="@../img/head.png"/>
+    </ImageView>
 </Pane>
