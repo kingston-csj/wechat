@@ -4,11 +4,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import jforgame.commons.TimeUtil;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
+import pers.kinson.wechat.logic.friend.message.req.ReqQueryFriendsOnlineStatus;
 import pers.kinson.wechat.logic.user.message.req.ReqUserRegister;
 import pers.kinson.wechat.logic.user.message.res.ResUserInfo;
 import pers.kinson.wechat.logic.user.message.res.ResUserRegister;
@@ -21,6 +23,7 @@ import pers.kinson.wechat.net.SimpleRequestCallback;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.I18n;
+import pers.kinson.wechat.util.SchedulerManager;
 
 public class UserManager implements LifeCycle {
 
@@ -46,6 +49,14 @@ public class UserManager implements LifeCycle {
         ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
         reqFetchNewMessage.setMaxSeq(Context.userManager.getMyProfile().getChatMaxSeq());
         IOUtil.send(reqFetchNewMessage);
+
+        if (Context.userManager.getMyUserId() == 1000L) {
+            // 定时刷新好友登录状态
+            SchedulerManager.INSTANCE.scheduleAtFixedRate("refreshFriendStatus", () -> {
+                IOUtil.send(new ReqQueryFriendsOnlineStatus());
+            }, 0, 5*TimeUtil.MILLIS_PER_SECOND);
+        }
+
     }
 
     public UserModel getMyProfile() {

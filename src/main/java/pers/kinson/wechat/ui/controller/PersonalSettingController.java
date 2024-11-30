@@ -2,8 +2,6 @@ package pers.kinson.wechat.ui.controller;
 
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -29,15 +27,14 @@ import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
+import pers.kinson.wechat.util.SystemNotifyUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
-public class PersonalSettingController implements ControlledStage, Initializable {
+public class PersonalSettingController implements ControlledStage {
     @FXML
     private TextField nameField, remarkField;
     @FXML
@@ -122,11 +119,7 @@ public class PersonalSettingController implements ControlledStage, Initializable
         try {
             HttpResult httpResult = Context.httpClientManager.post(ClientConfigs.REMOTE_HTTP_SERVER + "/user/profile", params, HttpResult.class);
             if (httpResult.isOk()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("信息");
-                alert.setContentText("保存成功");
-                alert.showAndWait();
-
+                SystemNotifyUtil.warm("保存成功");
                 Context.userManager.getMyProfile().setUserName(newName);
                 Context.userManager.getMyProfile().setSignature(newRemark);
                 if (StringUtils.isNoneEmpty(newAvatar)) {
@@ -137,19 +130,11 @@ public class PersonalSettingController implements ControlledStage, Initializable
                     headImg.setImage(new Image(newAvatar));
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("警告");
-                alert.setContentText("保存失败");
-                alert.showAndWait();
+                SystemNotifyUtil.warm("保存失败");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     @Override

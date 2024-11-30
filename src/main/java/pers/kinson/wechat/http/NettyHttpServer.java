@@ -11,6 +11,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import pers.kinson.wechat.logic.constant.Constants;
 
 public class NettyHttpServer {
 
@@ -29,7 +30,7 @@ public class NettyHttpServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline()
                                     .addLast(new HttpServerCodec())
-                                    .addLast(new HttpObjectAggregator(65536))
+                                    .addLast(new HttpObjectAggregator((int) (512 * Constants.MB_SIZE)))
                                     .addLast(new FileUploadHandler());
                         }
                     });

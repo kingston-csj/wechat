@@ -8,34 +8,52 @@ import pers.kinson.wechat.net.CmdConst;
 
 @Data
 @MessageMeta(cmd = CmdConst.FriendVo)
-public class FriendItemVo  {
+public class FriendItemVo {
 
-	private long userId;
-	/** 在线状态 {@link Constants#online_status} */
-	private byte online;
-	/** 昵称 */
-	private String userName;
-	/** 备注 */
-	private String remark;
-	/** 个性签名　*/
-	private String signature;
-	/**　性别 */
-	private byte sex;
-	/** 所属好友分组 */
-	private int group;
-	/** 分组备注 */
-	private String groupName;
+    private long userId;
+    /**
+     * 在线状态
+     */
+    private byte online;
+    /**
+     * 昵称
+     */
+    private String userName;
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
+     * 个性签名
+     */
+    private String signature;
+    /**
+     * 　性别
+     */
+    private byte sex;
+    /**
+     * 所属好友分组
+     */
+    private int group;
+    /**
+     * 分组备注
+     */
+    private String groupName;
+    /**
+     * 头像地址
+     */
+    private String headUrl = "@../img/head.png";
 
-	public boolean isOnline() {
-		return online == Constants.ONLINE_STATUS;
-	}
+    public boolean isOnline() {
+        return online == Constants.ONLINE_STATUS;
+    }
 
-	public String getFullName() {
-		if (StringUtils.isEmpty(remark)) {
-			return this.userName;
-		}
-		return this.userName + "(" + this.remark + ")";
-	}
+    public String getFullName() {
+        if (StringUtils.isEmpty(remark)) {
+            return this.userName;
+        }
+        return this.userName + "(" + this.remark + ")";
+    }
 
 }
 

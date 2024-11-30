@@ -43,6 +43,7 @@ public class ClientStartup extends Application {
 
         stageController.loadStage(R.id.RegisterView, R.layout.RegisterView, StageStyle.UNDECORATED);
         Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UTILITY);
+//        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UNDECORATED);
         stageController.loadStage(R.id.PersonSettingView, R.layout.PersonSettingView, StageStyle.UNDECORATED);
 
         //把主界面放在右上方

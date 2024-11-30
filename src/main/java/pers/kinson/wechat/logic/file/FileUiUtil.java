@@ -23,6 +23,7 @@ import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.struct.FileMessageContent;
 import pers.kinson.wechat.logic.chat.struct.ImageMessageContent;
+import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.file.message.req.ReqOnlineTransferFileApply;
 import pers.kinson.wechat.logic.file.message.res.ResUploadFile;
 import pers.kinson.wechat.net.ClientConfigs;
@@ -33,6 +34,7 @@ import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.ui.controller.ProgressFileEntity;
 import pers.kinson.wechat.ui.controller.ProgressMonitor;
 import pers.kinson.wechat.util.SchedulerManager;
+import pers.kinson.wechat.util.SystemNotifyUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -116,7 +118,6 @@ public class FileUiUtil {
         nameUi.getChildren().add(progressBar);
         msgContainer.getChildren().add(pane);
 
-
         // 使用javafx的task，执行进度刷新任务
         Task<Void> uploadTask = new Task<Void>() {
             @Override
@@ -138,8 +139,6 @@ public class FileUiUtil {
                 httpPut.setEntity(entity);
                 // 执行请求
                 HttpResponse response = httpClient.execute(httpPut);
-                // 根据响应状态码等进行后续处理，这里简单打印响应状态码
-                System.out.println("Response Status Code: " + response.getStatusLine().getStatusCode());
                 FileMessageContent content = new FileMessageContent();
                 content.setName(file.getName());
                 content.setSize(file.length());
@@ -163,6 +162,14 @@ public class FileUiUtil {
         // 显示文件选择器
         File file = fileChooser.showOpenDialog(window);
         if (file == null) {
+            return;
+        }
+        if (file.length() < Constants.MB_SIZE) {
+            SystemNotifyUtil.warm("文件小于1M，直接发送即可");
+            return;
+        }
+        if (file.length() > 500 * Constants.MB_SIZE) {
+            SystemNotifyUtil.warm("文件大于500M，无法发送");
             return;
         }
         ReqOnlineTransferFileApply reqApply = new ReqOnlineTransferFileApply();

@@ -19,9 +19,10 @@
             <Button layoutX="500.0"
                     mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
                     text="创建讨论组" onMouseClicked="#createDiscussion"/>
+            <!--visible打包前将它改为false -->
             <ImageView id="closeBtn" fitHeight="30.0"
                        fitWidth="30.0" layoutX="554.0" pickOnBounds="true"
-                       preserveRatio="true" onMouseClicked="#close" visible="false">
+                       preserveRatio="true" onMouseClicked="#close" visible="true" >
                 <Image url="@../../login/img/close.png"/>
             </ImageView>
             <Label id="signature" fx:id="autograph" layoutX="76.0"
@@ -58,19 +59,19 @@
                            prefHeight="300.0" prefWidth="450.0">
                     <Button mnemonicParsing="false" prefHeight="1.0"
                             text="%chat.loadmore"/>
-                    <ScrollPane fitToWidth="true" layoutY="20.0">
+                    <ScrollPane fx:id="msgScrollPane" fitToWidth="true" layoutY="20.0">
                         <VBox fx:id="msgContainer" fillWidth="false"/>
                     </ScrollPane>
                 </SplitPane>
                 <VBox>
                     <SplitPane orientation="VERTICAL">
-                        <HBox spacing="0">
+                        <HBox>
                             <Button
                                     mnemonicParsing="false"
                                     onMouseClicked="#showFacePanel" styleClass="button-without-content">
                                 <graphic>
                                     <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="@../../assets/emoji.jpg"/>
+                                        <Image url="/assets/img/icon/emoji.png"/>
                                     </ImageView>
                                 </graphic>
                                 <tooltip>
@@ -82,7 +83,7 @@
                                     onMouseClicked="#sendImageResource" styleClass="button-without-content">
                                 <graphic>
                                     <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="@../../assets/file.jpg"/>
+                                        <Image url="/assets/img/icon/picture.png"/>
                                     </ImageView>
                                 </graphic>
                                 <tooltip>
@@ -94,7 +95,7 @@
                                     onMouseClicked="#sendOnlineFileResource" styleClass="button-without-content">
                                 <graphic>
                                     <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="@../../assets/file.jpg"/>
+                                        <Image url="/assets/img/icon/picture.png"/>
                                     </ImageView>
                                 </graphic>
                                 <tooltip>
@@ -106,7 +107,7 @@
                                     onMouseClicked="#sendOfflineFileResource" styleClass="button-without-content">
                                 <graphic>
                                     <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="@../../assets/file.jpg"/>
+                                        <Image url="/assets/img/icon/picture.png"/>
                                     </ImageView>
                                 </graphic>
                                 <tooltip>
@@ -119,7 +120,7 @@
                             <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
                                       minHeight="111.0" minWidth="400.0" prefHeight="163.0"
                                       prefWidth="450.0" text="hello?"/>
-                            <Button layoutX="360.0" layoutY="123.0"
+                            <Button fx:id="sendBtn" layoutX="360.0" layoutY="123.0"
                                     mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
                                     text="%chat.send" onMouseClicked="#sendMessage"/>
 
@@ -131,7 +132,7 @@
                   prefHeight="460.0" prefWidth="150.0">
                 <ImageView fitHeight="460.0"
                            fitWidth="150.0" layoutX="-0.0">
-                    <Image url="@../img/elegant.png"/>
+                    <Image url="/assets/img/other/elegant.png"/>
                 </ImageView>
             </Pane>
         </HBox>

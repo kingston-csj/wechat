@@ -65,9 +65,7 @@
                         style="-fx-background-color: #E4E4E4;">
                 <ScrollPane fx:id="applySp" fitToHeight="true" fitToWidth="true" prefHeight="490.0"
                             prefWidth="300.0">
-                    <content>
-                        <ListView fx:id="applies" prefHeight="475.0" prefWidth="298.0"/>
-                    </content>
+                    <ListView fx:id="applies" prefHeight="475.0" prefWidth="298.0"/>
                 </ScrollPane>
             </AnchorPane>
         </Tab>

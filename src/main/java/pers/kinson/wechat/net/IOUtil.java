@@ -22,7 +22,7 @@ public class IOUtil {
 
     public static void init() throws Exception {
         HostAndPort hostPort = new HostAndPort();
-        hostPort.setHost("127.0.0.1");
+        hostPort.setHost(ClientConfigs.REMOTE_SERVER_IP);
         hostPort.setPort(ClientConfigs.REMOTE_SERVER_PORT);
 
         SocketIoDispatcher msgDispatcher = new SocketIoDispatcherAdapter() {

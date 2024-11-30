@@ -25,10 +25,7 @@ import pers.kinson.wechat.util.IdFactory;
 import pers.kinson.wechat.util.IpAddressUtil;
 import pers.kinson.wechat.util.PortScanner;
 
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 
 @Slf4j
 public class OnlineTransferContentHandler implements MessageContentUiHandler {
@@ -192,7 +189,6 @@ public class OnlineTransferContentHandler implements MessageContentUiHandler {
 
                 try {
                     // 要打开的目录路径
-                    String directoryPath = "C:\\Users\\Public";
                     // 构建命令字符串，在Windows中使用explorer.exe打开目录
                     String command = "explorer.exe /select, " + downloadPath;
                     // 执行命令

@@ -13,12 +13,11 @@ public class PortScanner {
         int counter = 0;
         for (; counter <= 10; counter++) {
             try {
-                int result = port + counter;
-                ServerSocket socket = new ServerSocket(result);
+                ServerSocket socket = new ServerSocket(port);
                 socket.close();
-                return result;
+                return port;
             } catch (IOException e) {
-                System.out.println("端口 " + port + " 是关闭的或者无法访问。");
+//                System.out.println("端口 " + port + " 是关闭的或者无法访问。");
             }
             port++;
         }

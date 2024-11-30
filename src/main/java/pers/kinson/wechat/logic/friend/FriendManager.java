@@ -9,12 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
-import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
@@ -24,6 +23,7 @@ import pers.kinson.wechat.logic.constant.RedPointId;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyResult;
 import pers.kinson.wechat.logic.friend.message.res.ResApplyFriendList;
 import pers.kinson.wechat.logic.friend.message.res.ResFriendList;
+import pers.kinson.wechat.logic.friend.message.res.ResQueryFriendsOnlineStatus;
 import pers.kinson.wechat.logic.friend.message.vo.FriendApplyVo;
 import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
 import pers.kinson.wechat.logic.redpoint.RedPointEvent;
@@ -35,9 +35,13 @@ import pers.kinson.wechat.util.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class FriendManager implements LifeCycle {
 
@@ -45,43 +49,18 @@ public class FriendManager implements LifeCycle {
 
     private Map<Integer, String> groupNames = new LinkedHashMap<>();
 
+    private String defaultGroupName = "未分组";
+
     @Getter
-    private long activatedFriendId;
+    private Long activatedFriendId;
 
     @Override
     public void init() {
         Context.messageRouter.registerHandler(CmdConst.ResFriendList, this::receiveFriendsList);
         Context.messageRouter.registerHandler(CmdConst.ResApplyFriendList, this::refreshFriendApplyView);
+        Context.messageRouter.registerHandler(CmdConst.ResFriendOnlineStatus, this::refreshFriendOnlineStatus);
 
         EventDispatcher.eventBus.register(this);
-    }
-
-    /**
-     * 好友登录刷新
-     *
-     * @param friendId
-     */
-    public void onFriendLogin(long friendId) {
-        FriendItemVo friend = friends.get(friendId);
-        if (friend != null) {
-            friend.setOnline(Constants.ONLINE_STATUS);
-            List<FriendItemVo> friendItems = new ArrayList<>(friends.values());
-            receiveFriendsList(friendItems);
-        }
-    }
-
-    /**
-     * 好友下线刷新
-     *
-     * @param friendId
-     */
-    public void onFriendLogout(long friendId) {
-        FriendItemVo friend = friends.get(friendId);
-        if (friend != null) {
-            friend.setOnline(Constants.OFFLINE_STATUS);
-            List<FriendItemVo> friendItems = new ArrayList<>(friends.values());
-            receiveFriendsList(friendItems);
-        }
     }
 
     private void receiveFriendsList(Object packet) {
@@ -112,8 +91,7 @@ public class FriendManager implements LifeCycle {
         Map<Integer, List<FriendItemVo>> friendsByGroup = rangeToGroupFriends();
         for (Map.Entry<Integer, List<FriendItemVo>> entry : friendsByGroup.entrySet()) {
             int groupId = entry.getKey();
-            String groupName = this.groupNames.get(groupId);
-            decorateFriendGroup(friendGroup, groupName, entry.getValue());
+            decorateFriendGroup(friendGroup, groupId, entry.getValue());
         }
     }
 
@@ -125,14 +103,16 @@ public class FriendManager implements LifeCycle {
         for (FriendItemVo item : friends.values()) {
             int groupId = item.getGroup();
             List<FriendItemVo> friendsByGroup = groupFriends.computeIfAbsent(groupId, k -> new ArrayList<>());
-            this.groupNames.put(groupId, item.getGroupName());
+            if (groupId > 0) {
+                this.groupNames.put(groupId, item.getGroupName());
+            }
             friendsByGroup.add(item);
         }
         return groupFriends;
     }
 
 
-    private void decorateFriendGroup(Accordion container, String groupName, List<FriendItemVo> friendItems) {
+    private void decorateFriendGroup(Accordion container, int groupId, List<FriendItemVo> friendItems) {
         ListView<Node> listView = new ListView<>();
         int onlineCount = 0;
         StageController stageController = UiContext.stageController;
@@ -141,13 +121,17 @@ public class FriendManager implements LifeCycle {
                 onlineCount++;
             }
             Pane pane = stageController.load(R.layout.FriendItem, Pane.class);
+            pane.setId("friend@" + item.getUserId());
             decorateFriendItem(pane, item);
             listView.getItems().add(pane);
         }
 
         bindDoubleClickEvent(listView);
-        String groupInfo = StringUtils.isEmpty(groupName) ? "未分组" : groupName + " " + onlineCount + "/" + friendItems.size();
+        String groupName = this.groupNames.getOrDefault(groupId, defaultGroupName);
+        // 显示在线人数
+        String groupInfo = groupName + onlineCount + "/" + friendItems.size();
         TitledPane tp = new TitledPane(groupInfo, listView);
+        tp.setId("group@" + groupId);
         container.getPanes().add(tp);
     }
 
@@ -160,9 +144,7 @@ public class FriendManager implements LifeCycle {
         //隐藏域，聊天界面用
         Label userIdUi = (Label) itemUi.lookup("#friendId");
         userIdUi.setText(String.valueOf(friendVo.getUserId()));
-
         ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
-
         if (!friendVo.isOnline()) {
             headImage.setImage(ImageUtil.convertToGray(headImage.getImage()));
         }
@@ -183,8 +165,73 @@ public class FriendManager implements LifeCycle {
         decorateApplyItem(applyListView, resApplyFriendList.getRecords());
     }
 
-    private void onFriendLogin(Object message) {
+    private void refreshFriendOnlineStatus(Object message) {
+        ResQueryFriendsOnlineStatus onlineStatus = (ResQueryFriendsOnlineStatus) message;
+        Stage stage = UiContext.stageController.getStageBy(R.id.MainView);
+        ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#friendSp");
+        Accordion parentContainer = (Accordion) scrollPane.getContent();
+        Set<Long> onlineIds = new HashSet<>(onlineStatus.getIds());
+        boolean changed = false;
+        for (Map.Entry<Long, FriendItemVo> entry : friends.entrySet()) {
+            long friendId = entry.getKey();
+            FriendItemVo vo = entry.getValue();
+            byte status = 0;
+            // 下线
+            if (vo.isOnline() && !onlineIds.contains(friendId)) {
+                status = 1;
+            }
+            // 上线
+            if (!vo.isOnline() && onlineIds.contains(friendId)) {
+                status = 2;
+            }
+            vo.setOnline((byte) (onlineIds.contains(friendId) ? 1 : 0));
+            if (status > 0) {
+                changed = true;
+                Node itemUi = lookUpFriendItem(parentContainer, vo.getUserId());
+                if (itemUi != null) {
+                    ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
+                    if (status == 1) {
+                        headImage.setImage(ImageUtil.convertToGray(headImage.getImage()));
+                    } else {
+                        headImage.setImage(new Image(vo.getHeadUrl()));
+                    }
+                }
+            }
+        }
+        if (changed) {
+            Map<Integer, Integer> onlineCounter = new HashMap<>();
+            Map<Integer, Integer> friendByGroup = new HashMap<>();
+            for (Map.Entry<Long, FriendItemVo> entry : friends.entrySet()) {
+                FriendItemVo vo = entry.getValue();
+                if (vo.isOnline()) {
+                    int prevOnline = onlineCounter.getOrDefault(vo.getGroup(), 0);
+                    onlineCounter.put(vo.getGroup(), prevOnline + 1);
+                }
+                int prevSum = onlineCounter.getOrDefault(vo.getGroup(), 0);
+                friendByGroup.put(vo.getGroup(), prevSum + 1);
+            }
 
+            for (Map.Entry<Integer, Integer> entry : friendByGroup.entrySet()) {
+                Integer groupId = entry.getKey();
+                TitledPane groupUi = (TitledPane) parentContainer.lookup("#group@" + groupId);
+                String groupName = this.groupNames.getOrDefault(groupId, defaultGroupName);
+                Integer online = onlineCounter.getOrDefault(groupId,0);
+                String groupInfo = groupName + online + "/" + entry.getValue();
+                groupUi.setText(groupInfo);
+            }
+        }
+    }
+
+    private Node lookUpFriendItem(Accordion friendGroup, Long friendId) {
+        FriendItemVo vo = friends.get(friendId);
+        TitledPane groupUi = (TitledPane) friendGroup.lookup("#group@" + vo.getGroup());
+        ListView<Node> childContainer = (ListView<Node>) groupUi.getContent();
+        for (Node itemUi : childContainer.getItems()) {
+            if (Objects.equals(itemUi.getId(), "friend@" + vo.getUserId())) {
+                return itemUi;
+            }
+        }
+        return null;
     }
 
 
@@ -284,6 +331,8 @@ public class FriendManager implements LifeCycle {
         signatureUi.setText(targetFriend.getSignature());
 
         activatedFriendId = targetFriend.getUserId();
+
+        Context.friendManager.updateRedPoint(targetFriend.getUserId(), false);
         Context.chatManager.showFriendPrivateMessage(targetFriend.getUserId());
     }
 
@@ -298,9 +347,25 @@ public class FriendManager implements LifeCycle {
         return friends.values();
     }
 
+    public void updateRedPoint(Long friendId, boolean show) {
+        if (Objects.equals(friendId, Context.userManager.getMyUserId())) {
+            return;
+        }
+        // 当前已经聊得嗨起了
+        if (show && Objects.equals(friendId, activatedFriendId)) {
+            return;
+        }
+        Stage stage = UiContext.stageController.getStageBy(R.id.MainView);
+        ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#friendSp");
+        Accordion parentContainer = (Accordion) scrollPane.getContent();
+        Node node = lookUpFriendItem(parentContainer, friendId);
+        if (node != null) {
+            node.lookup("#redDot").setVisible(show);
+        }
+    }
 
-    private void on(Object message) {
-
+    public void resetActivatedFriendId() {
+        this.activatedFriendId = null;
     }
 
 }

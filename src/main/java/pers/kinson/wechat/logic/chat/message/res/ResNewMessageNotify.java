@@ -10,5 +10,7 @@ public class ResNewMessageNotify {
 
     private byte channel;
 
+    private long senderId;
+
     private long topic;
 }

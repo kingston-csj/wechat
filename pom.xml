@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>pers.kinson</groupId>
-    <artifactId>chatclient</artifactId>
+    <artifactId>wechat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
@@ -15,12 +15,23 @@
         <jforgame.version>2.0.0</jforgame.version>
         <lombok.version>1.18.30</lombok.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>openjfx</id>
+            <url>https://openjfx.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -111,17 +122,18 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>native2ascii-maven-plugin</artifactId>
                 <version>1.0-beta-1</version>
-                <!--				<configuration>-->
-                <!--					<encoding>UTF-8</encoding>-->
-                <!--					<src>src/main/resources/${message.dir.rel}</src>-->
-                <!--					<dest>${message.dir.rel}</dest>-->
-                <!--					<includes>-->
-                <!--						<include>**/*.txt</include>-->
-                <!--					</includes>-->
-                <!--				</configuration>-->
                 <executions>
                     <execution>
                         <id>native2ascii-utf8</id>
@@ -141,10 +153,10 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>pers.kinson.ClientStartup</mainClass>
+                            <mainClass>pers.kinson.wechat.ClientStartup</mainClass>
                         </manifest>
                     </archive>
-                    <jarName>Chatroom_Client</jarName>
+                    <jarName>wechat</jarName>
                 </configuration>
             </plugin>
             <plugin>

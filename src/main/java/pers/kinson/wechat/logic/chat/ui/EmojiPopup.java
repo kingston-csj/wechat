@@ -47,7 +47,7 @@ public class EmojiPopup extends PopupControl {
         int rowIndex = 0;
 
         for (EmojiVo emoji : emojis) {
-            ImageView imageView = new ImageView(new Image(emoji.getUrl()));
+            ImageView imageView = new ImageView(emoji.getImage());
             imageView.setFitWidth(30);
             imageView.setFitHeight(30);
             Tooltip tooltip = new Tooltip(emoji.getLabel());

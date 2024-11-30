@@ -20,10 +20,10 @@ import pers.kinson.wechat.logic.file.FileUiUtil;
 import pers.kinson.wechat.util.Base64CodecUtil;
 import pers.kinson.wechat.util.SchedulerManager;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class FileUploadHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
@@ -38,6 +38,12 @@ public class FileUploadHandler extends SimpleChannelInboundHandler<FullHttpReque
         String fileName = Base64CodecUtil.decode(request.headers().get("fileName"));
         // 构建Downloads文件夹路径
         String downloadsPath = FileUiUtil.getDownloadPath(fileName);
+        OnlineTransferInfo progressMonitor = FileUploadProgressMonitor.getInstance().getMonitor(requestId);
+        // 安全验证
+        if (!Objects.equals(secretKey, progressMonitor.getSecretKey())) {
+            return;
+        }
+
         // 遍历解析出的所有HttpData对象
         List<InterfaceHttpData> httpDataList = decoder.getBodyHttpDatas();
         UiContext.runTaskInFxThread(() -> {
@@ -47,7 +53,6 @@ public class FileUploadHandler extends SimpleChannelInboundHandler<FullHttpReque
                     FileUpload fileUpload = (FileUpload) httpData;
                     // 创建文件输出流
                     // 进度君
-                    OnlineTransferInfo progressMonitor = FileUploadProgressMonitor.getInstance().getMonitor(requestId);
                     try (FileOutputStream fos = new FileOutputStream(downloadsPath)) {
                         ByteBuf content = fileUpload.getByteBuf();
                         byte[] buffer = new byte[1024]; // 定义一个字节数组作为缓冲区，大小可以根据实际情况调整
@@ -76,7 +81,6 @@ public class FileUploadHandler extends SimpleChannelInboundHandler<FullHttpReque
             response.content().writeBytes("File uploaded successfully".getBytes(CharsetUtil.UTF_8));
 
             ctx.writeAndFlush(response);
-
         });
     }
 

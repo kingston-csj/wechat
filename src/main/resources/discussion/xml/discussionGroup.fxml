@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.*?>
 
 <Pane layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity"
-      minHeight="-Infinity" minWidth="600.0" prefHeight="540.0" prefWidth="660.0"
+      minHeight="-Infinity" minWidth="600.0" prefHeight="570.0" prefWidth="640.0"
       style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pers.kinson.wechat.ui.controller.DiscussionGroupController">
     <VBox>
-        <Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="600.0">
+        <Pane id="top" minWidth="600.0" prefHeight="80.0" prefWidth="650.0">
             <VBox.margin>
                 <Insets/>
             </VBox.margin>
@@ -39,24 +39,55 @@
                               prefWidth="625.0"/>
                     </ScrollPane>
                 </SplitPane>
-                <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
-                      prefHeight="200.0" prefWidth="450.0">
-                    <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
-                              minHeight="111.0" minWidth="400.0" prefHeight="163.0"
-                              prefWidth="450.0" text="hello?"/>
-                    <Button layoutX="360.0" layoutY="123.0"
-                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                            text="%chat.send" onMouseClicked="#sendMessage"/>
-                    <Button layoutX="140.0" layoutY="123.0"
-                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                            text="文件" onMouseClicked="#sendFileResource"/>
-                    <Button layoutX="215.0" layoutY="123.0"
-                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                            text="表情" onMouseClicked="#showFacePanel"/>
-                    <Button layoutX="290.0" layoutY="123.0"
-                            mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                            text="图片" onMouseClicked="#sendImageResource"/>
-                </Pane>
+                <VBox>
+                    <HBox>
+                        <Button
+                                mnemonicParsing="false"
+                                onMouseClicked="#showFacePanel" styleClass="button-without-content">
+                            <graphic>
+                                <ImageView fitWidth="26" fitHeight="26">
+                                    <Image url="/assets/img/icon/emoji.png"/>
+                                </ImageView>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="表情"/>
+                            </tooltip>
+                        </Button>
+                        <Button
+                                mnemonicParsing="false"
+                                onMouseClicked="#sendImageResource" styleClass="button-without-content">
+                            <graphic>
+                                <ImageView fitWidth="26" fitHeight="26">
+                                    <Image url="/assets/img/icon/picture.png"/>
+                                </ImageView>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="图片"/>
+                            </tooltip>
+                        </Button>
+                        <Button
+                                mnemonicParsing="false"
+                                onMouseClicked="#sendFileResource" styleClass="button-without-content">
+                            <graphic>
+                                <ImageView fitWidth="26" fitHeight="26">
+                                    <Image url="/assets/img/icon/picture.png"/>
+                                </ImageView>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="在线传输文件"/>
+                            </tooltip>
+                        </Button>
+                    </HBox>
+                    <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
+                          prefHeight="200.0" prefWidth="450.0">
+                        <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
+                                  minHeight="111.0" minWidth="400.0" prefHeight="163.0"
+                                  prefWidth="450.0" text="hello?"/>
+                        <Button layoutX="360.0" layoutY="118.0"
+                                mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                                text="%chat.send" onMouseClicked="#sendMessage"/>
+                    </Pane>
+                </VBox>
             </VBox>
             <Pane id="right"
                   prefHeight="460.0" prefWidth="150.0">

@@ -112,6 +112,7 @@ public interface CmdConst {
     int ReqApplyFriendList = 5_001;
     int ReqApplyFriend = 5_002;
     int ReqApplyResult = 5_003;
+    int ReqFriendOnlineStatus = 5_004;
     /**
      * 推送--好友列表
      */
@@ -134,6 +135,7 @@ public interface CmdConst {
     int ApplyFriendVo = 5_207;
     int ResApplyFriendList = 5_208;
     int ResApplyResult = 5_209;
+    int ResFriendOnlineStatus = 5_210;
 
 
     /*

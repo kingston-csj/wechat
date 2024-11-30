@@ -1,7 +1,10 @@
 package pers.kinson.wechat.logic.chat;
 
+import javafx.application.Platform;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -45,7 +48,6 @@ import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
-import pers.kinson.wechat.ui.controller.ProgressMonitor;
 import pers.kinson.wechat.util.Base64CodecUtil;
 import pers.kinson.wechat.util.SchedulerManager;
 
@@ -57,8 +59,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 public class ChatManager implements LifeCycle {
@@ -67,7 +69,7 @@ public class ChatManager implements LifeCycle {
     private Map<Long, LinkedList<ChatMessage>> friendMessage = new HashMap<>();
 
     @Getter
-    private Map<String, EmojiVo> emojiVoMap;
+    private ConcurrentMap<String, EmojiVo> emojiVoMap = new ConcurrentHashMap<>();
 
     @Override
     public void init() {
@@ -82,7 +84,11 @@ public class ChatManager implements LifeCycle {
             try {
                 HttpResult httpResult = Context.httpClientManager.get(ClientConfigs.REMOTE_HTTP_SERVER + "/emoji/list", new HashMap<>(), HttpResult.class);
                 @SuppressWarnings("all") LinkedList<EmojiVo> list = JsonUtil.string2Collection(httpResult.getData(), LinkedList.class, EmojiVo.class);
-                emojiVoMap = list.stream().collect(Collectors.toMap(EmojiVo::getLabel, Function.identity()));
+                for (EmojiVo emojiVo : list) {
+                    Image image = new Image(emojiVo.getUrl());
+                    emojiVo.setImage(image);
+                    emojiVoMap.put(emojiVo.getLabel(), emojiVo);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -99,8 +105,8 @@ public class ChatManager implements LifeCycle {
         IOUtil.send(request);
     }
 
-    public void showFriendPrivateMessage(long friendId) {
-        if (friendId <= 0) {
+    public void showFriendPrivateMessage(Long friendId) {
+        if (friendId == null) {
             return;
         }
         StageController stageController = UiContext.stageController;
@@ -116,6 +122,9 @@ public class ChatManager implements LifeCycle {
             pane.setId("recordPane@" + e.getId());
             msgContainer.getChildren().add(pane);
         });
+        ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
+// 使用Platform.runLater确保在布局更新后设置滚动值
+        Platform.runLater(() -> scrollPane.setVvalue(1));
     }
 
     public void receiveFriendPrivateMessage(List<ChatMessage> messages) {
@@ -187,11 +196,12 @@ public class ChatManager implements LifeCycle {
                 reqFetchNewMessage.setChannel(Constants.CHANNEL_DISCUSSION);
                 reqFetchNewMessage.setTopic(targetDiscussionGroup.getId());
                 reqFetchNewMessage.setMaxSeq(targetDiscussionGroup.getMaxSeq());
-
             }
         } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
             reqFetchNewMessage.setTopic(Context.userManager.getMyUserId());
             reqFetchNewMessage.setMaxSeq(Context.userManager.getMyProfile().getChatMaxSeq());
+
+            Context.friendManager.updateRedPoint(message.getSenderId(), true);
         }
         IOUtil.send(reqFetchNewMessage);
     }
@@ -275,7 +285,6 @@ public class ChatManager implements LifeCycle {
     private static HttpEntity buildFileEntityWithProgress(File fileToUpload) {
         try {
             CountingInputStream countingInputStream = new CountingInputStream(FileUtils.openInputStream(fileToUpload));
-            // 创建自定义的ProgressFileBody
             ProgressFileBody progressFileBody = new ProgressFileBody(new FileBody(fileToUpload, ContentType.APPLICATION_OCTET_STREAM), countingInputStream);
             // 创建文件实体构建器
             MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();

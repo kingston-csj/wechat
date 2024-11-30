@@ -156,8 +156,9 @@ public class DiscussionManager implements LifeCycle {
     }
 
     public void receiveDiscussionMessages(long maxSeq, List<ChatMessage> messages) {
+        long discussionId = 0;
         for (ChatMessage message : messages) {
-            long discussionId = message.getReceiverId();
+             discussionId = message.getReceiverId();
             discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
             discussionGroups.get(discussionId).setMaxSeq(maxSeq);
             discussionMessages.get(discussionId).add(message);
@@ -167,7 +168,8 @@ public class DiscussionManager implements LifeCycle {
             Stage stage = UiContext.stageController.getStageBy(R.id.DiscussionGroup);
             VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
             msgContainer.getChildren().clear();
-            messages.forEach(e -> {
+            List<ChatMessage> allMsg = discussionMessages.get(discussionId);
+            allMsg.forEach(e -> {
                 Pane pane = decorateChatRecord(e);
                 msgContainer.getChildren().add(pane);
             });

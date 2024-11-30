@@ -62,7 +62,6 @@ public class FileContentHandler implements MessageContentUiHandler {
         vBox.setLayoutX(20);
         vBox.setLayoutY(20);
 
-
         downloadBtn.setOnAction(event -> {
             // 创建文件选择器
             FileChooser fileChooser = new FileChooser();

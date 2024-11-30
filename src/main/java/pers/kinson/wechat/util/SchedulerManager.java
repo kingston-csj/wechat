@@ -44,19 +44,6 @@ public enum SchedulerManager {
 	}
 
 	/**
-	 * 注册timeout任务
-	 * @param taskName
-	 * @param task
-	 * @param delay
-	 */
-	public void registerTimeoutTask(String taskName, Runnable task, long delay) {
-		groupTasks.putIfAbsent(taskName, new ArrayList<ScheduledFuture>());
-		List<ScheduledFuture> tasks = groupTasks.get(taskName);
-		ScheduledFuture taskFuture = executor.schedule(task, delay, TimeUnit.MILLISECONDS);
-		tasks.add(taskFuture);
-	}
-
-	/**
 	 * 注册定时任务
 	 * @param taskName
 	 * @param task
@@ -64,7 +51,7 @@ public enum SchedulerManager {
 	 * @param period
 	 */
 	public void scheduleAtFixedRate(String taskName, Runnable task, long delay, long period) {
-		groupTasks.putIfAbsent(taskName, new ArrayList<ScheduledFuture>());
+		groupTasks.putIfAbsent(taskName, new ArrayList<>());
 		List<ScheduledFuture> tasks = groupTasks.get(taskName);
 		ScheduledFuture taskFuture = executor.scheduleAtFixedRate(task, delay, period, TimeUnit.MILLISECONDS);
 		tasks.add(taskFuture);
@@ -80,7 +67,7 @@ public enum SchedulerManager {
 			oldTask.cancel(false);
 		}
 		List<ScheduledFuture> tasks = groupTasks.get(taskName);
-		if (tasks != null && tasks.size() > 0) {
+		if (tasks != null && !tasks.isEmpty()) {
 			for (ScheduledFuture task:tasks) {
 				task.cancel(false);
 			}

@@ -1,21 +1,24 @@
 package pers.kinson.wechat.ui.controller;
 
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import jforgame.commons.NumberUtil;
-import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
 import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
-import pers.kinson.wechat.logic.file.message.req.ReqOnlineTransferFileApply;
+import pers.kinson.wechat.logic.constant.Constants;
+import pers.kinson.wechat.logic.file.FileUiUtil;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
-import pers.kinson.wechat.logic.file.FileUiUtil;
 
 import java.io.IOException;
 
@@ -27,6 +30,23 @@ public class ChatToPointController implements ControlledStage {
     @FXML
     private TextArea msgInput;
 
+    @FXML
+    private Button sendBtn;
+
+
+    @Override
+    public void onStageShown() {
+        msgInput.requestFocus();
+
+        // 快捷键的代码,暂时未生效
+        Scene scene = getMyStage().getScene();
+        ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
+        // 创建一个表示Enter键的KeyCombination对象
+        KeyCombination enterKeyCombination = KeyCombination.keyCombination("Enter");
+        accelerators.put(enterKeyCombination, () -> {
+            sendBtn.fire();
+        });
+    }
 
     @FXML
     private void sendMessage() throws IOException {
@@ -48,6 +68,7 @@ public class ChatToPointController implements ControlledStage {
     @FXML
     private void close() {
         UiContext.stageController.closeStage(R.id.ChatToPoint);
+        Context.friendManager.resetActivatedFriendId();
     }
 
     @FXML
@@ -84,6 +105,7 @@ public class ChatToPointController implements ControlledStage {
     private void sendOnlineFileResource() throws IOException {
         FileUiUtil.sendOnlineFileResource(getMyStage(), NumberUtil.longValue(userIdUi.getText()));
     }
+
 
 }
 
