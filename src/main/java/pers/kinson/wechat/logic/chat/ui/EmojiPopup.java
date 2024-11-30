@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;

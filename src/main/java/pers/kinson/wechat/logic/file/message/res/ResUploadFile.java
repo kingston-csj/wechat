@@ -1,4 +1,4 @@
-package pers.kinson.wechat.logic.file;
+package pers.kinson.wechat.logic.file.message.res;
 
 import lombok.Data;
 

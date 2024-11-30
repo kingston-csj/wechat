@@ -113,7 +113,7 @@ public class FileContentHandler implements MessageContentUiHandler {
 
     @Override
     public byte type() {
-        return MessageContentType.TYPE_FILE;
+        return MessageContentType.FILE;
     }
 
 }

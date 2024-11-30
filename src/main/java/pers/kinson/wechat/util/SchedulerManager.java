@@ -91,4 +91,7 @@ public enum SchedulerManager {
 		executor.execute(task);
 	}
 
+	public void runDelay(Runnable task, long delay) {
+		executor.schedule(task, delay, TimeUnit.MILLISECONDS);
+	}
 }

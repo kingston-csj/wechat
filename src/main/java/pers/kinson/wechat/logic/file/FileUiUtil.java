@@ -23,6 +23,8 @@ import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.struct.FileMessageContent;
 import pers.kinson.wechat.logic.chat.struct.ImageMessageContent;
+import pers.kinson.wechat.logic.file.message.req.ReqOnlineTransferFileApply;
+import pers.kinson.wechat.logic.file.message.res.ResUploadFile;
 import pers.kinson.wechat.net.ClientConfigs;
 import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
@@ -86,6 +88,10 @@ public class FileUiUtil {
         System.out.println("Response Status Code: " + response.getStatusLine().getStatusCode());
         ImageMessageContent content = new ImageMessageContent();
         content.setUrl(resUploadFile.getCdnUrl());
+        request.setContent(JsonUtil.object2String(content));
+        request.setContentType(content.getType());
+
+        IOUtil.send(request);
     }
 
     public static void sendFileResource(Window window, ReqChatToChannel request) throws IOException {
@@ -150,5 +156,28 @@ public class FileUiUtil {
         SchedulerManager.INSTANCE.runNow(uploadTask);
     }
 
+    public static void sendOnlineFileResource(Window window, Long receiverId) {
+        FileChooser fileChooser = new FileChooser();
+        // 设置文件选择器的标题和过滤器
+        fileChooser.setTitle("选择文件");
+        // 显示文件选择器
+        File file = fileChooser.showOpenDialog(window);
+        if (file == null) {
+            return;
+        }
+        ReqOnlineTransferFileApply reqApply = new ReqOnlineTransferFileApply();
+        reqApply.setFileSize(file.length());
+        reqApply.setFileName(file.getName());
+        reqApply.setFilePath(file.getAbsolutePath());
+        reqApply.setReceiverId(receiverId);
+        IOUtil.send(reqApply);
+    }
 
+    /**
+     * 构建Downloads文件夹路径
+     */
+    public static String getDownloadPath(String fileName) {
+        String userHome = System.getProperty("user.home");
+        return userHome + File.separator + "Downloads" + File.separator + fileName;
+    }
 }

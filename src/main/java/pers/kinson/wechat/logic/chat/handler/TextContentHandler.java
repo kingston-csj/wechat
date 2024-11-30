@@ -22,7 +22,7 @@ public class TextContentHandler implements MessageContentUiHandler {
 
     @Override
     public byte type() {
-        return MessageContentType.TYPE_TEXT;
+        return MessageContentType.TEXT;
     }
 
 }

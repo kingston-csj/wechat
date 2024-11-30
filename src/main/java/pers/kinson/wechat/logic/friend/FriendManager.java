@@ -174,13 +174,17 @@ public class FriendManager implements LifeCycle {
         }
     }
 
-    public void refreshFriendApplyView(Object message) {
+    private void refreshFriendApplyView(Object message) {
         ResApplyFriendList resApplyFriendList = (ResApplyFriendList) message;
         StageController stageController = UiContext.stageController;
         Stage stage = stageController.getStageBy(R.id.MainView);
         ListView applyListView = (ListView) stage.getScene().getRoot().lookup("#applies");
         applyListView.getItems().clear();
         decorateApplyItem(applyListView, resApplyFriendList.getRecords());
+    }
+
+    private void onFriendLogin(Object message) {
+
     }
 
 
@@ -292,6 +296,11 @@ public class FriendManager implements LifeCycle {
 
     public Collection<FriendItemVo> getFriends() {
         return friends.values();
+    }
+
+
+    private void on(Object message) {
+
     }
 
 }

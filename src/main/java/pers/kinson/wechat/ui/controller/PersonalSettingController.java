@@ -22,7 +22,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
-import pers.kinson.wechat.logic.file.ResUploadFile;
+import pers.kinson.wechat.logic.file.message.res.ResUploadFile;
 import pers.kinson.wechat.logic.user.model.UserModel;
 import pers.kinson.wechat.net.ClientConfigs;
 import pers.kinson.wechat.net.HttpResult;

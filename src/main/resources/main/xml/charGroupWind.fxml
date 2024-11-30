@@ -24,17 +24,14 @@
                   <ProgressBar prefHeight="23.0" prefWidth="625.0" visible="false" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="120.0" minWidth="0.0" prefHeight="173.0" prefWidth="625.0">
-               <children>
-                  <TextArea fx:id="waitArea" prefHeight="143.0" prefWidth="625.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
+           <AnchorPane minHeight="120.0" minWidth="0.0" prefHeight="173.0" prefWidth="625.0">
+              <TextArea fx:id="waitArea" prefHeight="143.0" prefWidth="625.0" AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+           </AnchorPane>
         </items>
       </SplitPane>
       <ImageView fx:id="headImage" layoutX="14.0" layoutY="14.0">
-         <image>
-            <Image url="@../img/head.png" />
-         </image>
+         <Image url="@../img/head.png"/>
       </ImageView>
       <Label fx:id="username" layoutX="90.0" layoutY="14.0" text="username">
          <font>
@@ -53,15 +50,13 @@
       </ImageView>
       <Button layoutX="563.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="发送" />
       <Button layoutX="488.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="关闭" />
-      <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="741.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../login/img/min.png" />
-         </image>
+      <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="741.0" layoutY="-1.0" pickOnBounds="true"
+                 preserveRatio="true">
+         <Image url="@../../login/img/min.png"/>
       </ImageView>
-      <ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="771.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../login/img/close.png" />
-         </image>
+      <ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="771.0" layoutY="-1.0" pickOnBounds="true"
+                 preserveRatio="true">
+         <Image url="@../../login/img/close.png"/>
       </ImageView>
       <Label fx:id="userid" layoutX="296.0" layoutY="25.0" text="groupid" visible="false">
          <font>

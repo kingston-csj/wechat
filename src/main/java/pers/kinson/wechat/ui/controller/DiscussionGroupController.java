@@ -57,7 +57,7 @@ public class DiscussionGroupController implements ControlledStage {
         request.setChannel(Constants.CHANNEL_DISCUSSION);
         request.setTarget(Context.discussionManager.getSelectedGroupId());
         TextMessageContent content = new TextMessageContent();
-        request.setContentType(MessageContentType.TYPE_TEXT);
+        request.setContentType(MessageContentType.TEXT);
         content.setContent(message);
         request.setContent(JsonUtil.object2String(content));
 

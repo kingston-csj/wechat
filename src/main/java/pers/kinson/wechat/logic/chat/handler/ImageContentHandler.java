@@ -17,7 +17,7 @@ public class ImageContentHandler implements MessageContentUiHandler {
 
     @Override
     public byte type() {
-        return MessageContentType.TYPE_IMAGE;
+        return MessageContentType.IMAGE;
     }
 
 }

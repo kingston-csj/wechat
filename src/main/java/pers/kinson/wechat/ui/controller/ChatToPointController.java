@@ -11,6 +11,7 @@ import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
 import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
+import pers.kinson.wechat.logic.file.message.req.ReqOnlineTransferFileApply;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
@@ -71,12 +72,17 @@ public class ChatToPointController implements ControlledStage {
     }
 
     @FXML
-    private void sendFileResource() throws IOException {
+    private void sendOfflineFileResource() throws IOException {
         ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
         reqChatToChannel.setChannel(Constants.CHANNEL_PERSON);
         reqChatToChannel.setTarget(NumberUtil.longValue(userIdUi.getText()));
 
         FileUiUtil.sendFileResource(getMyStage(), reqChatToChannel);
+    }
+
+    @FXML
+    private void sendOnlineFileResource() throws IOException {
+        FileUiUtil.sendOnlineFileResource(getMyStage(), NumberUtil.longValue(userIdUi.getText()));
     }
 
 }

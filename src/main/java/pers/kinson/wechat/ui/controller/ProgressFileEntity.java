@@ -24,7 +24,6 @@ public class ProgressFileEntity extends FileEntity {
 
         try (InputStream inStream = Files.newInputStream(this.file.toPath())) {
             byte[] tmp = new byte[4096];
-
             int l;
             while ((l = inStream.read(tmp)) != -1) {
                 monitor.updateTransferred(l);

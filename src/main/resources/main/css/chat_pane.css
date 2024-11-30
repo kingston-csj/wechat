@@ -1,0 +1,6 @@
+/* 定义一个样式类来隐藏按钮的默认外观 */
+.button-without-content {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: transparent;
+}

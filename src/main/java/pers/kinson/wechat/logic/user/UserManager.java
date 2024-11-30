@@ -1,5 +1,6 @@
 package pers.kinson.wechat.logic.user;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ import pers.kinson.wechat.logic.user.message.res.ResUserRegister;
 import pers.kinson.wechat.logic.user.model.UserModel;
 import pers.kinson.wechat.logic.user.util.PasswordUtil;
 import pers.kinson.wechat.net.CmdConst;
+import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.net.SimpleRequestCallback;
 import pers.kinson.wechat.ui.R;
@@ -28,6 +30,7 @@ public class UserManager implements LifeCycle {
     @Override
     public void init() {
         Context.messageRouter.registerHandler(CmdConst.ResUserInfo, this::updateMyProfile);
+        Context.messageRouter.registerHandler(CmdConst.ResCommon, this::commonAlert);
     }
 
     public void updateMyProfile(Object packet) {
@@ -79,14 +82,14 @@ public class UserManager implements LifeCycle {
         Stage stage = stageController.getStageBy(R.id.RegisterView);
         Label errorTips = (Label) stage.getScene().getRoot().lookup("#errorTips");
         if (isSucc) {
-               UiContext.runTaskInFxThread(() -> {
+            UiContext.runTaskInFxThread(() -> {
                 errorTips.setVisible(true);
                 errorTips.setText(I18n.get("register.operateSucc"));
                 long userId = Long.parseLong(message);
                 gotoLoginPanel(userId);
             });
         } else {
-               UiContext.runTaskInFxThread(() -> {
+            UiContext.runTaskInFxThread(() -> {
                 errorTips.setVisible(true);
                 errorTips.setText(I18n.get("register.nickUsed"));
             });
@@ -99,6 +102,14 @@ public class UserManager implements LifeCycle {
         Stage stage = stageController.getStageBy(R.id.LoginView);
         TextField userIdField = (TextField) stage.getScene().getRoot().lookup("#userId");
         userIdField.setText(String.valueOf(userId));
+    }
+
+    private void commonAlert(Object packet) {
+        HttpResult systemAlert = (HttpResult) packet;
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("系统提示");
+        alert.setContentText("错误码:" + systemAlert.getCode());
+        alert.showAndWait();
     }
 
 }

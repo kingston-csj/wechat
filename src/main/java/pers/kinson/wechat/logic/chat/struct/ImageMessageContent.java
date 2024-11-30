@@ -10,7 +10,7 @@ public class ImageMessageContent extends MediaMessageContent {
 
 
     public ImageMessageContent() {
-        setType(MessageContentType.TYPE_IMAGE);
+        setType(MessageContentType.IMAGE);
     }
 
 }

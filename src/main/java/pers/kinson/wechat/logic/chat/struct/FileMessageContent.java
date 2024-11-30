@@ -13,7 +13,7 @@ public class FileMessageContent extends MediaMessageContent {
     private long size;
 
     public FileMessageContent() {
-        setType(MessageContentType.TYPE_FILE);
+        setType(MessageContentType.FILE);
     }
 
 }
