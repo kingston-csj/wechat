@@ -27,6 +27,7 @@ import pers.kinson.wechat.logic.friend.message.res.ResQueryFriendsOnlineStatus;
 import pers.kinson.wechat.logic.friend.message.vo.FriendApplyVo;
 import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
 import pers.kinson.wechat.logic.redpoint.RedPointEvent;
+import pers.kinson.wechat.logic.system.ApplicationEffect;
 import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
@@ -351,6 +352,14 @@ public class FriendManager implements LifeCycle {
         if (Objects.equals(friendId, Context.userManager.getMyUserId())) {
             return;
         }
+
+        // 最小化任务栏消息提示
+        if (show) {
+            ApplicationEffect.setMessage("new message");
+        } else {
+            ApplicationEffect.setMessage("");
+        }
+
         // 当前已经聊得嗨起了
         if (show && Objects.equals(friendId, activatedFriendId)) {
             return;

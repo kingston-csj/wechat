@@ -51,7 +51,6 @@ public class FileUiUtil {
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.addTextBody("file", file.getName());
         builder.addTextBody("type", params.get("type"));
-        // 临时方法
         builder.addTextBody("params", JsonUtil.object2String(params));
         HttpEntity httpEntity = builder.build();
         httpPost.setEntity(httpEntity);
@@ -74,6 +73,11 @@ public class FileUiUtil {
         if (file == null) {
             return;
         }
+        sendImageResource(file, request);
+    }
+
+
+    public static void sendImageResource(File file, ReqChatToChannel request) throws IOException {
         Map<String, String> params = new HashMap<>();
         params.put("type", "1");
         ResUploadFile resUploadFile = FileUiUtil.uploadFile(file, params);
@@ -105,6 +109,10 @@ public class FileUiUtil {
         if (file == null) {
             return;
         }
+        sendFileResource(window, file, request);
+    }
+
+    public static void sendFileResource(Window window, File file , ReqChatToChannel request) throws IOException {
         Map<String, String> params = new HashMap<>();
         params.put("type", "1");
         ResUploadFile resUploadFile = FileUiUtil.uploadFile(file, params);
