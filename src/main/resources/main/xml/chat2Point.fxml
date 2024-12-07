@@ -22,7 +22,7 @@
             <!--visible打包前将它改为false -->
             <ImageView id="closeBtn" fitHeight="30.0"
                        fitWidth="30.0" layoutX="554.0" pickOnBounds="true"
-                       preserveRatio="true" onMouseClicked="#close" visible="true" >
+                       preserveRatio="true" onMouseClicked="#close" visible="true">
                 <Image url="@../../login/img/close.png"/>
             </ImageView>
             <Label id="signature" fx:id="autograph" layoutX="76.0"
@@ -52,89 +52,77 @@
                 </font>
             </Label>
         </Pane>
-        <HBox layoutX="3.0" layoutY="8.0" minHeight="460.0" prefHeight="400.0">
-            <VBox id="left" prefWidth="450.0">
-                <SplitPane id="outputArea" dividerPositions="0.5"
-                           layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
-                           prefHeight="300.0" prefWidth="450.0">
-                    <Button mnemonicParsing="false" prefHeight="1.0"
-                            text="%chat.loadmore"/>
-                    <ScrollPane fx:id="msgScrollPane" fitToWidth="true" layoutY="20.0">
-                        <VBox fx:id="msgContainer" fillWidth="false"/>
-                    </ScrollPane>
-                </SplitPane>
-                <VBox>
-                    <SplitPane orientation="VERTICAL">
-                        <HBox>
-                            <Button
-                                    mnemonicParsing="false"
-                                    onMouseClicked="#showFacePanel" styleClass="button-without-content">
-                                <graphic>
-                                    <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="/assets/img/icon/emoji.png"/>
-                                    </ImageView>
-                                </graphic>
-                                <tooltip>
-                                    <Tooltip text="表情"/>
-                                </tooltip>
-                            </Button>
-                            <Button
-                                    mnemonicParsing="false"
-                                    onMouseClicked="#sendImageResource" styleClass="button-without-content">
-                                <graphic>
-                                    <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="/assets/img/icon/picture.png"/>
-                                    </ImageView>
-                                </graphic>
-                                <tooltip>
-                                    <Tooltip text="图片"/>
-                                </tooltip>
-                            </Button>
-                            <Button
-                                    mnemonicParsing="false"
-                                    onMouseClicked="#sendOnlineFileResource" styleClass="button-without-content">
-                                <graphic>
-                                    <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="/assets/img/icon/picture.png"/>
-                                    </ImageView>
-                                </graphic>
-                                <tooltip>
-                                    <Tooltip text="在线传输文件"/>
-                                </tooltip>
-                            </Button>
-                            <Button
-                                    mnemonicParsing="false"
-                                    onMouseClicked="#sendOfflineFileResource" styleClass="button-without-content">
-                                <graphic>
-                                    <ImageView fitWidth="26" fitHeight="26">
-                                        <Image url="/assets/img/icon/picture.png"/>
-                                    </ImageView>
-                                </graphic>
-                                <tooltip>
-                                    <Tooltip text="离线传输文件"/>
-                                </tooltip>
-                            </Button>
-                        </HBox>
-                        <Pane id="inputArea" minHeight="160.0" minWidth="450.0"
-                              prefHeight="200.0" prefWidth="450.0">
-                            <TextArea fx:id="msgInput" layoutY="-0.0" maxWidth="455.0"
-                                      minHeight="111.0" minWidth="400.0" prefHeight="163.0"
-                                      prefWidth="450.0" text="hello?"/>
-                            <Button fx:id="sendBtn" layoutX="360.0" layoutY="123.0"
-                                    mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
-                                    text="%chat.send" onMouseClicked="#sendMessage"/>
-
-                        </Pane>
-                    </SplitPane>
-                </VBox>
-            </VBox>
-            <Pane id="right" layoutX="330.0" minHeight="460.0"
-                  prefHeight="460.0" prefWidth="150.0">
-                <ImageView fitHeight="460.0"
-                           fitWidth="150.0" layoutX="-0.0">
-                    <Image url="/assets/img/other/elegant.png"/>
-                </ImageView>
+        <VBox prefWidth="550.0">
+            <SplitPane id="outputArea" dividerPositions="0.7"
+                       layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
+                       prefHeight="300.0" prefWidth="450.0">
+                <ScrollPane fx:id="msgScrollPane" fitToWidth="true" layoutY="20.0">
+                    <VBox fx:id="msgContainer" fillWidth="false"/>
+                </ScrollPane>
+            </SplitPane>
+            <HBox>
+                <Button
+                        mnemonicParsing="false"
+                        onMouseClicked="#showFacePanel" styleClass="button-without-content">
+                    <graphic>
+                        <ImageView fitWidth="26" fitHeight="26">
+                            <Image url="/assets/img/icon/emoji.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="表情"/>
+                    </tooltip>
+                </Button>
+                <Button
+                        mnemonicParsing="false"
+                        onMouseClicked="#sendImageResource" styleClass="button-without-content">
+                    <graphic>
+                        <ImageView fitWidth="26" fitHeight="26">
+                            <Image url="/assets/img/icon/picture.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="图片"/>
+                    </tooltip>
+                </Button>
+                <Button
+                        mnemonicParsing="false"
+                        onMouseClicked="#sendOnlineFileResource" styleClass="button-without-content">
+                    <graphic>
+                        <ImageView fitWidth="26" fitHeight="26">
+                            <Image url="/assets/img/icon/picture.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="在线传输文件"/>
+                    </tooltip>
+                </Button>
+                <Button
+                        mnemonicParsing="false"
+                        onMouseClicked="#sendOfflineFileResource" styleClass="button-without-content">
+                    <graphic>
+                        <ImageView fitWidth="26" fitHeight="26">
+                            <Image url="/assets/img/icon/picture.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="离线传输文件"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+            <Pane id="inputArea" minHeight="160.0"
+                  prefHeight="200.0">
+                <TextArea fx:id="msgInput"
+                          prefHeight="163.0" minWidth="590.0"
+                          text="hello?"/>
+                <Button fx:id="sendBtn" layoutX="470.0" layoutY="123.0"
+                        mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0"
+                        text="发送" onMouseClicked="#sendMessage">
+                    <tooltip>
+                        <Tooltip text="快使用Enter键吧"/>
+                    </tooltip>
+                </Button>
             </Pane>
-        </HBox>
+        </VBox>
     </VBox>
 </Pane>

@@ -2,12 +2,15 @@ package pers.kinson.wechat.logic.file;
 
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import jforgame.commons.JsonUtil;
+import jforgame.commons.Pair;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,6 +22,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import pers.kinson.wechat.SystemConfig;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.struct.FileMessageContent;
@@ -26,7 +30,6 @@ import pers.kinson.wechat.logic.chat.struct.ImageMessageContent;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.file.message.req.ReqOnlineTransferFileApply;
 import pers.kinson.wechat.logic.file.message.res.ResUploadFile;
-import pers.kinson.wechat.net.ClientConfigs;
 import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
@@ -41,12 +44,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class FileUiUtil {
 
 
     public static ResUploadFile uploadFile(File file, Map<String, String> params) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(ClientConfigs.REMOTE_HTTP_SERVER + "/file/upload");
+        HttpPost httpPost = new HttpPost(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/file/upload");
         // 使用MultipartEntityBuilder构建多部分表单
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.addTextBody("file", file.getName());
@@ -76,28 +80,35 @@ public class FileUiUtil {
         sendImageResource(file, request);
     }
 
-
     public static void sendImageResource(File file, ReqChatToChannel request) throws IOException {
-        Map<String, String> params = new HashMap<>();
-        params.put("type", "1");
-        ResUploadFile resUploadFile = FileUiUtil.uploadFile(file, params);
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                Map<String, String> params = new HashMap<>();
+                params.put("type", "1");
 
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        // 创建PUT请求
-        HttpPut httpPut = new HttpPut(resUploadFile.getPresignedUrl());
-        // 设置请求体为图片文件，并指定Content-type为image/jpeg
-        HttpEntity entity = new FileEntity(file, ContentType.IMAGE_JPEG);
-        httpPut.setEntity(entity);
-        // 执行请求
-        HttpResponse response = httpClient.execute(httpPut);
-        // 根据响应状态码等进行后续处理，这里简单打印响应状态码
-        System.out.println("Response Status Code: " + response.getStatusLine().getStatusCode());
-        ImageMessageContent content = new ImageMessageContent();
-        content.setUrl(resUploadFile.getCdnUrl());
-        request.setContent(JsonUtil.object2String(content));
-        request.setContentType(content.getType());
+                // 执行请求
+                try {
+                    ResUploadFile resUploadFile = FileUiUtil.uploadFile(file, params);
+                    HttpClient httpClient = HttpClientBuilder.create().build();
+                    // 创建PUT请求
+                    HttpPut httpPut = new HttpPut(resUploadFile.getPresignedUrl());
+                    // 设置请求体为图片文件，并指定Content-type为image/jpeg
+                    HttpEntity entity = new FileEntity(file, ContentType.IMAGE_JPEG);
+                    httpPut.setEntity(entity);
+                    HttpResponse response = httpClient.execute(httpPut);
+                    ImageMessageContent content = new ImageMessageContent();
+                    content.setUrl(resUploadFile.getCdnUrl());
+                    request.setContent(JsonUtil.object2String(content));
+                    request.setContentType(content.getType());
 
-        IOUtil.send(request);
+                    IOUtil.send(request);
+                } catch (IOException e) {
+                    log.error("", e);
+                }
+            }
+        };
+        SchedulerManager.INSTANCE.runNow(task);
     }
 
     public static void sendFileResource(Window window, ReqChatToChannel request) throws IOException {
@@ -112,7 +123,7 @@ public class FileUiUtil {
         sendFileResource(window, file, request);
     }
 
-    public static void sendFileResource(Window window, File file , ReqChatToChannel request) throws IOException {
+    public static void sendFileResource(Window window, File file, ReqChatToChannel request) throws IOException {
         Map<String, String> params = new HashMap<>();
         params.put("type", "1");
         ResUploadFile resUploadFile = FileUiUtil.uploadFile(file, params);
@@ -195,4 +206,40 @@ public class FileUiUtil {
         String userHome = System.getProperty("user.home");
         return userHome + File.separator + "Downloads" + File.separator + fileName;
     }
+
+
+    /**
+     * 发送剪贴板内容
+     *
+     * @param output           文本显示框
+     * @param reqChatToChannel 传送协议
+     */
+    public static void sendClipboardResource(TextArea output, ReqChatToChannel reqChatToChannel) {
+        Pair<Byte, Object> dataFlavor = ClipboardUtil.getFromClipboard();
+        byte dataType = dataFlavor.getFirst();
+        switch (dataType) {
+            case ClipboardUtil.TYPE_STRING:
+                output.setText(dataFlavor.getSecond().toString());
+                break;
+            case ClipboardUtil.TYPE_IMAGE:
+                File image = (File) dataFlavor.getSecond();
+                try {
+                    FileUiUtil.sendImageResource(image, reqChatToChannel);
+                } catch (IOException e) {
+                    log.error("", e);
+                }
+                break;
+            case ClipboardUtil.TYPE_FILE:
+                File file = (File) dataFlavor.getSecond();
+                UiContext.runTaskInFxThread(() -> {
+                    try {
+                        FileUiUtil.sendFileResource(output.getScene().getWindow(), file, reqChatToChannel);
+                    } catch (IOException e) {
+                        log.error("", e);
+                    }
+                });
+                break;
+        }
+    }
+
 }

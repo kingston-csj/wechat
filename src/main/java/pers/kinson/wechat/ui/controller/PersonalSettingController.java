@@ -18,11 +18,11 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import pers.kinson.wechat.SystemConfig;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.file.message.res.ResUploadFile;
 import pers.kinson.wechat.logic.user.model.UserModel;
-import pers.kinson.wechat.net.ClientConfigs;
 import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
@@ -74,7 +74,7 @@ public class PersonalSettingController implements ControlledStage {
         }
         HttpClient httpClient = HttpClients.createDefault();
 
-        HttpPost httpPost = new HttpPost(ClientConfigs.REMOTE_HTTP_SERVER + "/file/upload");
+        HttpPost httpPost = new HttpPost(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/file/upload");
 
         // 使用MultipartEntityBuilder构建多部分表单
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -117,7 +117,7 @@ public class PersonalSettingController implements ControlledStage {
         params.put("remark", newRemark);
         params.put("avatar", newAvatar);
         try {
-            HttpResult httpResult = Context.httpClientManager.post(ClientConfigs.REMOTE_HTTP_SERVER + "/user/profile", params, HttpResult.class);
+            HttpResult httpResult = Context.httpClientManager.post(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/user/profile", params, HttpResult.class);
             if (httpResult.isOk()) {
                 SystemNotifyUtil.warm("保存成功");
                 Context.userManager.getMyProfile().setUserName(newName);

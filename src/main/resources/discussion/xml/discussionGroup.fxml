@@ -32,7 +32,7 @@
                 <SplitPane id="outputArea" dividerPositions="0.5"
                            layoutY="133.0" minHeight="300.0" orientation="VERTICAL"
                            prefHeight="300.0" prefWidth="450.0">
-                    <ScrollPane fitToWidth="true" layoutY="20.0"
+                    <ScrollPane fx:id="msgScrollPane" fitToWidth="true" layoutY="20.0"
                                 maxWidth="600.0">
                         <VBox fx:id="msgContainer" fillWidth="false" maxWidth="625.0"
                               prefHeight="273.0"

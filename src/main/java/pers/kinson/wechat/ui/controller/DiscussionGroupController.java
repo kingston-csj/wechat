@@ -3,21 +3,23 @@ package pers.kinson.wechat.ui.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import jforgame.commons.JsonUtil;
-import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.MessageContentType;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
 import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
+import pers.kinson.wechat.logic.constant.Constants;
+import pers.kinson.wechat.logic.file.FileUiUtil;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
-import pers.kinson.wechat.logic.file.FileUiUtil;
+import pers.kinson.wechat.util.SchedulerManager;
 
 import java.io.IOException;
 
@@ -32,6 +34,30 @@ public class DiscussionGroupController implements ControlledStage {
     @FXML
     private TilePane members;
 
+    @Override
+    public void onStageShown() {
+        msgInput.requestFocus();
+
+        msgInput.setOnKeyPressed(event -> {
+            // 注册enter快捷键
+            if (event.getCode() == KeyCode.ENTER) {
+                sendMessage();
+            }
+            // 注册ctrl+v快捷键
+            // 复制系统剪贴板图片资源
+            if (event.isControlDown() && event.getCode() == KeyCode.V) {
+                SchedulerManager.INSTANCE.runNow(this::sendClipboardImage);
+            }
+        });
+    }
+
+    private void sendClipboardImage() {
+        ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
+        reqChatToChannel.setChannel(Constants.CHANNEL_DISCUSSION);
+        reqChatToChannel.setTarget(Context.discussionManager.getSelectedGroupId());
+
+        FileUiUtil.sendClipboardResource(msgInput, reqChatToChannel);
+    }
 
     @Override
     public Stage getMyStage() {
@@ -88,7 +114,6 @@ public class DiscussionGroupController implements ControlledStage {
 
         FileUiUtil.sendFileResource(getMyStage(), reqChatToChannel);
     }
-
 
 }
 

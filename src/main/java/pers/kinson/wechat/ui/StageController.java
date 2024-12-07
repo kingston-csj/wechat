@@ -74,6 +74,8 @@ public class StageController {
             return null;
         }
         stage.show();
+        // 屏幕最顶层
+        stage.toFront();
         controllers.get(name).onStageShown();
         openedStages.add(name);
         return stage;

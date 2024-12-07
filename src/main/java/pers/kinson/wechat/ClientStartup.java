@@ -19,7 +19,6 @@ public class ClientStartup extends Application {
 
     @Override
     public void init() throws Exception {
-
         Context.init();
     }
 
@@ -35,8 +34,8 @@ public class ClientStartup extends Application {
         loginStage.setTitle("QQ");
 
         stageController.loadStage(R.id.RegisterView, R.layout.RegisterView, StageStyle.UNDECORATED);
-        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UTILITY);
-//        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UNDECORATED);
+//        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UTILITY);
+        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UNDECORATED);
         stageController.loadStage(R.id.PersonSettingView, R.layout.PersonSettingView, StageStyle.UNDECORATED);
 
         //把主界面放在右上方

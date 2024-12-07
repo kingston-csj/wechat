@@ -14,82 +14,87 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
-			minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
-			prefWidth="430.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-			fx:controller="pers.kinson.wechat.ui.controller.LoginViewController"
-			stylesheets="@../css/login.css">
-	<rotationAxis>
-		<Point3D/>
-	</rotationAxis>
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
+            prefWidth="430.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pers.kinson.wechat.ui.controller.LoginViewController"
+            stylesheets="@../css/login.css">
+    <rotationAxis>
+        <Point3D/>
+    </rotationAxis>
 
-	<ImageView fitHeight="330.0" fitWidth="430.0" layoutX="91.0"
-			   layoutY="90.0" pickOnBounds="true" preserveRatio="true"
-			   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-			   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-		<Image url="@../img/login.png"/>
-	</ImageView>
-	<Button fx:id="login" layoutX="135.0" layoutY="288.0"
-		mnemonicParsing="false" onMouseClicked="#login" onMouseEntered="#login_en"
-		onMouseExited="#login_ex" prefHeight="32.0" prefWidth="194.0" text="%login.safeLogin"
-		textFill="WHITE">
-		<font>
-			<Font size="18.0"/>
-		</font>
-	</Button>
-	<ImageView fitHeight="80.0" fitWidth="80.0" layoutX="38.0"
-			   layoutY="195.0" pickOnBounds="true" preserveRatio="true">
-		<Image url="@../img/head.jpg"/>
-	</ImageView>
-	<TextField fx:id="userId" layoutX="135.0" layoutY="195.0"
-			   prefHeight="25.0" prefWidth="194.0" promptText="%login.account" text="1000"/>
-	<PasswordField fx:id="password" layoutX="135.0" layoutY="226.0"
-				   prefHeight="25.0" prefWidth="194.0" promptText="%login.password" text="0000"/>
-	<CheckBox fx:id="rememberPsw" layoutX="135.0" layoutY="258.0"
-			  mnemonicParsing="false" text="%login.rememberPsw"/>
-	<CheckBox fx:id="autoLogin" layoutX="260.0" layoutY="258.0"
-			  mnemonicParsing="false" text="%login.autoLogin"/>
-	<Label/>
-	<Label/>
-	<ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0"
-			   layoutX="399.0" onMouseClicked="#close" onMouseEntered="#closeEntered"
-			   onMouseExited="#closeExited" pickOnBounds="true" preserveRatio="true"
-			   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-		<Image url="@../img/close.png"/>
-	</ImageView>
-	<ImageView fx:id="minBtn" fitHeight="30.0" fitWidth="30.0"
-			   layoutX="346.0" onMouseClicked="#min" onMouseEntered="#minEntered"
-			   onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true"
-			   AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
-		<Image url="@../img/min.png"/>
-	</ImageView>
-	<ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0" fx:id="loginProgress"
-				 prefWidth="200.0" visible="false"/>
-	<Pane fx:id="errorPane" layoutY="36.0" prefHeight="307.0"
-		  prefWidth="430.0" style="-fx-background-color: #9AD3EE;" visible="false"
-		  AnchorPane.topAnchor="30.0">
-		<Label fx:id="errorTips" layoutX="118.0" layoutY="52.0" prefHeight="153.0"
-			   prefWidth="194.0" wrapText="true">
-			<font>
-				<Font size="27.0"/>
-			</font>
-		</Label>
-		<Button layoutX="118.0" layoutY="223.0" mnemonicParsing="false"
-			onMouseClicked="#backToLogin" prefHeight="32.0" prefWidth="194.0"
-			style="-fx-background-color: #09A3DC;" text="%login.backToLogin" textFill="WHITE">
-			<font>
-				<Font size="18.0"/>
-			</font>
-		</Button>
-	</Pane>
-	<Hyperlink layoutX="339.0" layoutY="195.0" text="%login.registerAccount"
-			   onMouseClicked="#gotoRegister">
-		<font>
-			<Font size="14.0"/>
-		</font>
-	</Hyperlink>
-	<Hyperlink layoutX="339.0" layoutY="226.0" text="%login.findPsw">
-		<font>
-			<Font size="14.0"/>
-		</font>
-	</Hyperlink>
+    <ImageView fitHeight="330.0" fitWidth="430.0" layoutX="91.0"
+               layoutY="90.0" pickOnBounds="true" preserveRatio="true"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Image url="@../img/login.png"/>
+    </ImageView>
+    <Label fx:id="notice" layoutX="85.0" layoutY="127.0"  alignment="CENTER" textFill="YELLOW">
+        <font>
+            <Font size="22.0"/>
+        </font>
+    </Label>
+    <Button fx:id="login" layoutX="135.0" layoutY="288.0"
+            mnemonicParsing="false" onMouseClicked="#login" onMouseEntered="#login_en"
+            onMouseExited="#login_ex" prefHeight="32.0" prefWidth="194.0" text="%login.safeLogin"
+            textFill="WHITE">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Button>
+    <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="38.0"
+               layoutY="195.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../img/head.jpg"/>
+    </ImageView>
+    <TextField fx:id="userId" layoutX="135.0" layoutY="195.0"
+               prefHeight="25.0" prefWidth="194.0" promptText="%login.account" text="1000"/>
+    <PasswordField fx:id="password" layoutX="135.0" layoutY="226.0"
+                   prefHeight="25.0" prefWidth="194.0" promptText="%login.password" text="0000"/>
+    <CheckBox fx:id="rememberPsw" layoutX="135.0" layoutY="258.0"
+              mnemonicParsing="false" text="%login.rememberPsw"/>
+    <CheckBox fx:id="autoLogin" layoutX="260.0" layoutY="258.0"
+              mnemonicParsing="false" text="%login.autoLogin"/>
+    <Label/>
+    <Label/>
+    <ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0"
+               layoutX="399.0" onMouseClicked="#close" onMouseEntered="#closeEntered"
+               onMouseExited="#closeExited" pickOnBounds="true" preserveRatio="true"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Image url="@../img/close.png"/>
+    </ImageView>
+    <ImageView fx:id="minBtn" fitHeight="30.0" fitWidth="30.0"
+               layoutX="346.0" onMouseClicked="#min" onMouseEntered="#minEntered"
+               onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true"
+               AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
+        <Image url="@../img/min.png"/>
+    </ImageView>
+    <ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0" fx:id="loginProgress"
+                 prefWidth="200.0" visible="false"/>
+    <Pane fx:id="errorPane" layoutY="36.0" prefHeight="307.0"
+          prefWidth="430.0" style="-fx-background-color: #9AD3EE;" visible="false"
+          AnchorPane.topAnchor="30.0">
+        <Label fx:id="errorTips" layoutX="118.0" layoutY="52.0" prefHeight="153.0"
+               prefWidth="194.0" wrapText="true">
+            <font>
+                <Font size="27.0"/>
+            </font>
+        </Label>
+        <Button layoutX="118.0" layoutY="223.0" mnemonicParsing="false"
+                onMouseClicked="#backToLogin" prefHeight="32.0" prefWidth="194.0"
+                style="-fx-background-color: #09A3DC;" text="%login.backToLogin" textFill="WHITE">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
+    </Pane>
+    <Hyperlink layoutX="339.0" layoutY="195.0" text="%login.registerAccount"
+               onMouseClicked="#gotoRegister">
+        <font>
+            <Font size="14.0"/>
+        </font>
+    </Hyperlink>
+    <Hyperlink layoutX="339.0" layoutY="226.0" text="%login.findPsw">
+        <font>
+            <Font size="14.0"/>
+        </font>
+    </Hyperlink>
 </AnchorPane>

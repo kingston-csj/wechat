@@ -1,7 +1,6 @@
 package pers.kinson.wechat.net;
 
 import jforgame.codec.struct.StructMessageCodec;
-import jforgame.commons.JsonUtil;
 import jforgame.socket.client.RequestCallback;
 import jforgame.socket.client.RpcMessageClient;
 import jforgame.socket.client.SocketClient;
@@ -12,6 +11,7 @@ import jforgame.socket.share.SocketIoDispatcher;
 import jforgame.socket.share.SocketIoDispatcherAdapter;
 import jforgame.socket.share.message.MessageFactory;
 import jforgame.socket.share.message.RequestDataFrame;
+import pers.kinson.wechat.SystemConfig;
 import pers.kinson.wechat.base.Context;
 
 public class IOUtil {
@@ -22,8 +22,8 @@ public class IOUtil {
 
     public static void init() throws Exception {
         HostAndPort hostPort = new HostAndPort();
-        hostPort.setHost(ClientConfigs.REMOTE_SERVER_IP);
-        hostPort.setPort(ClientConfigs.REMOTE_SERVER_PORT);
+        hostPort.setHost(SystemConfig.getInstance().getServer().getRemoteServerIp());
+        hostPort.setPort(SystemConfig.getInstance().getServer().getRemoteServerPort());
 
         SocketIoDispatcher msgDispatcher = new SocketIoDispatcherAdapter() {
             @Override

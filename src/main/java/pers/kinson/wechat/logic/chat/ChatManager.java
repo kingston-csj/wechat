@@ -25,6 +25,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import pers.kinson.wechat.SystemConfig;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
@@ -42,7 +43,6 @@ import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.discussion.message.vo.DiscussionGroupVo;
 import pers.kinson.wechat.logic.file.message.push.PushBeginTransferFile;
 import pers.kinson.wechat.logic.file.message.req.ReqOnlineTransferFileFinish;
-import pers.kinson.wechat.net.ClientConfigs;
 import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
@@ -82,7 +82,7 @@ public class ChatManager implements LifeCycle {
 
         SchedulerManager.INSTANCE.runDelay(() -> {
             try {
-                HttpResult httpResult = Context.httpClientManager.get(ClientConfigs.REMOTE_HTTP_SERVER + "/emoji/list", new HashMap<>(), HttpResult.class);
+                HttpResult httpResult = Context.httpClientManager.get(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/emoji/list", new HashMap<>(), HttpResult.class);
                 @SuppressWarnings("all") LinkedList<EmojiVo> list = JsonUtil.string2Collection(httpResult.getData(), LinkedList.class, EmojiVo.class);
                 for (EmojiVo emojiVo : list) {
                     Image image = new Image(emojiVo.getUrl());
@@ -123,7 +123,7 @@ public class ChatManager implements LifeCycle {
             msgContainer.getChildren().add(pane);
         });
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
-// 使用Platform.runLater确保在布局更新后设置滚动值
+        // 使用Platform.runLater确保在布局更新后设置滚动值
         Platform.runLater(() -> scrollPane.setVvalue(1));
     }
 

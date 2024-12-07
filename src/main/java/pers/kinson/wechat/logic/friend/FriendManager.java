@@ -1,7 +1,6 @@
 package pers.kinson.wechat.logic.friend;
 
 import com.google.common.eventbus.Subscribe;
-import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Hyperlink;
@@ -18,7 +17,6 @@ import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
-import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
 import pers.kinson.wechat.logic.constant.RedPointId;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyResult;
 import pers.kinson.wechat.logic.friend.message.res.ResApplyFriendList;
@@ -216,7 +214,7 @@ public class FriendManager implements LifeCycle {
                 Integer groupId = entry.getKey();
                 TitledPane groupUi = (TitledPane) parentContainer.lookup("#group@" + groupId);
                 String groupName = this.groupNames.getOrDefault(groupId, defaultGroupName);
-                Integer online = onlineCounter.getOrDefault(groupId,0);
+                Integer online = onlineCounter.getOrDefault(groupId, 0);
                 String groupInfo = groupName + online + "/" + entry.getValue();
                 groupUi.setText(groupInfo);
             }
@@ -293,28 +291,25 @@ public class FriendManager implements LifeCycle {
 
 
     private void bindDoubleClickEvent(ListView<Node> listView) {
-        listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                if (this.checkValid()) {
-                    ListView<Node> view = (ListView<Node>) event.getSource();
-                    Node selectedItem = view.getSelectionModel().getSelectedItem();
-                    if (selectedItem == null)
-                        return;
-                    Pane pane = (Pane) selectedItem;
-                    Label userIdUi = (Label) pane.lookup("#friendId");
+        listView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                ListView<Node> view = (ListView<Node>) event.getSource();
+                Node selectedItem = view.getSelectionModel().getSelectedItem();
+                if (selectedItem == null)
+                    return;
+                Pane pane = (Pane) selectedItem;
+                Label userIdUi = (Label) pane.lookup("#friendId");
 
-                    long friendId = Long.parseLong(userIdUi.getText());
-                    FriendItemVo targetFriend = friends.get(friendId);
+                long friendId = Long.parseLong(userIdUi.getText());
+                FriendItemVo targetFriend = friends.get(friendId);
 
-                    long selfId = Context.userManager.getMyUserId();
-                    if (friendId == selfId) {
-                        //不能跟自己聊天
-                        return;
-                    }
-                    if (targetFriend != null) {
-                        openChat2PointPanel(targetFriend);
-                    }
+                long selfId = Context.userManager.getMyUserId();
+                if (friendId == selfId) {
+                    //不能跟自己聊天
+                    return;
+                }
+                if (targetFriend != null) {
+                    openChat2PointPanel(targetFriend);
                 }
             }
         });
@@ -352,14 +347,12 @@ public class FriendManager implements LifeCycle {
         if (Objects.equals(friendId, Context.userManager.getMyUserId())) {
             return;
         }
-
-        // 最小化任务栏消息提示
+        // 任务栏小图标提醒
         if (show) {
-            ApplicationEffect.setMessage("new message");
+            ApplicationEffect.startBlink();
         } else {
-            ApplicationEffect.setMessage("");
+            ApplicationEffect.stopBlink();
         }
-
         // 当前已经聊得嗨起了
         if (show && Objects.equals(friendId, activatedFriendId)) {
             return;

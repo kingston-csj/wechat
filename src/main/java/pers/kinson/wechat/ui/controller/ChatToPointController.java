@@ -7,6 +7,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import jforgame.commons.NumberUtil;
+import lombok.extern.slf4j.Slf4j;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
@@ -14,19 +15,16 @@ import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
 import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.file.FileUiUtil;
+import pers.kinson.wechat.logic.system.ApplicationEffect;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.SchedulerManager;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
+
+@Slf4j
 public class ChatToPointController implements ControlledStage {
 
     @FXML
@@ -43,84 +41,34 @@ public class ChatToPointController implements ControlledStage {
     public void onStageShown() {
         msgInput.requestFocus();
 
-        // 注册enter快捷键
         msgInput.setOnKeyPressed(event -> {
+            // 注册enter快捷键
             if (event.getCode() == KeyCode.ENTER) {
                 sendMessage();
             }
-        });
-
-        // 注册ctrl+v快捷键
-        // 复制系统剪贴板图片资源
-        msgInput.setOnKeyPressed(event -> {
+            // 注册ctrl+v快捷键
+            // 复制系统剪贴板图片资源
             if (event.isControlDown() && event.getCode() == KeyCode.V) {
                 SchedulerManager.INSTANCE.runNow(this::sendClipboardImage);
+            }
+        });
+
+        // 获得焦点，关闭小图标闪动
+        msgInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                ApplicationEffect.stopBlink();
             }
         });
     }
 
     private void sendClipboardImage() {
-        try {
-            // 获取系统剪贴板
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            Transferable contents = clipboard.getContents(null);
-            if (contents != null) {
-                DataFlavor[] flavors = contents.getTransferDataFlavors();
-                for (DataFlavor flavor : flavors) {
-                    if (flavor.getMimeType().contains("application/x-java-file-list")) {
-                        // 尝试从文件列表格式中获取图像文件路径
-                        Object data = contents.getTransferData(flavor);
-                        if (data instanceof List) {
-                            List<?> fileList = (List<?>) data;
-                            for (Object item : fileList) {
-                                if (item instanceof File) {
-                                    File file = (File) item;
-                                    if (file.isFile()) {
-                                        ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
-                                        reqChatToChannel.setChannel(Constants.CHANNEL_PERSON);
-                                        reqChatToChannel.setTarget(NumberUtil.longValue(userIdUi.getText()));
-                                        if (isImageFile(file)) {
-                                            // 读取图像文件并进行处理
-//                                                BufferedImage awtImage = ImageIO.read(file);
-                                            // 将BufferedImage转换为JavaFX Image对象
-//                                                javafx.scene.image.Image fxImage = SwingFXUtils.toFXImage(awtImage, null);
-//                                                System.out.println("Image pasted (size: " + fxImage.getWidth() + "x" + fxImage.getHeight() + ")");
+        ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
+        reqChatToChannel.setChannel(Constants.CHANNEL_PERSON);
+        reqChatToChannel.setTarget(NumberUtil.longValue(userIdUi.getText()));
 
-
-                                            FileUiUtil.sendImageResource(file, reqChatToChannel);
-                                        } else {
-                                            UiContext.runTaskInFxThread(() -> {
-                                                try {
-                                                    FileUiUtil.sendFileResource(getMyStage(), file, reqChatToChannel);
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            });
-
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FileUiUtil.sendClipboardResource(msgInput, reqChatToChannel);
     }
 
-    private static boolean isImageFile(File file) {
-        String fileName = file.getName();
-        String[] imageExtensions = {".png", ".jpg", ".jpeg", ".gif", ".bmp"};
-        for (String extension : imageExtensions) {
-            if (fileName.endsWith(extension)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @FXML
     private void sendMessage() {

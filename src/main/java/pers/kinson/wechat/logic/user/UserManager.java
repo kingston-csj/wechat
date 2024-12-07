@@ -50,12 +50,10 @@ public class UserManager implements LifeCycle {
         reqFetchNewMessage.setMaxSeq(Context.userManager.getMyProfile().getChatMaxSeq());
         IOUtil.send(reqFetchNewMessage);
 
-        if (Context.userManager.getMyUserId() == 1000L) {
-            // 定时刷新好友登录状态
-            SchedulerManager.INSTANCE.scheduleAtFixedRate("refreshFriendStatus", () -> {
-                IOUtil.send(new ReqQueryFriendsOnlineStatus());
-            }, 0, 5*TimeUtil.MILLIS_PER_SECOND);
-        }
+        // 定时刷新好友登录状态
+        SchedulerManager.INSTANCE.scheduleAtFixedRate("refreshFriendStatus", () -> {
+            IOUtil.send(new ReqQueryFriendsOnlineStatus());
+        }, 0, 5 * TimeUtil.MILLIS_PER_SECOND);
 
     }
 

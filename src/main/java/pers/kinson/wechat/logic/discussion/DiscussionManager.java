@@ -1,11 +1,12 @@
 package pers.kinson.wechat.logic.discussion;
 
-import javafx.event.Event;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -14,13 +15,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import lombok.Getter;
-import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
-import pers.kinson.wechat.fxextend.event.DoubleClickEventHandler;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
+import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.discussion.message.req.ReqViewDiscussionMembers;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionList;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionMembersList;
@@ -83,23 +83,20 @@ public class DiscussionManager implements LifeCycle {
     }
 
     private void bindDoubleClickEvent(ListView<Node> listView) {
-        listView.setOnMouseClicked(new DoubleClickEventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                if (this.checkValid()) {
-                    ListView<Node> view = (ListView<Node>) event.getSource();
-                    Node selectedItem = view.getSelectionModel().getSelectedItem();
-                    if (selectedItem == null)
-                        return;
-                    Pane pane = (Pane) selectedItem;
-                    Label userIdUi = (Label) pane.lookup("#discussionId");
+        listView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                ListView<Node> view = (ListView<Node>) event.getSource();
+                Node selectedItem = view.getSelectionModel().getSelectedItem();
+                if (selectedItem == null)
+                    return;
+                Pane pane = (Pane) selectedItem;
+                Label userIdUi = (Label) pane.lookup("#discussionId");
 
-                    long discussionId = Long.parseLong(userIdUi.getText());
-                    DiscussionGroupVo targetFriend = discussionGroups.get(discussionId);
-                    if (targetFriend != null) {
-                        selectedGroupId = discussionId;
-                        openGroupUI(targetFriend);
-                    }
+                long discussionId = Long.parseLong(userIdUi.getText());
+                DiscussionGroupVo targetFriend = discussionGroups.get(discussionId);
+                if (targetFriend != null) {
+                    selectedGroupId = discussionId;
+                    openGroupUI(targetFriend);
                 }
             }
         });
@@ -158,7 +155,7 @@ public class DiscussionManager implements LifeCycle {
     public void receiveDiscussionMessages(long maxSeq, List<ChatMessage> messages) {
         long discussionId = 0;
         for (ChatMessage message : messages) {
-             discussionId = message.getReceiverId();
+            discussionId = message.getReceiverId();
             discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
             discussionGroups.get(discussionId).setMaxSeq(maxSeq);
             discussionMessages.get(discussionId).add(message);
@@ -173,6 +170,9 @@ public class DiscussionManager implements LifeCycle {
                 Pane pane = decorateChatRecord(e);
                 msgContainer.getChildren().add(pane);
             });
+            ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
+            // 使用Platform.runLater确保在布局更新后设置滚动值
+            Platform.runLater(() -> scrollPane.setVvalue(1));
         }
     }
 
