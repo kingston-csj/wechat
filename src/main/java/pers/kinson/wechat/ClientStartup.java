@@ -55,14 +55,10 @@ public class ClientStartup extends Application {
         //显示MainView舞台
         stageController.setStage(R.id.LoginView);
 
-//        // 当窗口状态改变时的事件处理器
         mainStage.setTitle("wechat");
 
         ApplicationEffect.registerEffect(mainStage);
     }
-
-
-
 
     private void connectToServer() {
         new Thread() {

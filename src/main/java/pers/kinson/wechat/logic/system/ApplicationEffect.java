@@ -21,8 +21,8 @@ public class ApplicationEffect {
     private static boolean isBlinking = false;
     private static Timeline blinkTimer;
 
-    private static List<Image> normalIcons = Collections.singletonList(new Image("/assets/img/icon/icon.jpg"));
-    private static List<Image> warmIcons = Collections.singletonList(new Image("/assets/img/icon/icon_gray.jpg"));
+    private static final List<Image> normalIcons = Collections.singletonList(new Image("/assets/img/icon/icon.jpg"));
+    private static final List<Image> warmIcons = Collections.singletonList(new Image("/assets/img/icon/icon_gray.jpg"));
 
     private static Stage mainStage;
 
