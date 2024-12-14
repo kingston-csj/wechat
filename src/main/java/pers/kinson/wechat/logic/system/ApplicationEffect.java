@@ -26,9 +26,13 @@ public class ApplicationEffect {
 
     private static Stage mainStage;
 
+    public static void setNormalIcons(Stage stage) {
+        stage.getIcons().setAll(normalIcons);
+    }
+
     public static void registerEffect(Stage mainStage) {
         ApplicationEffect.mainStage = mainStage;
-        mainStage.getIcons().setAll(normalIcons);
+
 //        mainStage.iconifiedProperty().addListener((observable, oldValue, newValue) -> {
 //            if (newValue) {
 //                // 窗口最小化时开始闪烁效果

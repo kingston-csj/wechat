@@ -214,13 +214,10 @@ public class FileUiUtil {
      * @param output           文本显示框
      * @param reqChatToChannel 传送协议
      */
-    public static void sendClipboardResource(TextArea output, ReqChatToChannel reqChatToChannel) {
+    public static void onCopyClipboardResource(TextArea output, ReqChatToChannel reqChatToChannel) {
         Pair<Byte, Object> dataFlavor = ClipboardUtil.getFromClipboard();
         byte dataType = dataFlavor.getFirst();
         switch (dataType) {
-            case ClipboardUtil.TYPE_STRING:
-                output.setText(dataFlavor.getSecond().toString());
-                break;
             case ClipboardUtil.TYPE_IMAGE:
                 File image = (File) dataFlavor.getSecond();
                 try {

@@ -7,17 +7,13 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0"
       prefWidth="270.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <ImageView id="headIcon" fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="5.0">
-            <image>
-                <Image url="@../../main/img/head.png"/>
-            </image>
-        </ImageView>
-        <Label fx:id="discussionId" layoutX="206.0" layoutY="23.0" visible="false" />
-        <Hyperlink fx:id="name" layoutX="65.0" layoutY="6.0" text="username" textFill="#000011">
-            <font>
-                <Font size="18.0"/>
-            </font>
-        </Hyperlink>
-    </children>
+    <ImageView id="headIcon" fitHeight="50.0" fitWidth="50.0" layoutX="5.0" layoutY="5.0">
+        <Image url="@../../main/img/head.png"/>
+    </ImageView>
+    <Label fx:id="discussionId" layoutX="206.0" layoutY="23.0" visible="false"/>
+    <Hyperlink fx:id="name" layoutX="65.0" layoutY="6.0" text="username" textFill="#000011">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Hyperlink>
 </Pane>

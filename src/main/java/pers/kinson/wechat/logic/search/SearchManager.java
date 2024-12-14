@@ -45,6 +45,7 @@ public class SearchManager {
                 for (int j = 0; j < 2; j++) {
                     Pane item = stageController.load(R.layout.RecommendFriendItem, Pane.class);
                     decorateItem(item, null);
+                    item.lookup("#addBtn").setVisible(false);
                     scrollPane.add(item, i, j);
                 }
             }
@@ -57,7 +58,6 @@ public class SearchManager {
                 scrollPane.add(itemUi, colIndex, rowIndex);
             }
         }
-
     }
 
     private GridPane lookUpFriendsContainer() {

@@ -1,107 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.RadioButton?>
-
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
-	minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
-	prefWidth="430.0" stylesheets="@../css/register.css" xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="pers.kinson.wechat.ui.controller.RegisterViewController">
-	<children>
-		<Text layoutX="50.0" layoutY="75.0" text="%register.welcom">
-			<font>
-				<Font size="24.0" />
-			</font>
-		</Text>
-		<Text layoutX="50.0" layoutY="105.0" text="%register.profile">
-			<font>
-				<Font size="18.0" />
-			</font>
-		</Text>
-		<TextField fx:id="userName" layoutX="100.0" layoutY="128.0"
-			prefHeight="25.0" prefWidth="240.0" promptText="%register.account" />
-		<PasswordField fx:id="password" layoutX="100.0" layoutY="158.0"
-			prefHeight="25.0" prefWidth="240.0" promptText="%register.password" />
-		<Label />
-		<Label />
-		<ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0"
-			prefWidth="200.0" visible="false" />
-		<Label fx:id="errorTips" layoutX="145.0" layoutY="212.0"
-			prefHeight="20.0" prefWidth="194.0" text="%register.nickUsed" visible="false"
-			wrapText="true">
-			<font>
-				<Font size="14.0" />
-			</font>
-		</Label>
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
+            prefWidth="430.0" stylesheets="@../css/register.css" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pers.kinson.wechat.ui.controller.RegisterViewController">
+    <rotationAxis>
+        <Point3D/>
+    </rotationAxis>
 
-		<Button fx:id="register" layoutX="100.0" layoutY="242.0"
-			mnemonicParsing="false" onMouseClicked="#register" onMouseEntered="#register_entered"
-			onMouseExited="#register_exit" prefHeight="32.0" prefWidth="240.0"
-			text="%register.action" textFill="WHITE">
-			<font>
-				<Font size="18.0" />
-			</font>
-		</Button>
+    <Text layoutX="50.0" layoutY="75.0" text="%register.welcom">
+        <font>
+            <Font size="24.0"/>
+        </font>
+    </Text>
+    <Text layoutX="50.0" layoutY="105.0" text="%register.profile">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Text>
+    <TextField fx:id="userName" layoutX="100.0" layoutY="128.0"
+               prefHeight="25.0" prefWidth="240.0" promptText="%register.account"/>
+    <PasswordField fx:id="password" layoutX="100.0" layoutY="158.0"
+                   prefHeight="25.0" prefWidth="240.0" promptText="%register.password"/>
+    <Label/>
+    <Label/>
+    <ProgressBar layoutX="132.0" layoutY="289.0" prefHeight="32.0"
+                 prefWidth="200.0" visible="false"/>
+    <Label fx:id="errorTips" layoutX="145.0" layoutY="212.0"
+           prefHeight="20.0" prefWidth="194.0" text="%register.nickUsed" visible="false"
+           wrapText="true">
+        <font>
+            <Font size="14.0"/>
+        </font>
+    </Label>
 
-		<Hyperlink layoutX="350.0" layoutY="127.0" onMouseClicked="#gotoLogin"
-			text="%register.backToLogin">
-			<font>
-				<Font size="14.0" />
-			</font>
-		</Hyperlink>
+    <Button fx:id="register" layoutX="100.0" layoutY="242.0"
+            mnemonicParsing="false" onMouseClicked="#register" onMouseEntered="#register_entered"
+            onMouseExited="#register_exit" prefHeight="32.0" prefWidth="240.0"
+            text="%register.action" textFill="WHITE">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Button>
 
-		<CheckBox disable="true" layoutX="100.0" layoutY="284.0"
-			mnemonicParsing="false" prefWidth="250.0" selected="true"
-			text="%register.serviceLaw">
-			<font>
-				<Font size="12.0" />
-			</font>
-		</CheckBox>
+    <Hyperlink layoutX="350.0" layoutY="127.0" onMouseClicked="#gotoLogin"
+               text="%register.backToLogin">
+        <font>
+            <Font size="14.0"/>
+        </font>
+    </Hyperlink>
 
-		<RadioButton layoutX="106.0" layoutY="192.0"
-			mnemonicParsing="false" selected="true" text="%register.boy">
-			<toggleGroup>
-				<ToggleGroup fx:id="sexGroup" />
-			</toggleGroup>
-		</RadioButton>
-		<RadioButton layoutX="152.0" layoutY="192.0"
-			mnemonicParsing="false" text="%register.girl" toggleGroup="$sexGroup" />
+    <CheckBox disable="true" layoutX="100.0" layoutY="284.0"
+              mnemonicParsing="false" prefWidth="250.0" selected="true"
+              text="%register.serviceLaw">
+        <font>
+            <Font size="12.0"/>
+        </font>
+    </CheckBox>
 
-		<ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0" layoutX="399.0"
-			onMouseClicked="#close" onMouseEntered="#closeEntered" onMouseExited="#closeExited"
-			pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0"
-			AnchorPane.topAnchor="0.0">
-			<image>
-				<Image url="@../img/close.png" />
-			</image>
-			<rotationAxis>
-				<Point3D />
-			</rotationAxis>
-		</ImageView>
-		<ImageView fx:id="minBtn" fitHeight="30.0" fitWidth="30.0"
-			layoutX="346.0" onMouseClicked="#min" onMouseEntered="#minEntered"
-			onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true"
-			AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
-			<image>
-				<Image url="@../img/min.png" />
-			</image>
-		</ImageView>
+    <RadioButton layoutX="106.0" layoutY="192.0"
+                 mnemonicParsing="false" selected="true" text="%register.boy">
+        <toggleGroup>
+            <ToggleGroup fx:id="sexGroup"/>
+        </toggleGroup>
+    </RadioButton>
+    <RadioButton layoutX="152.0" layoutY="192.0"
+                 mnemonicParsing="false" text="%register.girl" toggleGroup="$sexGroup"/>
 
-	</children>
-	<rotationAxis>
-		<Point3D />
-	</rotationAxis>
+    <ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0" layoutX="399.0"
+               onMouseClicked="#close" onMouseEntered="#closeEntered" onMouseExited="#closeExited"
+               pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+        <rotationAxis>
+            <Point3D/>
+        </rotationAxis>
+    </ImageView>
+    <ImageView fx:id="minBtn" fitHeight="30.0" fitWidth="30.0"
+               layoutX="346.0" onMouseClicked="#min" onMouseEntered="#minEntered"
+               onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true"
+               AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
+    </ImageView>
 
 </AnchorPane>

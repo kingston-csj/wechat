@@ -13,7 +13,7 @@
             <Font size="16.0"/>
         </font>
     </Hyperlink>
-    <Label fx:id="timeUi" layoutX="121.0" layoutY="3.0" text="2015年6月8日 13:30:31">
+    <Label fx:id="timeUi" layoutX="121.0" layoutY="3.0" text="2011年1月8日 1:30:3">
         <padding>
             <Insets left="10.0"/>
         </padding>
@@ -21,11 +21,10 @@
             <Font size="15.0"/>
         </font>
     </Label>
-    <FlowPane fx:id="contentUi" layoutX="66.0" layoutY="23.0"  prefHeight="32.0" prefWidth="370.0"
-              style="-fx-background-color: #d8d8da;  ">
-
+    <FlowPane fx:id="contentUi" layoutX="66.0" layoutY="23.0"  prefHeight="32.0" prefWidth="480.0" maxWidth="480.0"
+              style="-fx-background-color: #d8d8da; ">
     </FlowPane>
-    <ImageView fx:id="headImage1" fitHeight="50.0" fitWidth="50.0" layoutX="6.0" layoutY="4.0">
+    <ImageView fx:id="headImage" fitHeight="50.0" fitWidth="50.0" layoutX="6.0" layoutY="4.0">
         <Image url="@../img/head.png"/>
     </ImageView>
 </Pane>

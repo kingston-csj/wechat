@@ -1,7 +1,7 @@
 package pers.kinson.wechat.logic.chat.struct;
 
 import javafx.scene.Node;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 
 public class TextElemNode implements ContentElemNode {
 
@@ -13,17 +13,20 @@ public class TextElemNode implements ContentElemNode {
 
     @Override
     public Node toUi() {
-//        TextField text = new TextField(content);
-//        text.setEditable(false); // 设置为true以允许编辑文本
-//        text.setMouseTransparent(false);
-//        text.setFocusTraversable(true);
-//        text.setStyle("-fx-background-color: transparent;" +
+//        // 这里宽度与图片之间总是有一段空隙，不知道怎么调，丑是丑点，总比不能复制文本好吧
+//        TextField textField = new TextField(content);
+//        textField.setEditable(false); // 设置为true以允许编辑文本
+//        textField.setMouseTransparent(false);
+//        textField.setFocusTraversable(true);
+//        textField.setStyle("-fx-background-color: transparent;" +
 //                "-fx-border-color: transparent;" +
 //                "-fx-padding: 0;  ");
-//        return text;
-        Text label = new Text (content);
+//
+//        return textField;
+        Label label = new Label (content);
         label.setMouseTransparent(false);
         label.setFocusTraversable(true);
+        label.setWrapText(true);
         return label;
     }
 }

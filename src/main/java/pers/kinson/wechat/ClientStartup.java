@@ -49,7 +49,7 @@ public class ClientStartup extends Application {
         stageController.loadStage(R.id.CreateDiscussion, R.layout.CreateDiscussion, StageStyle.UTILITY);
         stageController.loadStage(R.id.DiscussionGroup, R.layout.DiscussionGroup, StageStyle.UTILITY);
 
-        Stage searchStage = stageController.loadStage(R.id.SearchView, R.layout.SearchFriendView,
+        stageController.loadStage(R.id.SearchView, R.layout.SearchFriendView,
                 StageStyle.UTILITY);
 
         //显示MainView舞台
@@ -57,6 +57,8 @@ public class ClientStartup extends Application {
 
         mainStage.setTitle("wechat");
 
+        ApplicationEffect.setNormalIcons(mainStage);
+        ApplicationEffect.setNormalIcons(loginStage);
         ApplicationEffect.registerEffect(mainStage);
     }
 

@@ -46,17 +46,17 @@ public class DiscussionGroupController implements ControlledStage {
             // 注册ctrl+v快捷键
             // 复制系统剪贴板图片资源
             if (event.isControlDown() && event.getCode() == KeyCode.V) {
-                SchedulerManager.INSTANCE.runNow(this::sendClipboardImage);
+                SchedulerManager.INSTANCE.runNow(this::onCopyClipboardResource);
             }
         });
     }
 
-    private void sendClipboardImage() {
+    private void onCopyClipboardResource() {
         ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
         reqChatToChannel.setChannel(Constants.CHANNEL_DISCUSSION);
         reqChatToChannel.setTarget(Context.discussionManager.getSelectedGroupId());
 
-        FileUiUtil.sendClipboardResource(msgInput, reqChatToChannel);
+        FileUiUtil.onCopyClipboardResource(msgInput, reqChatToChannel);
     }
 
     @Override

@@ -9,27 +9,21 @@
 <?import javafx.scene.layout.VBox?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0"
       prefWidth="180.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <ImageView fx:id="img" fitHeight="67.0" fitWidth="63.0" layoutX="3.0" layoutY="33.0" pickOnBounds="true"
-                   preserveRatio="true">
-            <image>
-                <Image url="@../../main/img/headImg.png"/>
-            </image>
-        </ImageView>
-        <VBox layoutX="71.0" layoutY="7.0" prefHeight="132.0" prefWidth="106.0" spacing="10.0">
-            <children>
-                <Label fx:id="nickName" prefHeight="26.0" prefWidth="106.0" text="nick" textAlignment="CENTER"/>
-                <Label fx:id="reason" prefHeight="23.0" prefWidth="111.0" text="1个共同好友" textFill="#949090"/>
-                <Label fx:id="userId" visible="false"/>
-                <Button fx:id="addBtn" alignment="CENTER" mnemonicParsing="false" text="+ 好友" textAlignment="CENTER">
-                    <VBox.margin>
-                        <Insets left="10.0"/>
-                    </VBox.margin>
-                </Button>
-            </children>
-            <padding>
-                <Insets top="15.0"/>
-            </padding>
-        </VBox>
-    </children>
+    <ImageView fx:id="img" fitHeight="67.0" fitWidth="63.0" layoutX="3.0" layoutY="33.0" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@../../main/img/headImg.png"/>
+    </ImageView>
+    <VBox layoutX="71.0" layoutY="7.0" prefHeight="132.0" prefWidth="106.0" spacing="10.0">
+        <padding>
+            <Insets top="15.0"/>
+        </padding>
+        <Label fx:id="nickName" prefHeight="26.0" prefWidth="106.0" text="nick" textAlignment="CENTER"/>
+        <Label fx:id="reason" prefHeight="23.0" prefWidth="111.0" text="1个共同好友" textFill="#949090"/>
+        <Label fx:id="userId" visible="false"/>
+        <Button fx:id="addBtn" alignment="CENTER" mnemonicParsing="false" text="+ 好友" textAlignment="CENTER">
+            <VBox.margin>
+                <Insets left="10.0"/>
+            </VBox.margin>
+        </Button>
+    </VBox>
 </Pane>

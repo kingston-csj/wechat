@@ -26,4 +26,5 @@ target/
 *.diff
 *.patch
 *.tmp
-/wechat/src/main/java/pers.kinson.wechat.net.ClientConfigs.java
+
+./system.xml

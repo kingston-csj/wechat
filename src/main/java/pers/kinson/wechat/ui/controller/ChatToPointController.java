@@ -1,8 +1,11 @@
 package pers.kinson.wechat.ui.controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -21,6 +24,8 @@ import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.SchedulerManager;
 
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.io.IOException;
 
 
@@ -34,12 +39,27 @@ public class ChatToPointController implements ControlledStage {
     private TextArea msgInput;
 
     @FXML
-    private Button sendBtn;
+    private ScrollPane msgScrollPane;
+
+    private long lastScrollTime;
 
 
     @Override
     public void onStageShown() {
         msgInput.requestFocus();
+
+        // 添加监听器来检测是否滚动到顶部
+        msgScrollPane.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+            // 判断是否接近顶部（考虑一定的误差范围）
+            if (newValue.doubleValue() <= 0.001) {
+                long now = System.currentTimeMillis();
+                // 间隔太短，不触发
+                if (now - lastScrollTime < 3000L) {
+                    return;
+                }
+                lastScrollTime = now;
+            }
+        });
 
         msgInput.setOnKeyPressed(event -> {
             // 注册enter快捷键
@@ -49,7 +69,7 @@ public class ChatToPointController implements ControlledStage {
             // 注册ctrl+v快捷键
             // 复制系统剪贴板图片资源
             if (event.isControlDown() && event.getCode() == KeyCode.V) {
-                SchedulerManager.INSTANCE.runNow(this::sendClipboardImage);
+                SchedulerManager.INSTANCE.runNow(this::onCopyClipboardResource);
             }
         });
 
@@ -61,14 +81,13 @@ public class ChatToPointController implements ControlledStage {
         });
     }
 
-    private void sendClipboardImage() {
+    private void onCopyClipboardResource() {
         ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
         reqChatToChannel.setChannel(Constants.CHANNEL_PERSON);
         reqChatToChannel.setTarget(NumberUtil.longValue(userIdUi.getText()));
 
-        FileUiUtil.sendClipboardResource(msgInput, reqChatToChannel);
+        FileUiUtil.onCopyClipboardResource(msgInput, reqChatToChannel);
     }
-
 
     @FXML
     private void sendMessage() {

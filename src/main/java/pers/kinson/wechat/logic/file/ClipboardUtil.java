@@ -2,6 +2,7 @@ package pers.kinson.wechat.logic.file;
 
 import jforgame.commons.Pair;
 import lombok.extern.slf4j.Slf4j;
+import pers.kinson.wechat.util.IdFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -51,34 +51,29 @@ public class ClipboardUtil {
                                 while ((line = reader.readLine()) != null) {
                                     stringBuilder.append(line);
                                 }
-                                return new Pair<>(TYPE_STRING, stringBuilder);
+                                return new Pair<>(TYPE_STRING, stringBuilder.toString());
                             }
                         }
                     }
 
                     // java.awt.datatransfer.DataFlavor[mimetype=image/x-java-image;representationclass=java.awt.Image]
-                    // 这段代码还不能生效
                     if (flavor.getMimeType().contains("image/x-java-image")) {
-                        try {
-                            java.awt.Image awtImage = (java.awt.Image) contents.getTransferData(new DataFlavor("image/x-java-image;representationclass=java.awt.Image"));
-                            // 创建一个字节数组输出流
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            // 将java.awt.Image转换为PNG格式的字节数组并写入输出流
-                            ImageIO.write((RenderedImage) awtImage, "png", baos);
-                            // 从字节数组输出流获取字节数组
-                            byte[] imageBytes = baos.toByteArray();
-                            // 使用字节数组创建BufferedImage
-                            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
-                            // 生成一个临时文件路径，你也可以根据需求指定具体的保存路径和文件名
-                            File outputFile = File.createTempFile("clipboard_image", ".png");
-
-                            // 将BufferedImage保存为文件
-                            ImageIO.write(bufferedImage, "png", outputFile);
-                            // 关闭字节数组输出流
-                            baos.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        Image awtImage = (Image) contents.getTransferData(DataFlavor.imageFlavor);
+                        // 创建一个字节数组输出流
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        // 将java.awt.Image转换为PNG格式的字节数组并写入输出流
+                        ImageIO.write((RenderedImage) awtImage, "png", baos);
+                        // 从字节数组输出流获取字节数组
+                        byte[] imageBytes = baos.toByteArray();
+                        // 使用字节数组创建BufferedImage
+                        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+                        // 生成一个临时文件路径，你也可以根据需求指定具体的保存路径和文件名
+                        File outputFile = File.createTempFile("clipboard_image" + IdFactory.nextUUId(), ".png");
+                        // 将BufferedImage保存为文件
+                        ImageIO.write(bufferedImage, "png", outputFile);
+                        // 关闭字节数组输出流
+                        baos.close();
+                        return new Pair<>(TYPE_IMAGE, outputFile);
                     }
 
                     if (flavor.getMimeType().contains("application/x-java-file-list")) {
@@ -102,7 +97,6 @@ public class ClipboardUtil {
                     }
                 }
             }
-
         } catch (Exception e) {
             log.error("", e);
         }
