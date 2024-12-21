@@ -9,6 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jforgame.commons.DateUtil;
 import jforgame.commons.JsonUtil;
 import jforgame.commons.NumberUtil;
 import jforgame.commons.TimeUtil;
@@ -30,6 +31,8 @@ import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.database.SqliteDbUtil;
+import pers.kinson.wechat.database.SqliteDdl;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
 import pers.kinson.wechat.logic.chat.message.req.ReqMarkNewMessage;
@@ -39,6 +42,7 @@ import pers.kinson.wechat.logic.chat.message.res.ResNewMessageNotify;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
 import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
 import pers.kinson.wechat.logic.chat.struct.MessageContent;
+import pers.kinson.wechat.logic.chat.struct.Resource;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.discussion.message.vo.DiscussionGroupVo;
 import pers.kinson.wechat.logic.file.message.push.PushBeginTransferFile;
@@ -48,19 +52,27 @@ import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
+import pers.kinson.wechat.ui.controller.ProgressMonitor;
 import pers.kinson.wechat.util.Base64CodecUtil;
 import pers.kinson.wechat.util.SchedulerManager;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ChatManager implements LifeCycle {
@@ -70,6 +82,11 @@ public class ChatManager implements LifeCycle {
 
     @Getter
     private ConcurrentMap<String, EmojiVo> emojiVoMap = new ConcurrentHashMap<>();
+
+    /**
+     * 保存每个好友最小的消息序号
+     */
+    private Map<Long, Long> friendMinSeq = new HashMap<>();
 
     @Override
     public void init() {
@@ -82,10 +99,22 @@ public class ChatManager implements LifeCycle {
 
         SchedulerManager.INSTANCE.runDelay(() -> {
             try {
+                System.out.println(new File("").getAbsolutePath());
                 HttpResult httpResult = Context.httpClientManager.get(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/emoji/list", new HashMap<>(), HttpResult.class);
                 @SuppressWarnings("all") LinkedList<EmojiVo> list = JsonUtil.string2Collection(httpResult.getData(), LinkedList.class, EmojiVo.class);
+                Map<String, Resource> localFaces = SqliteDbUtil.queryEmoijResource().stream().collect(Collectors.toMap(Resource::getLabel, Function.identity()));
                 for (EmojiVo emojiVo : list) {
-                    Image image = new Image(emojiVo.getUrl());
+                    Image image;
+                    Resource localRes = localFaces.get(emojiVo.getLabel());
+                    if (localRes != null) {
+                        String url = "asserts/" + localRes.getUrl();
+                        image = new Image(Files.newInputStream(new File(url).toPath()));
+                    } else {
+                        image = new Image(emojiVo.getUrl());
+                        String imageName = emojiVo.getUrl().substring(emojiVo.getUrl().lastIndexOf("/") + 1);
+                        Context.httpClientManager.downloadFile(emojiVo.getUrl(), "asserts/" + imageName, new ProgressMonitor());
+                        SqliteDbUtil.insertFace(emojiVo.getLabel(), imageName);
+                    }
                     emojiVo.setImage(image);
                     emojiVoMap.put(emojiVo.getLabel(), emojiVo);
                 }
@@ -105,34 +134,87 @@ public class ChatManager implements LifeCycle {
         IOUtil.send(request);
     }
 
+    public List<ChatMessage> loadHistoryMessage(Long friendId, boolean force) {
+        // 如果不是强制，则只在第一次打开界面才读取
+        if (!force) {
+            if (friendMessage.containsKey(friendId)) {
+                return Collections.emptyList();
+            }
+        }
+        long minSeq = friendMinSeq.getOrDefault(friendId, Long.MAX_VALUE);
+        long myUserId = Context.userManager.getMyUserId();
+        List<ChatMessage> chatMessages = SqliteDbUtil.queryPrivateMessages(myUserId, friendId, minSeq);
+        for (int i = chatMessages.size() - 1; i >= 0; i--) {
+            ChatMessage msg = chatMessages.get(i);
+            msg.setMessageContent(Context.messageContentFactory.parse(msg.getType(), msg.getContent()));
+            msg.setDate(DateUtil.format(new Date(NumberUtil.longValue(msg.getDate()))));
+            long sourceId = msg.getSender();
+            if (sourceId == Context.userManager.getMyUserId()) {
+                sourceId = msg.getReceiver();
+            }
+            friendMessage.putIfAbsent(sourceId, new LinkedList<>());
+            friendMessage.get(sourceId).addFirst(msg);
+            minSeq = Math.min(minSeq, msg.getId());
+        }
+        friendMinSeq.put(friendId, minSeq);
+        return chatMessages;
+    }
+
     public void showFriendPrivateMessage(Long friendId) {
         if (friendId == null) {
+            return;
+        }
+        LinkedList<ChatMessage> messages = friendMessage.getOrDefault(friendId, new LinkedList<>());
+        if (messages.isEmpty()) {
+            return;
+        }
+        showFriendPrivateMessage(messages, false);
+    }
+
+    public void showFriendPrivateMessage(List<ChatMessage> messages, boolean history) {
+        if (messages.isEmpty()) {
             return;
         }
         StageController stageController = UiContext.stageController;
         Stage stage = stageController.getStageBy(R.id.ChatToPoint);
         VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-        msgContainer.getChildren().clear();
-        LinkedList<ChatMessage> messages = friendMessage.getOrDefault(friendId, new LinkedList<>());
-        if (messages.isEmpty()) {
-            return;
+        if (!history) {
+            msgContainer.getChildren().clear();
         }
         messages.forEach(e -> {
             Pane pane = decorateChatRecord(e);
             pane.setId("recordPane@" + e.getId());
-            msgContainer.getChildren().add(pane);
+            if (history) {
+                msgContainer.getChildren().add(0, pane);
+            } else {
+                msgContainer.getChildren().add(pane);
+            }
         });
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
         // 使用Platform.runLater确保在布局更新后设置滚动值
-        Platform.runLater(() -> scrollPane.setVvalue(1));
+        Platform.runLater(() -> {
+            if (history) {
+                scrollPane.setVvalue(0);
+            } else {
+                scrollPane.setVvalue(1);
+            }
+        });
     }
 
     public void receiveFriendPrivateMessage(List<ChatMessage> messages) {
         for (ChatMessage msg : messages) {
-            long sourceId = msg.getSenderId();
+            long sourceId = msg.getSender();
             if (sourceId == Context.userManager.getMyUserId()) {
-                sourceId = msg.getReceiverId();
+                sourceId = msg.getReceiver();
             }
+            long date = 0;
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                date = formatter.parse(msg.getDate()).getTime();
+            } catch (Exception e) {
+
+            }
+            SqliteDbUtil.insertMessage(msg.getId(), msg.getContent(), Constants.CHANNEL_PERSON, msg.getReceiver(), msg.getSender(), date, msg.getType());
             friendMessage.putIfAbsent(sourceId, new LinkedList<>());
             friendMessage.get(sourceId).add(msg);
         }
@@ -141,13 +223,13 @@ public class ChatManager implements LifeCycle {
 
     public void refreshFriendPrivateMessage(ChatMessage message) {
         // 先修改数据
-        long sourceId = message.getSenderId();
+        long sourceId = message.getSender();
         if (sourceId == Context.userManager.getMyUserId()) {
-            sourceId = message.getReceiverId();
+            sourceId = message.getReceiver();
         }
         for (ChatMessage chatMsg : friendMessage.get(sourceId)) {
             if (chatMsg.getId() == message.getId()) {
-                chatMsg.setContent(message.getContent());
+                chatMsg.setMessageContent(message.getMessageContent());
             }
         }
         StageController stageController = UiContext.stageController;
@@ -155,12 +237,12 @@ public class ChatManager implements LifeCycle {
         if (stageController.isStageShown(R.id.ChatToPoint)) {
             Stage stage = stageController.getStageBy(R.id.ChatToPoint);
             Pane msgContainer = (Pane) stage.getScene().getRoot().lookup("#recordPane@" + message.getId());
-            Context.messageContentFactory.refreshItem(message.getContent().getType(), msgContainer, message);
+            Context.messageContentFactory.refreshItem(message.getMessageContent().getType(), msgContainer, message);
         }
     }
 
     private Pane decorateChatRecord(ChatMessage message) {
-        boolean fromMe = message.getSenderId() == Context.userManager.getMyUserId();
+        boolean fromMe = message.getSender() == Context.userManager.getMyUserId();
         StageController stageController = UiContext.stageController;
         Pane chatRecord = null;
         if (fromMe) {
@@ -173,14 +255,14 @@ public class ChatManager implements LifeCycle {
         if (fromMe) {
             nameUi.setText(Context.userManager.getMyProfile().getUserName());
         } else {
-            nameUi.setText(Context.friendManager.getUserName(message.getSenderId()));
+            nameUi.setText(Context.friendManager.getUserName(message.getSender()));
         }
         nameUi.setVisible(false);
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
         FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
 
-        Context.messageContentFactory.displayUi(message.getContent().getType(), _body, message);
+        Context.messageContentFactory.displayUi(message.getMessageContent().getType(), _body, message);
 //        chatRecord.setStyle("-fx-border-color: red");
 //        _body.setStyle("-fx-border-color: blue");
         return chatRecord;
@@ -213,7 +295,7 @@ public class ChatManager implements LifeCycle {
         }
         long maxSeq = 0;
         for (ChatMessage e : message.getMessages()) {
-            e.setContent(Context.messageContentFactory.parse(e.getType(), e.getJson()));
+            e.setMessageContent(Context.messageContentFactory.parse(e.getType(), e.getContent()));
             maxSeq = Math.max(maxSeq, e.getId());
         }
 
@@ -222,7 +304,7 @@ public class ChatManager implements LifeCycle {
         reqMarkNewMessage.setMaxSeq(maxSeq);
         // 根据消息来源进行分发
         if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
-            long discussionId = message.getMessages().get(0).getReceiverId();
+            long discussionId = message.getMessages().get(0).getReceiver();
             reqMarkNewMessage.setTopic(discussionId);
             Context.discussionManager.receiveDiscussionMessages(maxSeq, message.getMessages());
         } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
@@ -237,7 +319,7 @@ public class ChatManager implements LifeCycle {
     private void refreshMessage(Object packet) {
         ResModifyMessage resModifyMessage = (ResModifyMessage) packet;
         ChatMessage message = resModifyMessage.getMessage();
-        message.setContent(Context.messageContentFactory.parse(message.getType(), message.getJson()));
+        message.setMessageContent(Context.messageContentFactory.parse(message.getType(), message.getContent()));
         if (resModifyMessage.getChannel() == Constants.CHANNEL_PERSON) {
             refreshFriendPrivateMessage(message);
         }

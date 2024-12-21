@@ -2,7 +2,8 @@
 
  ### 主要使用的技术  
   *  Netty，通信网关  
-  *  JavaFx，gui界面    
+  *  JavaFx，gui界面  
+  *  SQLite，聊天信息本地存储
 
 
 目前只完成部分界面，效果图如下:  

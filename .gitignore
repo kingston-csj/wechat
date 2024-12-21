@@ -27,4 +27,6 @@ target/
 *.patch
 *.tmp
 
-./system.xml
+system.xml
+local.db
+asserts/**

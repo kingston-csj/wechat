@@ -155,7 +155,7 @@ public class DiscussionManager implements LifeCycle {
     public void receiveDiscussionMessages(long maxSeq, List<ChatMessage> messages) {
         long discussionId = 0;
         for (ChatMessage message : messages) {
-            discussionId = message.getReceiverId();
+            discussionId = message.getReceiver();
             discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
             discussionGroups.get(discussionId).setMaxSeq(maxSeq);
             discussionMessages.get(discussionId).add(message);
@@ -178,7 +178,7 @@ public class DiscussionManager implements LifeCycle {
 
 
     private Pane decorateChatRecord(ChatMessage message) {
-        boolean fromMe = message.getSenderId() == Context.userManager.getMyUserId();
+        boolean fromMe = message.getSender() == Context.userManager.getMyUserId();
         StageController stageController = UiContext.stageController;
         Pane chatRecord = null;
         if (fromMe) {
@@ -191,14 +191,14 @@ public class DiscussionManager implements LifeCycle {
         if (fromMe) {
             nameUi.setText(Context.userManager.getMyProfile().getUserName());
         } else {
-            nameUi.setText(Context.friendManager.getUserName(message.getSenderId()));
+            nameUi.setText(Context.friendManager.getUserName(message.getSender()));
         }
         nameUi.setVisible(false);
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
         FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
 
-        Context.messageContentFactory.displayUi(message.getContent().getType(), _body, message);
+        Context.messageContentFactory.displayUi(message.getMessageContent().getType(), _body, message);
 
         return chatRecord;
     }

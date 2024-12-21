@@ -7,6 +7,8 @@ import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.database.SqliteDbUtil;
+import pers.kinson.wechat.database.SqliteDdl;
 import pers.kinson.wechat.logic.system.ApplicationEffect;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
@@ -24,6 +26,10 @@ public class ClientStartup extends Application {
 
     @Override
     public void start(final Stage stage) throws IOException {
+        // 本地数据库
+        SqliteDdl.createDatabase();
+        SqliteDbUtil.clearExpiredMessage();
+
         //与服务端建立连接
         connectToServer();
         StageController stageController = UiContext.stageController;

@@ -30,7 +30,7 @@ public class FileContentHandler implements MessageContentUiHandler {
 
     @Override
     public void display(Pane parent, ChatMessage message) {
-        FileMessageContent mediaMessageContent = (FileMessageContent) message.getContent();
+        FileMessageContent mediaMessageContent = (FileMessageContent) message.getMessageContent();
 
         // 创建一个垂直布局容器VBox，并设置一些间距和对齐方式
         VBox vBox = new VBox(10); // 设置子元素之间的垂直间距为10像素

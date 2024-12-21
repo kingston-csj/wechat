@@ -10,7 +10,7 @@ public class ImageContentHandler implements MessageContentUiHandler {
 
     @Override
     public void display(Pane parent, ChatMessage message) {
-        MediaMessageContent mediaMessageContent = (MediaMessageContent) message.getContent();
+        MediaMessageContent mediaMessageContent = (MediaMessageContent) message.getMessageContent();
         ImageView imageView = new ImageView(mediaMessageContent.getUrl());
         parent.getChildren().add(imageView);
     }

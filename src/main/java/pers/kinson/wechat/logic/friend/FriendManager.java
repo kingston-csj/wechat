@@ -329,6 +329,9 @@ public class FriendManager implements LifeCycle {
         activatedFriendId = targetFriend.getUserId();
 
         Context.friendManager.updateRedPoint(targetFriend.getUserId(), false);
+
+        // 先加载本地数据
+        Context.chatManager.loadHistoryMessage(targetFriend.getUserId(), false);
         Context.chatManager.showFriendPrivateMessage(targetFriend.getUserId());
     }
 

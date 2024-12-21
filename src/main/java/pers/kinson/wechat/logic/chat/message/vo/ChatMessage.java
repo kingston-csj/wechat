@@ -11,17 +11,18 @@ public class ChatMessage {
 
     private long id;
 
-    private long senderId;
+    private long sender;
     private String senderName;
 
-    private long receiverId;
+    private long receiver;
     private String receiverName;
 
     private byte type;
-    private String json;
+
+    private String content;
 
     private String date;
 
-    private transient MessageContent content;
+    private transient MessageContent messageContent;
 
 }

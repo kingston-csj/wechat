@@ -17,10 +17,14 @@ public class TextContentHandler implements MessageContentUiHandler {
 
     @Override
     public void display(Pane parent, ChatMessage message) {
-        TextMessageContent textMessageContent = (TextMessageContent)message.getContent();
+        TextMessageContent textMessageContent = (TextMessageContent)message.getMessageContent();
         List<ContentElemNode> nodes = MessageTextUiEditor.parseMessage(textMessageContent.getContent());
         for (ContentElemNode node : nodes) {
-            parent.getChildren().add(node.toUi());
+            try {
+                parent.getChildren().add(node.toUi());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // 这段代码没生效。。。

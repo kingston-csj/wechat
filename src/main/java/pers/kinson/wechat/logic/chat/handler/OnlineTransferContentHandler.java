@@ -32,7 +32,7 @@ public class OnlineTransferContentHandler implements MessageContentUiHandler {
 
     @Override
     public void display(Pane parent, ChatMessage message) {
-        FileOnlineTransferMessageContent transferMessageContent = (FileOnlineTransferMessageContent) message.getContent();
+        FileOnlineTransferMessageContent transferMessageContent = (FileOnlineTransferMessageContent) message.getMessageContent();
         // 创建一个垂直布局容器VBox，并设置一些间距和对齐方式
         VBox vBox = new VBox(10); // 设置子元素之间的垂直间距为10像素
         vBox.setAlignment(Pos.CENTER_LEFT); // 设置内容左对齐且垂直居中
@@ -140,7 +140,7 @@ public class OnlineTransferContentHandler implements MessageContentUiHandler {
     @Override
     public void refresh(Pane parent, ChatMessage message) {
         Label statusUi = (Label) parent.lookup("#status");
-        FileOnlineTransferMessageContent transferMessageContent = (FileOnlineTransferMessageContent) message.getContent();
+        FileOnlineTransferMessageContent transferMessageContent = (FileOnlineTransferMessageContent) message.getMessageContent();
         long myUserId = Context.userManager.getMyUserId();
         if (transferMessageContent.getStatus() == FileOnlineTransferMessageContent.STATUS_APPLY) {
             if (myUserId == transferMessageContent.getFromId()) {

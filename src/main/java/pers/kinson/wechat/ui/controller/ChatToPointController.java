@@ -2,18 +2,21 @@ package pers.kinson.wechat.ui.controller;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 import jforgame.commons.NumberUtil;
 import lombok.extern.slf4j.Slf4j;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
+import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
 import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
 import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
 import pers.kinson.wechat.logic.constant.Constants;
@@ -27,6 +30,7 @@ import pers.kinson.wechat.util.SchedulerManager;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.io.IOException;
+import java.util.List;
 
 
 @Slf4j
@@ -34,6 +38,8 @@ public class ChatToPointController implements ControlledStage {
 
     @FXML
     private Label userIdUi;
+
+    private Long friendId;
 
     @FXML
     private TextArea msgInput;
@@ -43,21 +49,22 @@ public class ChatToPointController implements ControlledStage {
 
     private long lastScrollTime;
 
-
     @Override
     public void onStageShown() {
         msgInput.requestFocus();
-
+        friendId = NumberUtil.longValue(userIdUi.getText());
         // 添加监听器来检测是否滚动到顶部
-        msgScrollPane.vvalueProperty().addListener((observable, oldValue, newValue) -> {
-            // 判断是否接近顶部（考虑一定的误差范围）
-            if (newValue.doubleValue() <= 0.001) {
+        msgScrollPane.setOnScroll(event -> {
+            if (event.getDeltaY() > 0) {
                 long now = System.currentTimeMillis();
                 // 间隔太短，不触发
                 if (now - lastScrollTime < 3000L) {
                     return;
                 }
                 lastScrollTime = now;
+                // 先加载本地历史数据
+                List<ChatMessage> chatMessages = Context.chatManager.loadHistoryMessage(friendId, true);
+                Context.chatManager.showFriendPrivateMessage(chatMessages, true);
             }
         });
 
