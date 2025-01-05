@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 用户个人信息
@@ -62,5 +63,7 @@ public class UserModel {
         return this.signature;
     }
 
-
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }

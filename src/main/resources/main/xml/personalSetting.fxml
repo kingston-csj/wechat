@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
       prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pers.kinson.wechat.ui.controller.PersonalSettingController">
@@ -23,10 +24,12 @@
 
         <HBox>
             <Label text="头像："/>
-            <Button text="上传图片" onAction="#chooseAvatar"/>
-            <ImageView fx:id="avatarImageView" onMouseClicked="#chooseAvatar" fitWidth="100" fitHeight="100">
+            <ImageView fx:id="avatarImageView"  fitWidth="100" fitHeight="100">
                 <Image url="@../../login/img/headimag.png"/>
             </ImageView>
+            <Button text="切换图片" onAction="#switchAvatar" />
+            <GridPane hgap="10" vgap="10" fx:id="avatarPane">
+            </GridPane>
         </HBox>
         <HBox>
             <Label text="签名："/>

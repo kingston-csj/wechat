@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -53,7 +52,6 @@ public class EmojiPopup extends PopupControl {
             Tooltip tooltip = new Tooltip(emoji.getLabel());
             Tooltip.install(imageView, tooltip);
             imageView.setOnMouseClicked(event -> {
-                System.out.println("clicked:" + emoji.getLabel());
                 msgInput.setText(msgInput.getText() + "[" + emoji.getLabel() + "]");
                 this.hide();
             });

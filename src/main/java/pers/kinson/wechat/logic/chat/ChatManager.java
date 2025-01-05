@@ -5,6 +5,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -47,6 +48,8 @@ import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.discussion.message.vo.DiscussionGroupVo;
 import pers.kinson.wechat.logic.file.message.push.PushBeginTransferFile;
 import pers.kinson.wechat.logic.file.message.req.ReqOnlineTransferFileFinish;
+import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
+import pers.kinson.wechat.logic.system.AvatarCache;
 import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
@@ -54,6 +57,7 @@ import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.ui.controller.ProgressMonitor;
 import pers.kinson.wechat.util.Base64CodecUtil;
+import pers.kinson.wechat.util.FileUtil;
 import pers.kinson.wechat.util.SchedulerManager;
 
 import java.io.File;
@@ -63,6 +67,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,9 +102,11 @@ public class ChatManager implements LifeCycle {
 
         EventDispatcher.eventBus.register(this);
 
+
+        FileUtil.createDirectory("asserts/emoji");
+
         SchedulerManager.INSTANCE.runDelay(() -> {
             try {
-                System.out.println(new File("").getAbsolutePath());
                 HttpResult httpResult = Context.httpClientManager.get(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/emoji/list", new HashMap<>(), HttpResult.class);
                 @SuppressWarnings("all") LinkedList<EmojiVo> list = JsonUtil.string2Collection(httpResult.getData(), LinkedList.class, EmojiVo.class);
                 Map<String, Resource> localFaces = SqliteDbUtil.queryEmoijResource().stream().collect(Collectors.toMap(Resource::getLabel, Function.identity()));
@@ -107,12 +114,12 @@ public class ChatManager implements LifeCycle {
                     Image image;
                     Resource localRes = localFaces.get(emojiVo.getLabel());
                     if (localRes != null) {
-                        String url = "asserts/" + localRes.getUrl();
+                        String url = "asserts/emoji/" + localRes.getUrl();
                         image = new Image(Files.newInputStream(new File(url).toPath()));
                     } else {
                         image = new Image(emojiVo.getUrl());
                         String imageName = emojiVo.getUrl().substring(emojiVo.getUrl().lastIndexOf("/") + 1);
-                        Context.httpClientManager.downloadFile(emojiVo.getUrl(), "asserts/" + imageName, new ProgressMonitor());
+                        Context.httpClientManager.downloadFile(emojiVo.getUrl(), "asserts/emoji/" + imageName, new ProgressMonitor());
                         SqliteDbUtil.insertFace(emojiVo.getLabel(), imageName);
                     }
                     emojiVo.setImage(image);
@@ -178,16 +185,21 @@ public class ChatManager implements LifeCycle {
         StageController stageController = UiContext.stageController;
         Stage stage = stageController.getStageBy(R.id.ChatToPoint);
         VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-        if (!history) {
-            msgContainer.getChildren().clear();
-        }
+//        if (!history) {
+//            msgContainer.getChildren().clear();
+//        }
         messages.forEach(e -> {
-            Pane pane = decorateChatRecord(e);
-            pane.setId("recordPane@" + e.getId());
-            if (history) {
-                msgContainer.getChildren().add(0, pane);
+            // 已经存在的就不要重新创建了
+            if (msgContainer.lookup("#recordPane@" + e.getId()) == null) {
+                Pane pane = decorateChatRecord(e);
+                pane.setId("recordPane@" + e.getId());
+                if (history) {
+                    msgContainer.getChildren().add(0, pane);
+                } else {
+                    msgContainer.getChildren().add(pane);
+                }
             } else {
-                msgContainer.getChildren().add(pane);
+                System.out.println();
             }
         });
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
@@ -252,20 +264,34 @@ public class ChatManager implements LifeCycle {
         }
 
         Hyperlink nameUi = (Hyperlink) chatRecord.lookup("#nameUi");
+        ImageView headImage = (ImageView) chatRecord.lookup("#headImage");
         if (fromMe) {
             nameUi.setText(Context.userManager.getMyProfile().getUserName());
+            headImage.setImage(getAvatarImage(Context.userManager.getMyProfile().getUserId()));
         } else {
             nameUi.setText(Context.friendManager.getUserName(message.getSender()));
+            headImage.setImage(getAvatarImage(message.getSender()));
         }
         nameUi.setVisible(false);
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
         FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
 
+
+
+
         Context.messageContentFactory.displayUi(message.getMessageContent().getType(), _body, message);
 //        chatRecord.setStyle("-fx-border-color: red");
 //        _body.setStyle("-fx-border-color: blue");
         return chatRecord;
+    }
+
+    private Image getAvatarImage(long userId) {
+        if (Context.userManager.getMyProfile().getUserId() == userId) {
+            return AvatarCache.getOrCreateImage(Context.userManager.getMyProfile().getAvatar());
+        }
+        FriendItemVo friendVo = Context.friendManager.queryFriend(userId);
+        return AvatarCache.getOrCreateImage(friendVo.getHeadUrl());
     }
 
     private void notifyNewMessage(Object packet) {

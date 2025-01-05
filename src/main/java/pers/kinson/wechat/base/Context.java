@@ -2,13 +2,13 @@ package pers.kinson.wechat.base;
 
 import jforgame.codec.MessageCodec;
 import jforgame.codec.struct.StructMessageCodec;
-import jforgame.socket.client.SocketClient;
 import pers.kinson.wechat.logic.chat.ChatManager;
 import pers.kinson.wechat.logic.chat.MessageContentFactory;
 import pers.kinson.wechat.logic.discussion.DiscussionManager;
 import pers.kinson.wechat.logic.friend.FriendManager;
 import pers.kinson.wechat.logic.login.LoginManager;
 import pers.kinson.wechat.logic.redpoint.RedPointManager;
+import pers.kinson.wechat.logic.setting.SettingManager;
 import pers.kinson.wechat.logic.user.UserManager;
 import pers.kinson.wechat.net.MessageRouter;
 import pers.kinson.wechat.util.HttpClientManager;
@@ -30,6 +30,8 @@ public class Context {
     public static RedPointManager redPointManager;
 
     public static ChatManager chatManager;
+
+    public static SettingManager settingManager;
 
     public static DiscussionManager discussionManager;
 
