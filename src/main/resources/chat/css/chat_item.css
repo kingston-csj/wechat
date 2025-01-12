@@ -1,0 +1,11 @@
+/* styles.css */
+.focused-flowpane {
+    -fx-border-color: blue;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+.unfocused-flowpane {
+    -fx-border-color: transparent;
+    -fx-border-width: 0px;
+}

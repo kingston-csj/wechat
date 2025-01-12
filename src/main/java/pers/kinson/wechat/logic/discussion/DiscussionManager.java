@@ -7,6 +7,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -26,6 +27,8 @@ import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionList;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionMembersList;
 import pers.kinson.wechat.logic.discussion.message.vo.DiscussionGroupVo;
 import pers.kinson.wechat.logic.discussion.message.vo.DiscussionMemberVo;
+import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
+import pers.kinson.wechat.logic.system.AvatarCache;
 import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
@@ -87,8 +90,7 @@ public class DiscussionManager implements LifeCycle {
             if (event.getClickCount() == 2) {
                 ListView<Node> view = (ListView<Node>) event.getSource();
                 Node selectedItem = view.getSelectionModel().getSelectedItem();
-                if (selectedItem == null)
-                    return;
+                if (selectedItem == null) return;
                 Pane pane = (Pane) selectedItem;
                 Label userIdUi = (Label) pane.lookup("#discussionId");
 
@@ -135,7 +137,8 @@ public class DiscussionManager implements LifeCycle {
 
             members.forEach((key, vo) -> {
                 VBox vBox = new VBox();
-                ImageView head = new ImageView("@../../main/img/head.png");
+                Image image = AvatarCache.getOrCreateImage(vo.getAvatar());
+                ImageView head = new ImageView(image);
                 head.setFitWidth(50);
                 head.setFitHeight(50);
                 vBox.getChildren().add(head);
@@ -180,19 +183,18 @@ public class DiscussionManager implements LifeCycle {
     private Pane decorateChatRecord(ChatMessage message) {
         boolean fromMe = message.getSender() == Context.userManager.getMyUserId();
         StageController stageController = UiContext.stageController;
-        Pane chatRecord = null;
-        if (fromMe) {
-            chatRecord = stageController.load(R.layout.PrivateChatItemRight, Pane.class);
-        } else {
-            chatRecord = stageController.load(R.layout.PrivateChatItemLeft, Pane.class);
-        }
+        Pane chatRecord = stageController.load(R.layout.DiscussionChatItem, Pane.class);
 
         Hyperlink nameUi = (Hyperlink) chatRecord.lookup("#nameUi");
+        ImageView headImage = (ImageView) chatRecord.lookup("#headImage");
         if (fromMe) {
             nameUi.setText(Context.userManager.getMyProfile().getUserName());
+            headImage.setImage(getAvatarImage(Context.userManager.getMyProfile().getUserId()));
         } else {
             nameUi.setText(Context.friendManager.getUserName(message.getSender()));
+            headImage.setImage(getAvatarImage(message.getSender()));
         }
+
         nameUi.setVisible(false);
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
@@ -201,6 +203,14 @@ public class DiscussionManager implements LifeCycle {
         Context.messageContentFactory.displayUi(message.getMessageContent().getType(), _body, message);
 
         return chatRecord;
+    }
+
+    private Image getAvatarImage(long userId) {
+        if (Context.userManager.getMyProfile().getUserId() == userId) {
+            return AvatarCache.getOrCreateImage(Context.userManager.getMyProfile().getAvatar());
+        }
+        FriendItemVo friendVo = Context.friendManager.queryFriend(userId);
+        return AvatarCache.getOrCreateImage(friendVo.getHeadUrl());
     }
 
     public DiscussionGroupVo getDiscussionGroupVo(long discussionId) {

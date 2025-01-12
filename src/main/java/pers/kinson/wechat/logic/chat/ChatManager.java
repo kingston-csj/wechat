@@ -160,7 +160,7 @@ public class ChatManager implements LifeCycle {
                 sourceId = msg.getReceiver();
             }
             friendMessage.putIfAbsent(sourceId, new LinkedList<>());
-            friendMessage.get(sourceId).addFirst(msg);
+            friendMessage.get(sourceId).add(msg);
             minSeq = Math.min(minSeq, msg.getId());
         }
         friendMinSeq.put(friendId, minSeq);
@@ -185,6 +185,7 @@ public class ChatManager implements LifeCycle {
         StageController stageController = UiContext.stageController;
         Stage stage = stageController.getStageBy(R.id.ChatToPoint);
         VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
+
 //        if (!history) {
 //            msgContainer.getChildren().clear();
 //        }
@@ -198,8 +199,6 @@ public class ChatManager implements LifeCycle {
                 } else {
                     msgContainer.getChildren().add(pane);
                 }
-            } else {
-                System.out.println();
             }
         });
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
@@ -276,9 +275,6 @@ public class ChatManager implements LifeCycle {
         Label _createTime = (Label) chatRecord.lookup("#timeUi");
         _createTime.setText(message.getDate());
         FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
-
-
-
 
         Context.messageContentFactory.displayUi(message.getMessageContent().getType(), _body, message);
 //        chatRecord.setStyle("-fx-border-color: red");

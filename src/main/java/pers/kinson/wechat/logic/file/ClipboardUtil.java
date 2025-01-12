@@ -1,5 +1,6 @@
 package pers.kinson.wechat.logic.file;
 
+import javafx.scene.input.ClipboardContent;
 import jforgame.commons.Pair;
 import lombok.extern.slf4j.Slf4j;
 import pers.kinson.wechat.util.IdFactory;
@@ -112,5 +113,20 @@ public class ClipboardUtil {
             }
         }
         return false;
+    }
+
+
+    /**
+     * 将内容复制到剪贴板
+     */
+    public static void copyToClipboard(Object content) {
+        javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
+        ClipboardContent clipboardContent = new ClipboardContent();
+        if (content instanceof String) {
+            clipboardContent.putString((String) content); // 将内容放入剪贴板
+        } else if (content instanceof javafx.scene.image.Image) {
+            clipboardContent.putImage((javafx.scene.image.Image) content);
+        }
+        clipboard.setContent(clipboardContent);
     }
 }

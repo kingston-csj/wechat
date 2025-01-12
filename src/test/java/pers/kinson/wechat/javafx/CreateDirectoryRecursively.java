@@ -1,3 +1,5 @@
+package pers.kinson.wechat.javafx;
+
 import java.io.File;
 
 public class CreateDirectoryRecursively {

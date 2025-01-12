@@ -38,6 +38,7 @@ public final class R {
 		public static final String SearchFriendView = "query/xml/query.fxml";
 		public static final String RecommendFriendItem = "query/xml/recommend_item.fxml";
 		public static final String CreateDiscussion = "discussion/xml/create.fxml";
+		public static final String DiscussionChatItem = "discussion/xml/chatItem.fxml";
 	}
 
 }

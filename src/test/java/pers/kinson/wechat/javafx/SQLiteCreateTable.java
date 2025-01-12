@@ -1,3 +1,5 @@
+package pers.kinson.wechat.javafx;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

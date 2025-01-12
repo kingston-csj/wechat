@@ -26,6 +26,7 @@ import pers.kinson.wechat.logic.friend.message.vo.FriendApplyVo;
 import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
 import pers.kinson.wechat.logic.redpoint.RedPointEvent;
 import pers.kinson.wechat.logic.system.ApplicationEffect;
+import pers.kinson.wechat.logic.system.AvatarCache;
 import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
@@ -144,6 +145,8 @@ public class FriendManager implements LifeCycle {
         Label userIdUi = (Label) itemUi.lookup("#friendId");
         userIdUi.setText(String.valueOf(friendVo.getUserId()));
         ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
+        Image image = AvatarCache.getOrCreateImage(friendVo.getHeadUrl());
+        headImage.setImage(image);
         if (!friendVo.isOnline()) {
             headImage.setImage(ImageUtil.convertToGray(headImage.getImage()));
         }
@@ -189,10 +192,11 @@ public class FriendManager implements LifeCycle {
                 Node itemUi = lookUpFriendItem(parentContainer, vo.getUserId());
                 if (itemUi != null) {
                     ImageView headImage = (ImageView) itemUi.lookup("#headIcon");
+                    Image image = AvatarCache.getOrCreateImage(vo.getHeadUrl());
                     if (status == 1) {
                         headImage.setImage(ImageUtil.convertToGray(headImage.getImage()));
                     } else {
-                        headImage.setImage(new Image(vo.getHeadUrl()));
+                        headImage.setImage(image);
                     }
                 }
             }
@@ -325,6 +329,9 @@ public class FriendManager implements LifeCycle {
         Label signatureUi = (Label) chatStage.getScene().getRoot().lookup("#signature");
         userNameUi.setText(targetFriend.getFullName());
         signatureUi.setText(targetFriend.getSignature());
+
+        ImageView headIcon = (ImageView) chatStage.getScene().getRoot().lookup("#headIcon");
+        headIcon.setImage(AvatarCache.getOrCreateImage(targetFriend.getHeadUrl()));
 
         activatedFriendId = targetFriend.getUserId();
 

@@ -1,3 +1,5 @@
+package pers.kinson.wechat.javafx;
+
 import pers.kinson.wechat.logic.chat.struct.ContentElemNode;
 import pers.kinson.wechat.logic.chat.struct.EmojiElemNode;
 import pers.kinson.wechat.logic.chat.struct.TextElemNode;

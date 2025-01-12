@@ -31,7 +31,7 @@
                     <Font size="18.0"/>
                 </font>
             </Label>
-            <ImageView id="headIcon" fx:id="headImage" layoutY="11.0">
+            <ImageView id="headIcon" fx:id="headImage" layoutY="8.0" fitHeight="60.0" fitWidth="60.0" >
                 <Image url="@../img/head.png"/>
             </ImageView>
             <ImageView id="minBtn" fitHeight="30.0"
