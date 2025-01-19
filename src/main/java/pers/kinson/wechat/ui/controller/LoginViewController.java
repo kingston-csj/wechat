@@ -193,13 +193,13 @@ public class LoginViewController implements ControlledStage, Initializable {
     @FXML
     private void gotoRegister() {
         StageController stageController = UiContext.stageController;
-        stageController.switchStage(R.id.RegisterView, R.id.LoginView);
+        stageController.switchStage(R.Id.RegisterView, R.Id.LoginView);
     }
 
     @Override
     public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-        return stageController.getStageBy(R.id.LoginView);
+        return stageController.getStageBy(R.Id.LoginView);
     }
 
 }

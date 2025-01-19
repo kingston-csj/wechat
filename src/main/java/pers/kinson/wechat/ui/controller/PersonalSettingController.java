@@ -34,7 +34,6 @@ import pers.kinson.wechat.util.SystemNotifyUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,7 +161,7 @@ public class PersonalSettingController implements ControlledStage {
                     UiContext.runTaskInFxThread(() -> {
                         StageController stageController = UiContext.stageController;
                         // 刷新主页上的头像
-                        Stage stage = stageController.getStageBy(R.id.MainView);
+                        Stage stage = stageController.getStageBy(R.Id.MainView);
                         ImageView headImg = (ImageView) stage.getScene().getRoot().lookup("#headImg");
                         headImg.setImage(new Image(newAvatar));
                     });
@@ -178,12 +177,12 @@ public class PersonalSettingController implements ControlledStage {
     @Override
     public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-        return stageController.getStageBy(R.id.PersonSettingView);
+        return stageController.getStageBy(R.Id.PersonSettingView);
     }
 
     @FXML
     private void close() {
-        UiContext.stageController.closeStage(R.id.PersonSettingView);
+        UiContext.stageController.closeStage(R.Id.PersonSettingView);
     }
 
 }

@@ -3,12 +3,13 @@ package pers.kinson.wechat.logic.friend.message.vo;
 import jforgame.socket.share.annotation.MessageMeta;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import pers.kinson.wechat.logic.chat.model.ChatContact;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.net.CmdConst;
 
 @Data
 @MessageMeta(cmd = CmdConst.FriendVo)
-public class FriendItemVo {
+public class FriendItemVo implements ChatContact {
 
     private long userId;
     /**
@@ -53,6 +54,26 @@ public class FriendItemVo {
             return this.userName;
         }
         return this.userName + "(" + this.remark + ")";
+    }
+
+    @Override
+    public Long getId() {
+        return userId;
+    }
+
+    @Override
+    public int getType() {
+        return ChatContact.TYPE_FRIEND;
+    }
+
+    @Override
+    public String getName() {
+        return userName;
+    }
+
+    @Override
+    public String getAvatar() {
+        return headUrl;
     }
 
 }

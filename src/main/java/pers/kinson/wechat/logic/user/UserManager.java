@@ -88,7 +88,7 @@ public class UserManager implements LifeCycle {
         String message = data.getMessage();
         boolean isSucc = resultCode == Constants.TRUE;
         StageController stageController = UiContext.stageController;
-        Stage stage = stageController.getStageBy(R.id.RegisterView);
+        Stage stage = stageController.getStageBy(R.Id.RegisterView);
         Label errorTips = (Label) stage.getScene().getRoot().lookup("#errorTips");
         if (isSucc) {
             UiContext.runTaskInFxThread(() -> {
@@ -107,8 +107,8 @@ public class UserManager implements LifeCycle {
 
     private void gotoLoginPanel(long userId) {
         StageController stageController = UiContext.stageController;
-        stageController.switchStage(R.id.LoginView, R.id.RegisterView);
-        Stage stage = stageController.getStageBy(R.id.LoginView);
+        stageController.switchStage(R.Id.LoginView, R.Id.RegisterView);
+        Stage stage = stageController.getStageBy(R.Id.LoginView);
         TextField userIdField = (TextField) stage.getScene().getRoot().lookup("#userId");
         userIdField.setText(String.valueOf(userId));
     }

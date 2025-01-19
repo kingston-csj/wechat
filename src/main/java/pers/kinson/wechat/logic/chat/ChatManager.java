@@ -1,15 +1,24 @@
 package pers.kinson.wechat.logic.chat;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import jforgame.commons.DateUtil;
 import jforgame.commons.JsonUtil;
 import jforgame.commons.NumberUtil;
@@ -33,7 +42,6 @@ import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.database.SqliteDbUtil;
-import pers.kinson.wechat.database.SqliteDdl;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
 import pers.kinson.wechat.logic.chat.message.req.ReqMarkNewMessage;
@@ -42,6 +50,7 @@ import pers.kinson.wechat.logic.chat.message.res.ResNewMessage;
 import pers.kinson.wechat.logic.chat.message.res.ResNewMessageNotify;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
 import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
+import pers.kinson.wechat.logic.chat.model.ChatContact;
 import pers.kinson.wechat.logic.chat.struct.MessageContent;
 import pers.kinson.wechat.logic.chat.struct.Resource;
 import pers.kinson.wechat.logic.constant.Constants;
@@ -61,19 +70,19 @@ import pers.kinson.wechat.util.FileUtil;
 import pers.kinson.wechat.util.SchedulerManager;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -93,6 +102,8 @@ public class ChatManager implements LifeCycle {
      */
     private Map<Long, Long> friendMinSeq = new HashMap<>();
 
+    private Map<Integer, ChatPaneHandler> chatPaneHandlers = new HashMap<>();
+
     @Override
     public void init() {
         Context.messageRouter.registerHandler(CmdConst.ResNewMessageNotify, this::notifyNewMessage);
@@ -101,7 +112,6 @@ public class ChatManager implements LifeCycle {
         Context.messageRouter.registerHandler(CmdConst.PushBeginOnlineFileTransfer, this::doTransferFile);
 
         EventDispatcher.eventBus.register(this);
-
 
         FileUtil.createDirectory("asserts/emoji");
 
@@ -128,8 +138,11 @@ public class ChatManager implements LifeCycle {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }, 3 * TimeUtil.MILLIS_PER_SECOND);
+        }, TimeUtil.MILLIS_PER_SECOND);
 
+
+        chatPaneHandlers.put(ChatContact.TYPE_FRIEND, Context.friendManager);
+        chatPaneHandlers.put(ChatContact.TYPE_DISCUSSION, Context.discussionManager);
     }
 
     public void sendMessageTo(long friendId, MessageContent content) {
@@ -175,20 +188,19 @@ public class ChatManager implements LifeCycle {
         if (messages.isEmpty()) {
             return;
         }
-        showFriendPrivateMessage(messages, false);
+        showFriendPrivateMessage(friendId, messages, false);
     }
 
-    public void showFriendPrivateMessage(List<ChatMessage> messages, boolean history) {
+    public void showFriendPrivateMessage(long friendId, List<ChatMessage> messages, boolean history) {
         if (messages.isEmpty()) {
             return;
         }
         StageController stageController = UiContext.stageController;
-        Stage stage = stageController.getStageBy(R.id.ChatToPoint);
-        VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-
-//        if (!history) {
-//            msgContainer.getChildren().clear();
-//        }
+        if (!stageController.isStageShown(R.Id.ChatContainer)) {
+            return;
+        }
+        Stage stage = stageController.getStageBy(R.Id.ChatContainer);
+        VBox msgContainer = contact2Pane.get("1_" + friendId);
         messages.forEach(e -> {
             // 已经存在的就不要重新创建了
             if (msgContainer.lookup("#recordPane@" + e.getId()) == null) {
@@ -201,6 +213,7 @@ public class ChatManager implements LifeCycle {
                 }
             }
         });
+        msgContainer.requestLayout(); // 强制刷新布局
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
         // 使用Platform.runLater确保在布局更新后设置滚动值
         Platform.runLater(() -> {
@@ -213,10 +226,11 @@ public class ChatManager implements LifeCycle {
     }
 
     public void receiveFriendPrivateMessage(List<ChatMessage> messages) {
+        long targetUserId = 0;
         for (ChatMessage msg : messages) {
-            long sourceId = msg.getSender();
-            if (sourceId == Context.userManager.getMyUserId()) {
-                sourceId = msg.getReceiver();
+            targetUserId = msg.getSender();
+            if (targetUserId == Context.userManager.getMyUserId()) {
+                targetUserId = msg.getReceiver();
             }
             long date = 0;
             try {
@@ -226,10 +240,10 @@ public class ChatManager implements LifeCycle {
 
             }
             SqliteDbUtil.insertMessage(msg.getId(), msg.getContent(), Constants.CHANNEL_PERSON, msg.getReceiver(), msg.getSender(), date, msg.getType());
-            friendMessage.putIfAbsent(sourceId, new LinkedList<>());
-            friendMessage.get(sourceId).add(msg);
+            friendMessage.putIfAbsent(targetUserId, new LinkedList<>());
+            friendMessage.get(targetUserId).add(msg);
         }
-        showFriendPrivateMessage(Context.friendManager.getActivatedFriendId());
+        showFriendPrivateMessage(targetUserId);
     }
 
     public void refreshFriendPrivateMessage(ChatMessage message) {
@@ -245,8 +259,8 @@ public class ChatManager implements LifeCycle {
         }
         StageController stageController = UiContext.stageController;
         // 已经创建的消息ui，修改内容
-        if (stageController.isStageShown(R.id.ChatToPoint)) {
-            Stage stage = stageController.getStageBy(R.id.ChatToPoint);
+        if (stageController.isStageShown(R.Id.ChatContainer)) {
+            Stage stage = stageController.getStageBy(R.Id.ChatContainer);
             Pane msgContainer = (Pane) stage.getScene().getRoot().lookup("#recordPane@" + message.getId());
             Context.messageContentFactory.refreshItem(message.getMessageContent().getType(), msgContainer, message);
         }
@@ -257,9 +271,9 @@ public class ChatManager implements LifeCycle {
         StageController stageController = UiContext.stageController;
         Pane chatRecord = null;
         if (fromMe) {
-            chatRecord = stageController.load(R.layout.PrivateChatItemRight, Pane.class);
+            chatRecord = stageController.load(R.Layout.PrivateChatItemRight, Pane.class);
         } else {
-            chatRecord = stageController.load(R.layout.PrivateChatItemLeft, Pane.class);
+            chatRecord = stageController.load(R.Layout.PrivateChatItemLeft, Pane.class);
         }
 
         Hyperlink nameUi = (Hyperlink) chatRecord.lookup("#nameUi");
@@ -328,10 +342,10 @@ public class ChatManager implements LifeCycle {
         if (message.getChannel() == Constants.CHANNEL_DISCUSSION) {
             long discussionId = message.getMessages().get(0).getReceiver();
             reqMarkNewMessage.setTopic(discussionId);
-            Context.discussionManager.receiveDiscussionMessages(maxSeq, message.getMessages());
+            receiveDiscussionMessages(maxSeq, message.getMessages());
         } else if (message.getChannel() == Constants.CHANNEL_PERSON) {
             Context.userManager.getMyProfile().setChatMaxSeq(maxSeq);
-            Context.chatManager.receiveFriendPrivateMessage(message.getMessages());
+            receiveFriendPrivateMessage(message.getMessages());
         }
 
         // 收到消息之后再通知服务器，保证不丢消息
@@ -347,6 +361,160 @@ public class ChatManager implements LifeCycle {
         }
     }
 
+
+    // 动态设置联系人列表数据（有序map）
+    private Map<String, ChatContact> sortedContacts = new LinkedHashMap<>();
+    // 动态设置联系人列表数据
+    ObservableList<ChatContact> contacts = FXCollections.observableArrayList();
+    // 不同联系人对应不同的消息面板缓存
+    private Map<String, VBox> contact2Pane = new HashMap<>();
+
+    /**
+     * 当前激活的联系人信息
+     */
+    @Getter
+    private ChatContact activatedContact;
+
+    public void openChatPanel(ChatContact contact) {
+        StageController stageController = UiContext.stageController;
+        Stage chatStage = stageController.setStage(R.Id.ChatContainer);
+        Parent root = chatStage.getScene().getRoot();
+        String key = contact.getKey();
+        VBox targetMsgContainer = contact2Pane.get(key);
+
+        Pane container = (Pane) root.lookup("#container");
+        container.getChildren().clear();
+        container.getChildren().add(chatPaneHandlers.get(contact.getType()).loadMessagePane());
+
+        if (!sortedContacts.containsKey(key)) {
+            contacts.add(contact);
+            VBox msgContainer = new VBox();
+            msgContainer.setId("msgContainer");
+            msgContainer.setFillWidth(false);
+            contact2Pane.put(key, msgContainer);
+            sortedContacts.put(key, contact);
+            targetMsgContainer = msgContainer;
+        }
+        ListView contactList = (ListView) root.lookup("#contactList");
+        contactList.setItems(contacts);
+
+        // 自定义 ListView 的单元格
+        contactList.setCellFactory(new Callback<ListView<ChatContact>, ListCell<ChatContact>>() {
+            @Override
+            public ListCell<ChatContact> call(ListView<ChatContact> param) {
+                return new ListCell<ChatContact>() {
+                    @Override
+                    protected void updateItem(ChatContact contact, boolean empty) {
+                        super.updateItem(contact, empty);
+                        if (empty || contact == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            // 创建单元格内容
+                            HBox cellContent = new HBox(10); // 设置间距
+                            ImageView imageView = new ImageView(contact.getAvatar());
+                            imageView.setFitWidth(40);
+                            imageView.setFitHeight(40);
+                            cellContent.getChildren().addAll(
+                                    imageView, // 头像
+                                    new Text(contact.getName()) // 姓名
+                            );
+                            setGraphic(cellContent);
+                        }
+                    }
+                };
+            }
+        });
+
+        // 绑定联系人点击事件
+        contactList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                container.getChildren().clear();
+                // 切换到对应的聊天内容
+                ChatContact newContact = (ChatContact) newValue;
+                container.getChildren().add(chatPaneHandlers.get(newContact.getType()).loadMessagePane());
+                VBox newMsgContainer = contact2Pane.get(newContact.getKey());
+                chatPaneHandlers.get(newContact.getType()).onChatPaneShow(container, newContact);
+                ScrollPane msgScrollPane = (ScrollPane) root.lookup("#msgScrollPane");
+                msgScrollPane.setContent(newMsgContainer);
+                msgScrollPane.requestLayout(); // 强制刷新布局
+                activatedContact = newContact;
+            }
+        });
+
+        int selectedItemIndex = 0;
+        for (int i = 0; i < contacts.size(); i++) {
+            if (Objects.equals(contacts.get(i).getId(), contact.getId())) {
+                selectedItemIndex = i;
+                break;
+            }
+        }
+        // 主动设置点击态
+        contactList.getSelectionModel().select(selectedItemIndex);
+        ScrollPane msgScrollPane = (ScrollPane) root.lookup("#msgScrollPane");
+        msgScrollPane.setContent(targetMsgContainer);
+
+        chatPaneHandlers.get(contact.getType()).onChatPaneShow(container, contact);
+
+        activatedContact = contact;
+    }
+
+    private Map<Long, List<ChatMessage>> discussionMessages = new ConcurrentHashMap<>();
+
+    public void receiveDiscussionMessages(long maxSeq, List<ChatMessage> messages) {
+        long discussionId = 0;
+        for (ChatMessage message : messages) {
+            discussionId = message.getReceiver();
+            discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
+            discussionMessages.get(discussionId).add(message);
+            Context.discussionManager.updateDiscussionSeq(discussionId, maxSeq);
+        }
+
+        StageController stageController = UiContext.stageController;
+        Stage stage = stageController.getStageBy(R.Id.ChatContainer);
+        VBox msgContainer = contact2Pane.get("2_" + discussionId);
+
+        List<ChatMessage> allMsg = discussionMessages.get(discussionId);
+        allMsg.forEach(e -> {
+            // 已经存在的就不要重新创建了
+            if (msgContainer.lookup("#recordPane@" + e.getId()) == null) {
+                Pane pane = decorateDiscussionChatRecord(e);
+                pane.setId("recordPane@" + e.getId());
+                msgContainer.getChildren().add(pane);
+            }
+        });
+        ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
+        // 使用Platform.runLater确保在布局更新后设置滚动值
+        Platform.runLater(() -> scrollPane.setVvalue(1));
+    }
+
+
+    private Pane decorateDiscussionChatRecord(ChatMessage message) {
+        boolean fromMe = message.getSender() == Context.userManager.getMyUserId();
+        StageController stageController = UiContext.stageController;
+        Pane chatRecord = stageController.load(R.Layout.DiscussionChatItem, Pane.class);
+
+        Hyperlink nameUi = (Hyperlink) chatRecord.lookup("#nameUi");
+        ImageView headImage = (ImageView) chatRecord.lookup("#headImage");
+        if (fromMe) {
+            nameUi.setText(Context.userManager.getMyProfile().getUserName());
+            headImage.setImage(getAvatarImage(Context.userManager.getMyProfile().getUserId()));
+        } else {
+            nameUi.setText(Context.friendManager.getUserName(message.getSender()));
+            headImage.setImage(getAvatarImage(message.getSender()));
+        }
+
+        nameUi.setVisible(false);
+        Label _createTime = (Label) chatRecord.lookup("#timeUi");
+        _createTime.setText(message.getDate());
+        FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
+
+        Context.messageContentFactory.displayUi(message.getMessageContent().getType(), _body, message);
+
+        return chatRecord;
+    }
+
+
     @SneakyThrows
     private void doTransferFile(Object packet) {
         PushBeginTransferFile message = (PushBeginTransferFile) packet;
@@ -355,9 +523,6 @@ public class ChatManager implements LifeCycle {
         HttpPost httpPost = new HttpPost(message.getHost());
         // 构建要上传的文件实体
         File fileToUpload = new File(message.getFileUrl()); // 替换为实际要上传的文件路径
-//        HttpEntity fileEntity = MultipartEntityBuilder.create()
-//                .addBinaryBody("file", fileToUpload, ContentType.APPLICATION_OCTET_STREAM, fileToUpload.getName())
-//                .build();
         HttpEntity fileEntity = buildFileEntityWithProgress(fileToUpload);
         // 设置请求实体
         httpPost.setEntity(fileEntity);

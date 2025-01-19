@@ -1,7 +1,5 @@
 package pers.kinson.wechat.util;
 
-import pers.kinson.wechat.base.Context;
-import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
 import pers.kinson.wechat.logic.chat.struct.ContentElemNode;
 import pers.kinson.wechat.logic.chat.struct.EmojiElemNode;
 import pers.kinson.wechat.logic.chat.struct.TextElemNode;
@@ -25,7 +23,7 @@ public class MessageTextUiEditor {
             if (matcher.group(1) != null) {
                 resultList.add(new TextElemNode(matcher.group(1)));
             } else if (matcher.group(2) != null) {
-                resultList.add(new EmojiElemNode(getEmojiUrl(matcher.group(2))));
+                resultList.add(new EmojiElemNode(matcher.group(2)));
             } else if (matcher.group(3) != null) {
                 resultList.add(new TextElemNode(matcher.group(3)));
             }
@@ -34,8 +32,5 @@ public class MessageTextUiEditor {
         return resultList;
     }
 
-    private static String getEmojiUrl(String label) {
-        EmojiVo target = Context.chatManager.getEmojiVoMap().get(label);
-        return target != null ? target.getUrl() : "";
-    }
+
 }

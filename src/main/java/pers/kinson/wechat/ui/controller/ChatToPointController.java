@@ -1,45 +1,30 @@
 package pers.kinson.wechat.ui.controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 import jforgame.commons.NumberUtil;
 import lombok.extern.slf4j.Slf4j;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
-import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
 import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
 import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.file.FileUiUtil;
-import pers.kinson.wechat.logic.system.ApplicationEffect;
-import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
-import pers.kinson.wechat.util.SchedulerManager;
 
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.io.IOException;
-import java.util.List;
 
 
 @Slf4j
-public class ChatToPointController implements ControlledStage {
+public class ChatToPointController  {
 
     @FXML
     private Label userIdUi;
-
-    private Long friendId;
 
     @FXML
     private TextArea msgInput;
@@ -47,54 +32,6 @@ public class ChatToPointController implements ControlledStage {
     @FXML
     private ScrollPane msgScrollPane;
 
-    private long lastScrollTime;
-
-    @Override
-    public void onStageShown() {
-        msgInput.requestFocus();
-        friendId = NumberUtil.longValue(userIdUi.getText());
-        // 添加监听器来检测是否滚动到顶部
-        msgScrollPane.setOnScroll(event -> {
-            if (event.getDeltaY() > 0) {
-                long now = System.currentTimeMillis();
-                // 间隔太短，不触发
-                if (now - lastScrollTime < 3000L) {
-                    return;
-                }
-                lastScrollTime = now;
-                // 先加载本地历史数据
-                List<ChatMessage> chatMessages = Context.chatManager.loadHistoryMessage(friendId, true);
-                Context.chatManager.showFriendPrivateMessage(chatMessages, true);
-            }
-        });
-
-        msgInput.setOnKeyPressed(event -> {
-            // 注册enter快捷键
-            if (event.getCode() == KeyCode.ENTER) {
-                sendMessage();
-            }
-            // 注册ctrl+v快捷键
-            // 复制系统剪贴板图片资源
-            if (event.isControlDown() && event.getCode() == KeyCode.V) {
-                SchedulerManager.INSTANCE.runNow(this::onCopyClipboardResource);
-            }
-        });
-
-        // 获得焦点，关闭小图标闪动
-        msgInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                ApplicationEffect.stopBlink();
-            }
-        });
-    }
-
-    private void onCopyClipboardResource() {
-        ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
-        reqChatToChannel.setChannel(Constants.CHANNEL_PERSON);
-        reqChatToChannel.setTarget(NumberUtil.longValue(userIdUi.getText()));
-
-        FileUiUtil.onCopyClipboardResource(msgInput, reqChatToChannel);
-    }
 
     @FXML
     private void sendMessage() {
@@ -107,22 +44,15 @@ public class ChatToPointController implements ControlledStage {
     }
 
 
-    @Override
     public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-        return stageController.getStageBy(R.id.ChatToPoint);
-    }
-
-    @FXML
-    private void close() {
-        UiContext.stageController.closeStage(R.id.ChatToPoint);
-        Context.friendManager.resetActivatedFriendId();
+        return stageController.getStageBy(R.Id.ChatContainer);
     }
 
     @FXML
     private void createDiscussion() {
         StageController stageController = UiContext.stageController;
-        stageController.setStage(R.id.CreateDiscussion);
+        stageController.setStage(R.Id.CreateDiscussion);
     }
 
     @FXML

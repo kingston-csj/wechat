@@ -45,7 +45,7 @@ public class LoginManager implements LifeCycle {
 //            registerHeartTimer();
         } else {
             StageController stageController = UiContext.stageController;
-            Stage stage = stageController.getStageBy(R.id.LoginView);
+            Stage stage = stageController.getStageBy(R.Id.LoginView);
             Pane errPane = (Pane) stage.getScene().getRoot().lookup("#errorPane");
             errPane.setVisible(true);
             Label errTips = (Label) stage.getScene().getRoot().lookup("#errorTips");
@@ -55,7 +55,7 @@ public class LoginManager implements LifeCycle {
 
     private void redirectToMainPanel() {
         StageController stageController = UiContext.stageController;
-        stageController.switchStage(R.id.MainView, R.id.LoginView);
+        stageController.switchStage(R.Id.MainView, R.Id.LoginView);
     }
 
     /**

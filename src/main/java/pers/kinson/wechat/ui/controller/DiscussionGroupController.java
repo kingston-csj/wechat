@@ -3,7 +3,6 @@ package pers.kinson.wechat.ui.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import jforgame.commons.JsonUtil;
@@ -16,14 +15,12 @@ import pers.kinson.wechat.logic.chat.ui.EmojiPopup;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.file.FileUiUtil;
 import pers.kinson.wechat.net.IOUtil;
-import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
-import pers.kinson.wechat.util.SchedulerManager;
 
 import java.io.IOException;
 
-public class DiscussionGroupController implements ControlledStage {
+public class DiscussionGroupController  {
 
     @FXML
     private Label name;
@@ -34,46 +31,20 @@ public class DiscussionGroupController implements ControlledStage {
     @FXML
     private TilePane members;
 
-    @Override
-    public void onStageShown() {
-        msgInput.requestFocus();
-
-        msgInput.setOnKeyPressed(event -> {
-            // 注册enter快捷键
-            if (event.getCode() == KeyCode.ENTER) {
-                sendMessage();
-            }
-            // 注册ctrl+v快捷键
-            // 复制系统剪贴板图片资源
-            if (event.isControlDown() && event.getCode() == KeyCode.V) {
-                SchedulerManager.INSTANCE.runNow(this::onCopyClipboardResource);
-            }
-        });
-    }
-
-    private void onCopyClipboardResource() {
-        ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
-        reqChatToChannel.setChannel(Constants.CHANNEL_DISCUSSION);
-        reqChatToChannel.setTarget(Context.discussionManager.getSelectedGroupId());
-
-        FileUiUtil.onCopyClipboardResource(msgInput, reqChatToChannel);
-    }
-
-    @Override
     public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-        return stageController.getStageBy(R.id.DiscussionGroup);
+        return stageController.getStageBy(R.Id.ChatContainer);
     }
 
     @FXML
     private void close() {
-        UiContext.stageController.closeStage(R.id.DiscussionGroup);
+        UiContext.stageController.closeStage(R.Id.DiscussionGroup);
     }
 
     @FXML
     private void createDiscussion() {
         StageController stageController = UiContext.stageController;
-        stageController.setStage(R.id.CreateDiscussion);
+        stageController.setStage(R.Id.CreateDiscussion);
     }
 
     @FXML

@@ -52,13 +52,13 @@ public class SearchViewController implements ControlledStage, Initializable {
     @FXML
     private void close() {
         StageController stageController = UiContext.stageController;
-        stageController.closeStage(R.id.SearchView);
+        stageController.closeStage(R.Id.SearchView);
     }
 
     @Override
     public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-        return stageController.getStageBy(R.id.SearchView);
+        return stageController.getStageBy(R.Id.SearchView);
     }
 
 }

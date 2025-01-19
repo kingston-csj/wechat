@@ -1,56 +1,57 @@
 package pers.kinson.wechat.logic.discussion;
 
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import lombok.Getter;
+import jforgame.commons.JsonUtil;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
+import pers.kinson.wechat.base.MessageContentType;
 import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.logic.chat.ChatPaneHandler;
+import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
 import pers.kinson.wechat.logic.chat.message.req.ReqFetchNewMessage;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
+import pers.kinson.wechat.logic.chat.model.ChatContact;
+import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.discussion.message.req.ReqViewDiscussionMembers;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionList;
 import pers.kinson.wechat.logic.discussion.message.res.ResViewDiscussionMembersList;
 import pers.kinson.wechat.logic.discussion.message.vo.DiscussionGroupVo;
 import pers.kinson.wechat.logic.discussion.message.vo.DiscussionMemberVo;
-import pers.kinson.wechat.logic.friend.message.vo.FriendItemVo;
+import pers.kinson.wechat.logic.file.FileUiUtil;
+import pers.kinson.wechat.logic.system.ApplicationEffect;
 import pers.kinson.wechat.logic.system.AvatarCache;
 import pers.kinson.wechat.net.CmdConst;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.ImageUtil;
+import pers.kinson.wechat.util.SchedulerManager;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class DiscussionManager implements LifeCycle {
+public class DiscussionManager implements LifeCycle, ChatPaneHandler {
 
     private Map<Long, DiscussionGroupVo> discussionGroups = new HashMap<>();
 
     private Map<Long, Map<Long, DiscussionMemberVo>> groupMembers = new HashMap<>();
-
-    @Getter
-    private Long selectedGroupId;
-
-    private Map<Long, List<ChatMessage>> discussionMessages = new ConcurrentHashMap<>();
 
     @Override
     public void init() {
@@ -58,17 +59,21 @@ public class DiscussionManager implements LifeCycle {
         Context.messageRouter.registerHandler(CmdConst.ResViewDiscussionMembers, this::refreshGroupMembers);
     }
 
+    public void updateDiscussionSeq(long discussionId, long maxSeq) {
+        discussionGroups.get(discussionId).setMaxSeq(maxSeq);
+    }
+
     private void receiveGroupList(Object packet) {
-        ResViewDiscussionList resFriends = (ResViewDiscussionList) packet;
+        ResViewDiscussionList resDiscussionList = (ResViewDiscussionList) packet;
         StageController stageController = UiContext.stageController;
-        Stage stage = stageController.getStageBy(R.id.MainView);
+        Stage stage = stageController.getStageBy(R.Id.MainView);
         ListView groupListView = (ListView) stage.getScene().getRoot().lookup("#groups");
         groupListView.getItems().clear();
 
         discussionGroups.clear();
-        for (DiscussionGroupVo group : resFriends.getGroups()) {
+        for (DiscussionGroupVo group : resDiscussionList.getGroups()) {
             discussionGroups.put(group.getId(), group);
-            Pane pane = stageController.load(R.layout.DiscussionItem, Pane.class);
+            Pane pane = stageController.load(R.Layout.DiscussionItem, Pane.class);
             decorateFriendItem(pane, group);
             groupListView.getItems().add(pane);
         }
@@ -95,30 +100,68 @@ public class DiscussionManager implements LifeCycle {
                 Label userIdUi = (Label) pane.lookup("#discussionId");
 
                 long discussionId = Long.parseLong(userIdUi.getText());
-                DiscussionGroupVo targetFriend = discussionGroups.get(discussionId);
-                if (targetFriend != null) {
-                    selectedGroupId = discussionId;
-                    openGroupUI(targetFriend);
+                DiscussionGroupVo target = discussionGroups.get(discussionId);
+                if (target != null) {
+//                    openGroupUI(target);
+                    Context.chatManager.openChatPanel(target);
                 }
             }
         });
     }
 
-    private void openGroupUI(DiscussionGroupVo groupVo) {
-        Stage chatStage = UiContext.stageController.setStage(R.id.DiscussionGroup);
+    @Override
+    public Pane loadMessagePane() {
+        StageController stageController = UiContext.stageController;
+        return stageController.load(R.Layout.DiscussionGroup, Pane.class);
+    }
 
-        Label userNameUi = (Label) chatStage.getScene().getRoot().lookup("#name");
-        userNameUi.setText(groupVo.getName());
+    public void onChatPaneShow(Parent root, ChatContact chatModel) {
+        Label userNameUi = (Label) root.lookup("#name");
+        userNameUi.setText(chatModel.getName());
         ReqViewDiscussionMembers req = new ReqViewDiscussionMembers();
-        req.setDiscussionId(selectedGroupId);
+        req.setDiscussionId(chatModel.getId());
         IOUtil.send(req);
 
         // 拉取讨论组聊天内容
         ReqFetchNewMessage reqFetchNewMessage = new ReqFetchNewMessage();
-        reqFetchNewMessage.setMaxSeq(discussionGroups.get(groupVo.getId()).getMaxSeq());
+        reqFetchNewMessage.setMaxSeq(discussionGroups.get(chatModel.getId()).getMaxSeq());
         reqFetchNewMessage.setChannel(Constants.CHANNEL_DISCUSSION);
-        reqFetchNewMessage.setTopic(groupVo.getId());
+        reqFetchNewMessage.setTopic(chatModel.getId());
         IOUtil.send(reqFetchNewMessage);
+
+        registerEvent(root, chatModel);
+    }
+
+    private void registerEvent(Parent root, ChatContact chatModel) {
+        TextArea msgInput = (TextArea) root.lookup("#msgInput");
+        msgInput.requestFocus();
+
+        msgInput.setOnKeyPressed(event -> {
+            // 注册enter快捷键
+            if (event.getCode() == KeyCode.ENTER) {
+                String message = msgInput.getText();
+                ReqChatToChannel request = new ReqChatToChannel();
+                request.setChannel(Constants.CHANNEL_DISCUSSION);
+                request.setTarget(Context.discussionManager.getSelectedGroupId());
+                TextMessageContent content = new TextMessageContent();
+                request.setContentType(MessageContentType.TEXT);
+                content.setContent(message);
+                request.setContent(JsonUtil.object2String(content));
+
+                IOUtil.send(request);
+                msgInput.clear();
+            }
+            // 注册ctrl+v快捷键
+            // 复制系统剪贴板图片资源
+            if (event.isControlDown() && event.getCode() == KeyCode.V) {
+                SchedulerManager.INSTANCE.runNow(()->{
+                    ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
+                    reqChatToChannel.setChannel(Constants.CHANNEL_DISCUSSION);
+                    reqChatToChannel.setTarget(chatModel.getId());
+                    FileUiUtil.onCopyClipboardResource(msgInput, reqChatToChannel);
+                });
+            }
+        });
     }
 
     private void refreshGroupMembers(Object packet) {
@@ -128,8 +171,11 @@ public class DiscussionManager implements LifeCycle {
             members.put(e.getId(), e);
         });
         groupMembers.put(message.getDiscussionId(), members);
-        if (UiContext.stageController.isStageShown(R.id.DiscussionGroup)) {
-            Stage stage = UiContext.stageController.setStage(R.id.DiscussionGroup);
+        if (UiContext.stageController.isStageShown(R.Id.ChatContainer)) {
+            if (!(Context.chatManager.getActivatedContact() instanceof DiscussionGroupVo)) {
+                return;
+            }
+            Stage stage = UiContext.stageController.setStage(R.Id.ChatContainer);
             TilePane groupListView = (TilePane) stage.getScene().getRoot().lookup("#members");
             groupListView.getChildren().clear();
 
@@ -152,68 +198,17 @@ public class DiscussionManager implements LifeCycle {
                 groupListView.getChildren().add(vBox);
             });
         }
-
-    }
-
-    public void receiveDiscussionMessages(long maxSeq, List<ChatMessage> messages) {
-        long discussionId = 0;
-        for (ChatMessage message : messages) {
-            discussionId = message.getReceiver();
-            discussionMessages.putIfAbsent(discussionId, new LinkedList<>());
-            discussionGroups.get(discussionId).setMaxSeq(maxSeq);
-            discussionMessages.get(discussionId).add(message);
-        }
-
-        if (UiContext.stageController.isStageShown(R.id.DiscussionGroup)) {
-            Stage stage = UiContext.stageController.getStageBy(R.id.DiscussionGroup);
-            VBox msgContainer = (VBox) stage.getScene().getRoot().lookup("#msgContainer");
-            msgContainer.getChildren().clear();
-            List<ChatMessage> allMsg = discussionMessages.get(discussionId);
-            allMsg.forEach(e -> {
-                Pane pane = decorateChatRecord(e);
-                msgContainer.getChildren().add(pane);
-            });
-            ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#msgScrollPane");
-            // 使用Platform.runLater确保在布局更新后设置滚动值
-            Platform.runLater(() -> scrollPane.setVvalue(1));
-        }
-    }
-
-
-    private Pane decorateChatRecord(ChatMessage message) {
-        boolean fromMe = message.getSender() == Context.userManager.getMyUserId();
-        StageController stageController = UiContext.stageController;
-        Pane chatRecord = stageController.load(R.layout.DiscussionChatItem, Pane.class);
-
-        Hyperlink nameUi = (Hyperlink) chatRecord.lookup("#nameUi");
-        ImageView headImage = (ImageView) chatRecord.lookup("#headImage");
-        if (fromMe) {
-            nameUi.setText(Context.userManager.getMyProfile().getUserName());
-            headImage.setImage(getAvatarImage(Context.userManager.getMyProfile().getUserId()));
-        } else {
-            nameUi.setText(Context.friendManager.getUserName(message.getSender()));
-            headImage.setImage(getAvatarImage(message.getSender()));
-        }
-
-        nameUi.setVisible(false);
-        Label _createTime = (Label) chatRecord.lookup("#timeUi");
-        _createTime.setText(message.getDate());
-        FlowPane _body = (FlowPane) chatRecord.lookup("#contentUi");
-
-        Context.messageContentFactory.displayUi(message.getMessageContent().getType(), _body, message);
-
-        return chatRecord;
-    }
-
-    private Image getAvatarImage(long userId) {
-        if (Context.userManager.getMyProfile().getUserId() == userId) {
-            return AvatarCache.getOrCreateImage(Context.userManager.getMyProfile().getAvatar());
-        }
-        FriendItemVo friendVo = Context.friendManager.queryFriend(userId);
-        return AvatarCache.getOrCreateImage(friendVo.getHeadUrl());
     }
 
     public DiscussionGroupVo getDiscussionGroupVo(long discussionId) {
         return discussionGroups.get(discussionId);
+    }
+
+    public long getSelectedGroupId() {
+        ChatContact contact = Context.chatManager.getActivatedContact();
+        if (contact instanceof DiscussionGroupVo) {
+            return contact.getId();
+        }
+        return 0;
     }
 }

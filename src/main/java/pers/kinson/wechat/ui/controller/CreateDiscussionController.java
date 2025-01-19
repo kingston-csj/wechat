@@ -54,7 +54,7 @@ public class CreateDiscussionController implements ControlledStage, Initializabl
     @Override
     public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-        return stageController.getStageBy(R.id.CreateDiscussion);
+        return stageController.getStageBy(R.Id.CreateDiscussion);
     }
 
     @Override

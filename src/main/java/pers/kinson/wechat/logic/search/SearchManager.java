@@ -35,7 +35,7 @@ public class SearchManager {
         List<RecommendFriendItem> items = resSearchFriends.getFriends();
         StageController stageController = UiContext.stageController;
 //		stageController.switchStage(R.id.SearchView, R.id.MainView);
-        Stage stage = stageController.setStage(R.id.SearchView);
+        Stage stage = stageController.setStage(R.Id.SearchView);
         GridPane scrollPane = lookUpFriendsContainer();
         scrollPane.getChildren().clear();
 
@@ -43,7 +43,7 @@ public class SearchManager {
             // 暂时填充假数据
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 2; j++) {
-                    Pane item = stageController.load(R.layout.RecommendFriendItem, Pane.class);
+                    Pane item = stageController.load(R.Layout.RecommendFriendItem, Pane.class);
                     decorateItem(item, null);
                     item.lookup("#addBtn").setVisible(false);
                     scrollPane.add(item, i, j);
@@ -53,7 +53,7 @@ public class SearchManager {
             for (int i = 0; i < items.size(); i++) {
                 int colIndex = items.size() / 3;
                 int rowIndex = items.size() % 3;
-                Pane itemUi = stageController.load(R.layout.RecommendFriendItem, Pane.class);
+                Pane itemUi = stageController.load(R.Layout.RecommendFriendItem, Pane.class);
                 decorateItem(itemUi, items.get(i));
                 scrollPane.add(itemUi, colIndex, rowIndex);
             }
@@ -63,7 +63,7 @@ public class SearchManager {
     private GridPane lookUpFriendsContainer() {
         StageController stageController = UiContext.stageController;
         // 使用SplitPane有坑，由于SplitPane没有children子标签，所以这样需要间接lookup
-        Stage stage = stageController.getStageBy(R.id.SearchView);
+        Stage stage = stageController.getStageBy(R.Id.SearchView);
         SplitPane splitPane = (SplitPane) stage.getScene().getRoot().lookup("#friendsSplitPane");
         ObservableList<Node> itmes = splitPane.getItems();
         AnchorPane anchorPane = (AnchorPane) itmes.get(1);

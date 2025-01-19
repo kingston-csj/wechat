@@ -66,7 +66,7 @@ public class FileContentHandler implements MessageContentUiHandler {
             // 创建文件选择器
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("选择保存文件的位置");
-            Stage stage = UiContext.stageController.getStageBy(R.id.ChatToPoint);
+            Stage stage = UiContext.stageController.getStageBy(R.Id.ChatContainer);
             // 弹出文件选择器对话框并获取用户选择的文件对象
             File selectedFile = fileChooser.showSaveDialog(parent.getScene().getWindow());
 

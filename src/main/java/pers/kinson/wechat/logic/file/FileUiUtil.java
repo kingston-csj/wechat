@@ -131,7 +131,7 @@ public class FileUiUtil {
         // 临时创建一个消息面板来显示文件进度
         VBox msgContainer = (VBox) window.getScene().getRoot().lookup("#msgContainer");
         StageController stageController = UiContext.stageController;
-        Pane pane = stageController.load(R.layout.PrivateChatItemRight, Pane.class);
+        Pane pane = stageController.load(R.Layout.PrivateChatItemRight, Pane.class);
         FlowPane nameUi = (FlowPane) pane.lookup("#contentUi");
         ProgressBar progressBar = new ProgressBar();
         nameUi.getChildren().add(progressBar);

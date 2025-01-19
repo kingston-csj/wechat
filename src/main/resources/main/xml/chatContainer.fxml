@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<Pane layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="840.0" prefHeight="590.0" prefWidth="800.0"
+      style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/chat_pane.css"
+      fx:controller="pers.kinson.wechat.ui.controller.ChatMainPaneController">
+    <HBox>
+        <!-- 左侧联系人列表 -->
+        <VBox prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
+            <VBox prefWidth="200.0" style="-fx-background-color: #f0f0f0;">
+                <ListView fx:id="contactList" prefHeight="590.0" prefWidth="200.0"/>
+            </VBox>
+        </VBox>
+
+        <Pane id="container">
+        </Pane>
+    </HBox>
+</Pane>

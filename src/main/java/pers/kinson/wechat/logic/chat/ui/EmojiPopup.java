@@ -68,7 +68,7 @@ public class EmojiPopup extends PopupControl {
         // 设置样式
         borderPane.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: #ffffff;");
         StageController stageController = UiContext.stageController;
-        Stage stage = stageController.getStageBy(R.id.ChatToPoint);
+        Stage stage = stageController.getStageBy(R.Id.ChatContainer);
         Node root = stage.getScene().getRoot();
         // 为聊天容器添加鼠标点击事件过滤器
         root.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {

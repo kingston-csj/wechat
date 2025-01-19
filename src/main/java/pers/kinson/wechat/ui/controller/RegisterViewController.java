@@ -88,7 +88,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	private void gotoLogin() {
 		clearFields();
         StageController stageController = UiContext.stageController;
-		stageController.switchStage(R.id.LoginView, R.id.RegisterView);
+		stageController.switchStage(R.Id.LoginView, R.Id.RegisterView);
 	}
 
 	private void clearFields() {
@@ -129,7 +129,7 @@ public class RegisterViewController implements ControlledStage, Initializable {
 	@Override
 	public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-		return stageController.getStageBy(R.id.RegisterView);
+		return stageController.getStageBy(R.Id.RegisterView);
 	}
 
 }

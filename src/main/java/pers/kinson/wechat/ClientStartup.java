@@ -35,14 +35,14 @@ public class ClientStartup extends Application {
         StageController stageController = UiContext.stageController;
         stageController.setPrimaryStage("root", stage);
 
-        Stage loginStage = stageController.loadStage(R.id.LoginView, R.layout.LoginView,
+        Stage loginStage = stageController.loadStage(R.Id.LoginView, R.Layout.LoginView,
                 StageStyle.UNDECORATED);
         loginStage.setTitle("QQ");
 
-        stageController.loadStage(R.id.RegisterView, R.layout.RegisterView, StageStyle.UNDECORATED);
+        stageController.loadStage(R.Id.RegisterView, R.Layout.RegisterView, StageStyle.UNDECORATED);
 //        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UTILITY);
-        Stage mainStage = stageController.loadStage(R.id.MainView, R.layout.MainView, StageStyle.UNDECORATED);
-        stageController.loadStage(R.id.PersonSettingView, R.layout.PersonSettingView, StageStyle.UNDECORATED);
+        Stage mainStage = stageController.loadStage(R.Id.MainView, R.Layout.MainView, StageStyle.UNDECORATED);
+        stageController.loadStage(R.Id.PersonSettingView, R.Layout.PersonSettingView, StageStyle.UNDECORATED);
 
         //把主界面放在右上方
         Screen screen = Screen.getPrimary();
@@ -51,15 +51,15 @@ public class ClientStartup extends Application {
         mainStage.setX(rightTopX);
         mainStage.setY(rightTopY);
 
-        stageController.loadStage(R.id.ChatToPoint, R.layout.ChatToPoint, StageStyle.UTILITY);
-        stageController.loadStage(R.id.CreateDiscussion, R.layout.CreateDiscussion, StageStyle.UTILITY);
-        stageController.loadStage(R.id.DiscussionGroup, R.layout.DiscussionGroup, StageStyle.UTILITY);
+        stageController.loadStage(R.Id.ChatContainer, R.Layout.ChatContainer, StageStyle.UTILITY);
+        stageController.loadStage(R.Id.CreateDiscussion, R.Layout.CreateDiscussion, StageStyle.UTILITY);
+//        stageController.loadStage(R.id.DiscussionGroup, R.layout.DiscussionGroup, StageStyle.UTILITY);
 
-        stageController.loadStage(R.id.SearchView, R.layout.SearchFriendView,
+        stageController.loadStage(R.Id.SearchView, R.Layout.SearchFriendView,
                 StageStyle.UTILITY);
 
         //显示MainView舞台
-        stageController.setStage(R.id.LoginView);
+        stageController.setStage(R.Id.LoginView);
 
         mainStage.setTitle("wechat");
 

@@ -1,17 +1,12 @@
 package pers.kinson.wechat.ui.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import jforgame.commons.TimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
-import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyFriendList;
 import pers.kinson.wechat.logic.search.SearchManager;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
@@ -156,7 +151,7 @@ public class MainViewController implements ControlledStage, Initializable {
     @FXML
     private void onClickSetting() {
         StageController stageController = UiContext.stageController;
-        stageController.setStage(R.id.PersonSettingView);
+        stageController.setStage(R.Id.PersonSettingView);
     }
 
     @FXML
@@ -167,7 +162,7 @@ public class MainViewController implements ControlledStage, Initializable {
     @Override
     public Stage getMyStage() {
         StageController stageController = UiContext.stageController;
-        return stageController.getStageBy(R.id.MainView);
+        return stageController.getStageBy(R.Id.MainView);
     }
 
 }

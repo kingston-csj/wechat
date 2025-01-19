@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import lombok.extern.slf4j.Slf4j;
 import pers.kinson.wechat.base.MessageContentType;
 import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
@@ -53,11 +54,15 @@ public class TextContentHandler implements MessageContentUiHandler {
                 flowPane.getStyleClass().add("unfocused-flowpane");
             }
         });
-
         // 监听FlowPane的宽度变化，动态调整Label的宽度
         // 如果文本/图片超过flowPane的宽度，则自动切行
         flowPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-            adjustLabels(flowPane, newWidth.doubleValue());
+            // 没有这段代码，如果是纯文本的话，没法切行，因为newWidth超过flowPane的最大宽度了， 不知道什么原因。。。
+            int maxWidth = 480;
+            if (newWidth.doubleValue() > maxWidth) {
+                flowPane.setMaxWidth(maxWidth); // 强制限制宽度
+            }
+            adjustLabels(flowPane, Math.min(newWidth.doubleValue(), maxWidth));
         });
 
         // 确保每一个flowpane都能聚焦
@@ -78,7 +83,7 @@ public class TextContentHandler implements MessageContentUiHandler {
             String content = getFlowPaneContent(flowPane);
             // 将内容复制到剪贴板
             ClipboardUtil.copyToClipboard(content);
-//            System.out.println("Copied from " + flowPane.getId() + ": " + content); // 打印复制的内容（可选）
+//            System.out.println("Copied from " + flowPane.getId() + ": " + content); // 打印复制的内容
         }
     }
 
@@ -121,15 +126,17 @@ public class TextContentHandler implements MessageContentUiHandler {
 
         // 记录需要拆分的Label
         List<Runnable> splitTasks = new ArrayList<>();
+
         // 遍历FlowPane的所有子节点
         for (Node node : flowPane.getChildren()) {
-            if (node instanceof javafx.scene.control.Label) {
-                javafx.scene.control.Label label = (javafx.scene.control.Label) node;
+            if (node instanceof Label) {
+                Label label = (Label) node;
                 label.setWrapText(false); // 禁用文本换行
-                label.setMaxHeight(javafx.scene.control.Label.USE_PREF_SIZE); // 限制Label高度为单行
+                label.setMaxHeight(Label.USE_PREF_SIZE); // 限制Label高度为单行
 
                 // 计算Label的文本宽度
                 double textWidth = getTextWidth(label);
+
                 // 检查当前行是否还能容纳Label
                 if (currentX + textWidth > flowPaneWidth) {
                     // 如果当前行无法容纳，记录拆分任务
@@ -138,17 +145,24 @@ public class TextContentHandler implements MessageContentUiHandler {
                     currentX = 0; // 重置当前行的X坐标
                     rowHeight = 0; // 重置当前行的高度
                 }
+
+                // 设置Label的最大宽度为当前行的剩余宽度
+                double availableWidth = flowPaneWidth - currentX;
+                label.setMaxWidth(availableWidth);
+
                 // 更新当前行的X坐标和高度
                 currentX += textWidth + flowPane.getHgap();
                 rowHeight = Math.max(rowHeight, label.getBoundsInParent().getHeight());
             } else if (node instanceof ImageView) {
                 ImageView imageView = (ImageView) node;
+
                 // 检查当前行是否还能容纳图片
                 if (currentX + imageView.getFitWidth() > flowPaneWidth) {
                     // 换到下一行
                     currentX = 0;
                     rowHeight = 0;
                 }
+
                 // 更新当前行的X坐标和高度
                 currentX += imageView.getFitWidth() + flowPane.getHgap();
                 rowHeight = Math.max(rowHeight, imageView.getBoundsInParent().getHeight());
@@ -164,7 +178,7 @@ public class TextContentHandler implements MessageContentUiHandler {
     /**
      * 拆分Label，将超出的部分放到新的一行
      */
-    private void splitLabel(FlowPane flowPane, javafx.scene.control.Label label, double availableWidth) {
+    private void splitLabel(FlowPane flowPane, Label label, double availableWidth) {
         String text = label.getText();
         double textWidth = getTextWidth(label);
 
@@ -178,8 +192,9 @@ public class TextContentHandler implements MessageContentUiHandler {
             label.setText(firstPart);
 
             // 创建一个新的Label，存放剩余文本
-            javafx.scene.control.Label newLabel = new javafx.scene.control.Label(secondPart);
-            newLabel.setMaxHeight(javafx.scene.control.Label.USE_PREF_SIZE); // 限制高度为单行
+            Label newLabel = new Label(secondPart);
+            newLabel.setMaxHeight(Label.USE_PREF_SIZE); // 限制高度为单行
+            newLabel.setMaxWidth(flowPane.getWidth()); // 设置最大宽度为FlowPane的宽度
 
             // 将新的Label插入到FlowPane中
             int index = flowPane.getChildren().indexOf(label);
@@ -190,8 +205,10 @@ public class TextContentHandler implements MessageContentUiHandler {
     /**
      * 计算Label的文本宽度
      */
-    private double getTextWidth(javafx.scene.control.Label label) {
-        return label.getFont().getSize() * label.getText().length() * 0.6; // 估算文本宽度
+    private double getTextWidth(Label label) {
+        Text text = new Text(label.getText());
+        text.setFont(label.getFont());
+        return text.getLayoutBounds().getWidth();
     }
 
     /**
@@ -202,13 +219,16 @@ public class TextContentHandler implements MessageContentUiHandler {
         double currentWidth = 0;
 
         for (int i = 0; i < text.length(); i++) {
-            currentWidth += label.getFont().getSize() * 0.6; // 估算每个字符的宽度
+            Text tempText = new Text(text.substring(0, i + 1));
+            tempText.setFont(label.getFont());
+            currentWidth = tempText.getLayoutBounds().getWidth();
+
             if (currentWidth > availableWidth) {
-                return i;
+                return i; // 返回拆分位置
             }
         }
 
-        return text.length();
+        return text.length(); // 如果不需要拆分，返回文本长度
     }
 
     @Override

@@ -1,23 +1,35 @@
 package pers.kinson.wechat.logic.friend;
 
 import com.google.common.eventbus.Subscribe;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import lombok.Getter;
+import jforgame.commons.NumberUtil;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.EventDispatcher;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.logic.chat.ChatPaneHandler;
+import pers.kinson.wechat.logic.chat.message.req.ReqChatToChannel;
+import pers.kinson.wechat.logic.chat.message.vo.ChatMessage;
+import pers.kinson.wechat.logic.chat.model.ChatContact;
+import pers.kinson.wechat.logic.chat.struct.TextMessageContent;
+import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.logic.constant.RedPointId;
+import pers.kinson.wechat.logic.discussion.message.vo.DiscussionGroupVo;
+import pers.kinson.wechat.logic.file.FileUiUtil;
 import pers.kinson.wechat.logic.friend.message.req.ReqApplyResult;
 import pers.kinson.wechat.logic.friend.message.res.ResApplyFriendList;
 import pers.kinson.wechat.logic.friend.message.res.ResFriendList;
@@ -32,6 +44,7 @@ import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.ImageUtil;
+import pers.kinson.wechat.util.SchedulerManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,16 +56,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public class FriendManager implements LifeCycle {
+public class FriendManager implements LifeCycle, ChatPaneHandler {
 
     private Map<Long, FriendItemVo> friends = new LinkedHashMap<>();
 
     private Map<Integer, String> groupNames = new LinkedHashMap<>();
 
     private String defaultGroupName = "未分组";
-
-    @Getter
-    private Long activatedFriendId;
 
     @Override
     public void init() {
@@ -83,7 +93,7 @@ public class FriendManager implements LifeCycle {
 
     public void refreshMyFriendsView() {
         StageController stageController = UiContext.stageController;
-        Stage stage = stageController.getStageBy(R.id.MainView);
+        Stage stage = stageController.getStageBy(R.Id.MainView);
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#friendSp");
         Accordion friendGroup = (Accordion) scrollPane.getContent();
         friendGroup.getPanes().clear();
@@ -120,7 +130,7 @@ public class FriendManager implements LifeCycle {
             if (item.isOnline()) {
                 onlineCount++;
             }
-            Pane pane = stageController.load(R.layout.FriendItem, Pane.class);
+            Pane pane = stageController.load(R.Layout.FriendItem, Pane.class);
             pane.setId("friend@" + item.getUserId());
             decorateFriendItem(pane, item);
             listView.getItems().add(pane);
@@ -161,7 +171,7 @@ public class FriendManager implements LifeCycle {
     private void refreshFriendApplyView(Object message) {
         ResApplyFriendList resApplyFriendList = (ResApplyFriendList) message;
         StageController stageController = UiContext.stageController;
-        Stage stage = stageController.getStageBy(R.id.MainView);
+        Stage stage = stageController.getStageBy(R.Id.MainView);
         ListView applyListView = (ListView) stage.getScene().getRoot().lookup("#applies");
         applyListView.getItems().clear();
         decorateApplyItem(applyListView, resApplyFriendList.getRecords());
@@ -169,7 +179,7 @@ public class FriendManager implements LifeCycle {
 
     private void refreshFriendOnlineStatus(Object message) {
         ResQueryFriendsOnlineStatus onlineStatus = (ResQueryFriendsOnlineStatus) message;
-        Stage stage = UiContext.stageController.getStageBy(R.id.MainView);
+        Stage stage = UiContext.stageController.getStageBy(R.Id.MainView);
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#friendSp");
         Accordion parentContainer = (Accordion) scrollPane.getContent();
         Set<Long> onlineIds = new HashSet<>(onlineStatus.getIds());
@@ -243,7 +253,7 @@ public class FriendManager implements LifeCycle {
         StageController stageController = UiContext.stageController;
         Long myUserId = Context.userManager.getMyUserId();
         for (FriendApplyVo item : friendItems) {
-            Pane pane = stageController.load(R.layout.ApplyItem, Pane.class);
+            Pane pane = stageController.load(R.Layout.ApplyItem, Pane.class);
             Node agreeBtn = pane.lookup("#agreeBtn");
             Node rejectBtn = pane.lookup("#rejectBtn");
             Label statusLabel = (Label) pane.lookup("#status");
@@ -313,34 +323,13 @@ public class FriendManager implements LifeCycle {
                     return;
                 }
                 if (targetFriend != null) {
-                    openChat2PointPanel(targetFriend);
+                    Context.chatManager.openChatPanel(targetFriend);
                 }
             }
         });
     }
 
-    private void openChat2PointPanel(FriendItemVo targetFriend) {
-        StageController stageController = UiContext.stageController;
-        Stage chatStage = stageController.setStage(R.id.ChatToPoint);
 
-        Label userIdUi = (Label) chatStage.getScene().getRoot().lookup("#userIdUi");
-        userIdUi.setText(String.valueOf(targetFriend.getUserId()));
-        Hyperlink userNameUi = (Hyperlink) chatStage.getScene().getRoot().lookup("#userName");
-        Label signatureUi = (Label) chatStage.getScene().getRoot().lookup("#signature");
-        userNameUi.setText(targetFriend.getFullName());
-        signatureUi.setText(targetFriend.getSignature());
-
-        ImageView headIcon = (ImageView) chatStage.getScene().getRoot().lookup("#headIcon");
-        headIcon.setImage(AvatarCache.getOrCreateImage(targetFriend.getHeadUrl()));
-
-        activatedFriendId = targetFriend.getUserId();
-
-        Context.friendManager.updateRedPoint(targetFriend.getUserId(), false);
-
-        // 先加载本地数据
-        Context.chatManager.loadHistoryMessage(targetFriend.getUserId(), false);
-        Context.chatManager.showFriendPrivateMessage(targetFriend.getUserId());
-    }
 
     public String getUserName(Long userId) {
         if (userId == Context.userManager.getMyUserId()) {
@@ -363,11 +352,14 @@ public class FriendManager implements LifeCycle {
         } else {
             ApplicationEffect.stopBlink();
         }
-        // 当前已经聊得嗨起了
-        if (show && Objects.equals(friendId, activatedFriendId)) {
-            return;
+        ChatContact activatedFriend = Context.chatManager.getActivatedContact();
+        if (activatedFriend instanceof DiscussionGroupVo) {
+            // 当前已经聊得嗨起了
+            if (show && Objects.equals(friendId, activatedFriend.getId())) {
+                return;
+            }
         }
-        Stage stage = UiContext.stageController.getStageBy(R.id.MainView);
+        Stage stage = UiContext.stageController.getStageBy(R.Id.MainView);
         ScrollPane scrollPane = (ScrollPane) stage.getScene().getRoot().lookup("#friendSp");
         Accordion parentContainer = (Accordion) scrollPane.getContent();
         Node node = lookUpFriendItem(parentContainer, friendId);
@@ -376,8 +368,84 @@ public class FriendManager implements LifeCycle {
         }
     }
 
-    public void resetActivatedFriendId() {
-        this.activatedFriendId = null;
+    @Override
+    public Pane loadMessagePane() {
+        StageController stageController = UiContext.stageController;
+        return stageController.load(R.Layout.FriendChatContainer, Pane.class);
     }
+
+    public void onChatPaneShow(Parent root, ChatContact chatModel) {
+        FriendItemVo targetFriend = Context.friendManager.queryFriend(chatModel.getId());
+        Label userIdUi = (Label) root.lookup("#userIdUi");
+        userIdUi.setText(String.valueOf(targetFriend.getUserId()));
+        Hyperlink userNameUi = (Hyperlink) root.lookup("#userName");
+        Label signatureUi = (Label) root.lookup("#signature");
+        userNameUi.setText(targetFriend.getFullName());
+        signatureUi.setText(targetFriend.getSignature());
+
+        ImageView headIcon = (ImageView) root.lookup("#headIcon");
+        headIcon.setImage(AvatarCache.getOrCreateImage(targetFriend.getHeadUrl()));
+
+        registerEvent(root, chatModel);
+
+        Context.friendManager.updateRedPoint(targetFriend.getId(), false);
+
+        // 先加载本地数据
+        Context.chatManager.loadHistoryMessage(targetFriend.getId(), false);
+        Context.chatManager.showFriendPrivateMessage(targetFriend.getId());
+    }
+
+    private long lastScrollTime;
+
+    private void registerEvent(Parent root, ChatContact chatModel) {
+        TextArea msgInput = (TextArea) root.lookup("#msgInput");
+        ScrollPane msgScrollPane = (ScrollPane) root.lookup("#msgScrollPane");
+        msgInput.requestFocus();
+        // 添加监听器来检测是否滚动到顶部
+        msgScrollPane.setOnScroll(event -> {
+            if (event.getDeltaY() > 0) {
+                long now = System.currentTimeMillis();
+                // 间隔太短，不触发
+                if (now - lastScrollTime < 3000L) {
+                    return;
+                }
+                lastScrollTime = now;
+                // 先加载本地历史数据
+                List<ChatMessage> chatMessages = Context.chatManager.loadHistoryMessage(chatModel.getId(), true);
+                Context.chatManager.showFriendPrivateMessage(chatModel.getId(), chatMessages, true);
+            }
+        });
+
+        msgInput.setOnKeyPressed(event -> {
+            // 注册enter快捷键
+            if (event.getCode() == KeyCode.ENTER) {
+                String message = msgInput.getText();
+                TextMessageContent content = new TextMessageContent();
+                content.setContent(message);
+                Context.chatManager.sendMessageTo(chatModel.getId(), content);
+                msgInput.clear();
+            }
+            // 注册ctrl+v快捷键
+            // 复制系统剪贴板图片资源
+            if (event.isControlDown() && event.getCode() == KeyCode.V) {
+                SchedulerManager.INSTANCE.runNow(()->{
+                    ReqChatToChannel reqChatToChannel = new ReqChatToChannel();
+                    reqChatToChannel.setChannel(Constants.CHANNEL_PERSON);
+                    reqChatToChannel.setTarget(chatModel.getId());
+                    FileUiUtil.onCopyClipboardResource(msgInput, reqChatToChannel);
+                });
+            }
+        });
+
+        // 获得焦点，关闭小图标闪动
+        msgInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                ApplicationEffect.stopBlink();
+            }
+        });
+    }
+
+
+
 
 }
