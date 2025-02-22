@@ -136,7 +136,6 @@ public class TextContentHandler implements MessageContentUiHandler {
 
                 // 计算Label的文本宽度
                 double textWidth = getTextWidth(label);
-
                 // 检查当前行是否还能容纳Label
                 if (currentX + textWidth > flowPaneWidth) {
                     // 如果当前行无法容纳，记录拆分任务
@@ -145,7 +144,6 @@ public class TextContentHandler implements MessageContentUiHandler {
                     currentX = 0; // 重置当前行的X坐标
                     rowHeight = 0; // 重置当前行的高度
                 }
-
                 // 设置Label的最大宽度为当前行的剩余宽度
                 double availableWidth = flowPaneWidth - currentX;
                 label.setMaxWidth(availableWidth);
@@ -155,7 +153,6 @@ public class TextContentHandler implements MessageContentUiHandler {
                 rowHeight = Math.max(rowHeight, label.getBoundsInParent().getHeight());
             } else if (node instanceof ImageView) {
                 ImageView imageView = (ImageView) node;
-
                 // 检查当前行是否还能容纳图片
                 if (currentX + imageView.getFitWidth() > flowPaneWidth) {
                     // 换到下一行

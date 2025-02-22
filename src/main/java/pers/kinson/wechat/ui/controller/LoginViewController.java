@@ -14,9 +14,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
-import pers.kinson.wechat.SystemConfig;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
+import pers.kinson.wechat.config.SystemConfig;
 import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
@@ -24,7 +24,6 @@ import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.ui.container.ResourceContainer;
 import pers.kinson.wechat.util.NumberUtil;
 import pers.kinson.wechat.util.SchedulerManager;
-import pers.kinson.wechat.util.XmlUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -60,6 +59,10 @@ public class LoginViewController implements ControlledStage, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        long defaultUserId = SystemConfig.getInstance().getPrivacy().getUserId();
+        if (defaultUserId > 0) {
+            userId.setText(String.valueOf(defaultUserId));
+        }
         //验证规则：　userId非空且为数字　password非空
         login.disableProperty().bind(
                 Bindings.createBooleanBinding(
@@ -112,7 +115,7 @@ public class LoginViewController implements ControlledStage, Initializable {
                     notice.setText("客户端下载成功，请关闭重启");
                 });
                 SystemConfig.getInstance().getClient().setVersion(version);
-                XmlUtils.saveToFile("system.xml", SystemConfig.getInstance());
+                SystemConfig.getInstance().saveConfig();
             } catch (Exception e) {
                 log.error("", e);
             }
@@ -132,6 +135,9 @@ public class LoginViewController implements ControlledStage, Initializable {
 
         loginProgress.setVisible(true);
         login.setVisible(false);
+
+        SystemConfig.getInstance().getPrivacy().setUserId(useId);
+        SystemConfig.getInstance().saveConfig();
 
         Context.loginManager.beginToLogin(useId, psw);
     }

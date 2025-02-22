@@ -7,4 +7,7 @@
    <client>
       <version>1.2.3</version>
    </client>
+   <privacy>
+      <userId>1001</userId>
+   </privacy>
 </app>

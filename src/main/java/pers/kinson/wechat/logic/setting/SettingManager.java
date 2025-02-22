@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import jforgame.commons.JsonUtil;
 import jforgame.commons.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
-import pers.kinson.wechat.SystemConfig;
+import pers.kinson.wechat.config.SystemConfig;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;

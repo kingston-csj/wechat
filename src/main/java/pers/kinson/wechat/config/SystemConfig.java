@@ -1,4 +1,4 @@
-package pers.kinson.wechat;
+package pers.kinson.wechat.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +21,11 @@ public class SystemConfig {
     @Element
     private Client client;
 
+    @Getter
+    @Setter
+    @Element
+    private Privacy privacy;
+
     public static SystemConfig getInstance() {
         if (inst != null) {
             return inst;
@@ -31,6 +36,10 @@ public class SystemConfig {
             }
         }
         return inst;
+    }
+
+    public void saveConfig() {
+        XmlUtils.saveToFile("system.xml", SystemConfig.getInstance());
     }
 
 }

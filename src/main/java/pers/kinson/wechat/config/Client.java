@@ -1,4 +1,4 @@
-package pers.kinson.wechat;
+package pers.kinson.wechat.config;
 
 
 import lombok.Data;

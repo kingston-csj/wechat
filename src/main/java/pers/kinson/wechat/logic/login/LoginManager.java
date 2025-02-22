@@ -42,7 +42,6 @@ public class LoginManager implements LifeCycle {
         boolean isSucc = resp.getIsValid() == Constants.TRUE;
         if (isSucc) {
             redirectToMainPanel();
-//            registerHeartTimer();
         } else {
             StageController stageController = UiContext.stageController;
             Stage stage = stageController.getStageBy(R.Id.LoginView);
@@ -56,15 +55,6 @@ public class LoginManager implements LifeCycle {
     private void redirectToMainPanel() {
         StageController stageController = UiContext.stageController;
         stageController.switchStage(R.Id.MainView, R.Id.LoginView);
-    }
-
-    /**
-     * 注册心跳事件
-     */
-    private void registerHeartTimer() {
-        SchedulerManager.INSTANCE.scheduleAtFixedRate("HEART_BEAT", () -> {
-            IOUtil.send(new ReqHeartBeat());
-        }, 0, 5 * 1000);
     }
 
 }
