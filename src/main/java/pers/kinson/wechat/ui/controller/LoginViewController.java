@@ -78,7 +78,7 @@ public class LoginViewController implements ControlledStage, Initializable {
         login.setVisible(false);
         notice.setText("版本检测中");
         try {
-            HttpResult httpResult = Context.httpClientManager.get(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/system/version", new HashMap<>(), HttpResult.class);
+            HttpResult httpResult = Context.httpClientManager.get("/system/version", new HashMap<>(), HttpResult.class);
             String serverVersion = httpResult.getData();
             String clientVersion = SystemConfig.getInstance().getClient().getVersion();
             if (serverVersion.equals(clientVersion)) {
@@ -97,7 +97,7 @@ public class LoginViewController implements ControlledStage, Initializable {
         // 异步下载
         SchedulerManager.INSTANCE.runNow(() -> {
             try {
-                HttpResult httpResult = Context.httpClientManager.get(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/system/clientApp", new HashMap<>(), HttpResult.class);
+                HttpResult httpResult = Context.httpClientManager.get("/system/clientApp", new HashMap<>(), HttpResult.class);
                 String downloadUrl = httpResult.getData();
                 ProgressMonitor monitor = new ProgressMonitor() {
                     @Override

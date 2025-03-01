@@ -5,17 +5,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import jforgame.commons.JsonUtil;
+import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.search.SearchManager;
 import pers.kinson.wechat.logic.search.message.req.ReqSearchFriends;
 import pers.kinson.wechat.logic.search.message.res.ResSearchFriends;
+import pers.kinson.wechat.logic.search.model.RecommendFriendItem;
+import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.net.SimpleRequestCallback;
 import pers.kinson.wechat.ui.ControlledStage;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class SearchViewController implements ControlledStage, Initializable {
@@ -38,14 +45,16 @@ public class SearchViewController implements ControlledStage, Initializable {
         ReqSearchFriends req = new ReqSearchFriends();
         req.setKey(key);
 
-        IOUtil.callback(req, new SimpleRequestCallback<ResSearchFriends>() {
-            @Override
-            public void onSuccess(ResSearchFriends callBack) {
-                   UiContext.runTaskInFxThread(() -> {
-                    SearchManager.getInstance().refreshRecommendFriends(callBack);
-                });
+        try {
+            HttpResult httpResult = Context.httpClientManager.get("/search/key", req, HttpResult.class);
+            if (httpResult.isOk()) {
+                ArrayList<RecommendFriendItem> friendItems = JsonUtil.string2Collection(httpResult.getData(), ArrayList.class, RecommendFriendItem.class);
+                SearchManager.getInstance().refreshRecommendFriends(friendItems);
             }
-        });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 

@@ -31,10 +31,8 @@ public class SearchManager {
         return instance;
     }
 
-    public void refreshRecommendFriends(ResSearchFriends resSearchFriends) {
-        List<RecommendFriendItem> items = resSearchFriends.getFriends();
+    public void refreshRecommendFriends(List<RecommendFriendItem> items) {
         StageController stageController = UiContext.stageController;
-//		stageController.switchStage(R.id.SearchView, R.id.MainView);
         Stage stage = stageController.setStage(R.Id.SearchView);
         GridPane scrollPane = lookUpFriendsContainer();
         scrollPane.getChildren().clear();

@@ -42,7 +42,7 @@ public interface CmdConst {
     /**
      * 推送--用户登录
      */
-    int ResUserLogin = 3_201;
+    int ResSocketLogin = 3_201;
     /**
      * 推送--玩家信息
      */

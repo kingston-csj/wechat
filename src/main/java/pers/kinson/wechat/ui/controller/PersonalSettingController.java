@@ -149,7 +149,7 @@ public class PersonalSettingController implements ControlledStage {
         params.put("remark", newRemark);
         params.put("avatar", newAvatar);
         try {
-            HttpResult httpResult = Context.httpClientManager.post(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/user/profile", params, HttpResult.class);
+            HttpResult httpResult = Context.httpClientManager.post("/user/profile", params, HttpResult.class);
             if (httpResult.isOk()) {
                 SystemNotifyUtil.warm("保存成功");
                 Context.userManager.getMyProfile().setUserName(newName);

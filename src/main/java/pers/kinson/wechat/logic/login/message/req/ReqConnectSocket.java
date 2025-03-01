@@ -6,9 +6,9 @@ import pers.kinson.wechat.net.CmdConst;
 
 @Data
 @MessageMeta(cmd = CmdConst.ReqUserLogin)
-public class ReqUserLogin  {
+public class ReqConnectSocket {
 
 	private long userId;
-	private String userPwd;
+	private String token;
 
 }

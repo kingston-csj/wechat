@@ -5,10 +5,9 @@ import lombok.Data;
 import pers.kinson.wechat.net.CmdConst;
 
 @Data
-@MessageMeta(cmd = CmdConst.ResUserLogin)
-public class ResUserLogin  {
+@MessageMeta(cmd = CmdConst.ResSocketLogin)
+public class ResConnectServer {
 
-	private String alertMsg;
-	private byte isValid;
+	private byte status;
 	
 }

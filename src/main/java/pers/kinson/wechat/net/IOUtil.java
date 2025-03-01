@@ -1,6 +1,7 @@
 package pers.kinson.wechat.net;
 
 import jforgame.codec.struct.StructMessageCodec;
+import jforgame.commons.JsonUtil;
 import jforgame.socket.client.RequestCallback;
 import jforgame.socket.client.RpcMessageClient;
 import jforgame.socket.client.SocketClient;
@@ -32,7 +33,7 @@ public class IOUtil {
             public void dispatch(IdSession session, Object frame) {
                 RequestDataFrame dataFrame = (RequestDataFrame) frame;
                 Object message = dataFrame.getMessage();
-//                System.err.println("收到消息<-- " + message.getClass().getSimpleName() + "=" + JsonUtil.object2String(message));
+                System.err.println("收到消息<-- " + message.getClass().getSimpleName() + "=" + JsonUtil.object2String(message));
                 Context.messageRouter.execPacket(message);
             }
 
@@ -43,7 +44,7 @@ public class IOUtil {
 
             public void onSessionCreated(IdSession session) {
                 // 心跳，防止服务器断开沉默链接
-                registerHeartTimer();
+//                registerHeartTimer();
             }
         };
         BaseMessageFactory messageFactory = new BaseMessageFactory("pers.kinson.wechat");

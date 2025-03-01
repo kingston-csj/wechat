@@ -21,6 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import pers.kinson.wechat.base.LifeCycle;
+import pers.kinson.wechat.config.SystemConfig;
 import pers.kinson.wechat.ui.controller.ProgressMonitor;
 
 import java.io.File;
@@ -43,12 +44,18 @@ public class HttpClientManager implements LifeCycle {
         httpClient = HttpClients.createDefault();
     }
 
+    public <T> T get(String url, Object request, Class<T> responseClazz) throws IOException {
+        String params = JsonUtil.object2String(request);
+        return get(url, null, JsonUtil.string2Map(params), responseClazz);
+    }
+
     public <T> T get(String url, Map<String, Object> params, Class<T> responseClazz) throws IOException {
         return get(url, null, params, responseClazz);
     }
 
     public <T> T get(String url, Map<String, String> headers, Map<String, Object> params, Class<T> responseClazz) throws IOException {
         try {
+            url = SystemConfig.getInstance().getServer().getRemoteHttpUrl() + url;
             URIBuilder uriBuilder = new URIBuilder(url);
             List<NameValuePair> urlParam = new ArrayList<>();
             if (params != null && !params.isEmpty()) {
@@ -79,12 +86,17 @@ public class HttpClientManager implements LifeCycle {
         return null;
     }
 
+    public <T> T post(String url, Object request, Class<T> responseClazz) throws IOException {
+        String params = JsonUtil.object2String(request);
+        return post(url, null, JsonUtil.string2Map(params), responseClazz);
+    }
+
     public <T> T post(String url, Map<String, Object> params, Class<T> responseClazz) throws IOException {
         return post(url, null, params, responseClazz);
     }
 
     public <T> T post(String url, Map<String, String> headers, Map<String, Object> params, Class<T> responseClazz) throws IOException {
-        //创建请求对象
+        url = SystemConfig.getInstance().getServer().getRemoteHttpUrl() + url;
         HttpPost httpPost = new HttpPost(url);
         if (params != null && !params.isEmpty()) {
             String json = JsonUtil.object2String(params);

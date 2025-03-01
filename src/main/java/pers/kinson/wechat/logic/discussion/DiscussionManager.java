@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jforgame.commons.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.base.MessageContentType;
@@ -47,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class DiscussionManager implements LifeCycle, ChatPaneHandler {
 
     private Map<Long, DiscussionGroupVo> discussionGroups = new HashMap<>();
@@ -188,12 +190,17 @@ public class DiscussionManager implements LifeCycle, ChatPaneHandler {
                 head.setFitWidth(50);
                 head.setFitHeight(50);
                 vBox.getChildren().add(head);
+                if (vo.getOnline() == 0) {
+                    try {
+                        head.setImage(ImageUtil.convertToGray(head.getImage()));
+                    } catch (Exception e) {
+                        log.error("", e);
+                    }
+                }
                 Label label = new Label(vo.getNickName());
                 label.setMaxWidth(50);
                 label.setFont(new Font(20));
-                if (vo.getOnline() == 0) {
-                    head.setImage(ImageUtil.convertToGray(head.getImage()));
-                }
+
                 vBox.getChildren().add(label);
                 groupListView.getChildren().add(vBox);
             });

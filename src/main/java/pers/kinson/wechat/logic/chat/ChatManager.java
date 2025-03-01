@@ -116,7 +116,7 @@ public class ChatManager implements LifeCycle {
 
         SchedulerManager.INSTANCE.runDelay(() -> {
             try {
-                HttpResult httpResult = Context.httpClientManager.get(SystemConfig.getInstance().getServer().getRemoteHttpUrl() + "/emoji/list", new HashMap<>(), HttpResult.class);
+                HttpResult httpResult = Context.httpClientManager.get("/emoji/list", new HashMap<>(), HttpResult.class);
                 @SuppressWarnings("all") LinkedList<EmojiVo> list = JsonUtil.string2Collection(httpResult.getData(), LinkedList.class, EmojiVo.class);
                 Map<String, Resource> localFaces = SqliteDbUtil.queryEmoijResource().stream().collect(Collectors.toMap(Resource::getLabel, Function.identity()));
                 for (EmojiVo emojiVo : list) {

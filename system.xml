@@ -1,11 +1,11 @@
 <app>
    <server>
-      <remoteServerIp>192.168.0.123</remoteServerIp>
-      <remoteServerPort>8087</remoteServerPort>
-      <remoteHttpUrl>http://192.168.0.123:8080</remoteHttpUrl>
+      <remoteServerIp>192.168.0.121</remoteServerIp>
+      <remoteServerPort>9090</remoteServerPort>
+      <remoteHttpUrl>http://192.168.0.121:8080</remoteHttpUrl>
    </server>
    <client>
-      <version>1.2.3</version>
+      <version>1.0.0</version>
    </client>
    <privacy>
       <userId>1001</userId>

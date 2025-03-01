@@ -1,6 +1,7 @@
 package pers.kinson.wechat.ui.controller;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import jforgame.commons.TimeUtil;
@@ -59,11 +60,13 @@ public class MainViewController implements ControlledStage, Initializable {
         if (StringUtils.isEmpty(avatarUrl)) {
             SchedulerManager.INSTANCE.runDelay(() -> {
                 UiContext.runTaskInFxThread(() -> {
-                    Image image = new Image(profile.getAvatar());
-                    headImg.setImage(image);
+                    if (StringUtils.isNoneEmpty(profile.getAvatar())) {
+                        Image image = new Image(profile.getAvatar());
+                        headImg.setImage(image);
+                    }
                 });
 
-            }, 2 * TimeUtil.MILLIS_PER_SECOND);
+            }, 5 * TimeUtil.MILLIS_PER_SECOND);
         }
     }
 
@@ -156,7 +159,7 @@ public class MainViewController implements ControlledStage, Initializable {
 
     @FXML
     private void queryEvent() {
-        SearchManager.getInstance().refreshRecommendFriends(new ResSearchFriends());
+        SearchManager.getInstance().refreshRecommendFriends(Collections.emptyList());
     }
 
     @Override

@@ -30,8 +30,6 @@ public class ClientStartup extends Application {
         SqliteDdl.createDatabase();
         SqliteDbUtil.clearExpiredMessage();
 
-        //与服务端建立连接
-        connectToServer();
         StageController stageController = UiContext.stageController;
         stageController.setPrimaryStage("root", stage);
 
@@ -66,16 +64,6 @@ public class ClientStartup extends Application {
         ApplicationEffect.setNormalIcons(mainStage);
         ApplicationEffect.setNormalIcons(loginStage);
         ApplicationEffect.registerEffect(mainStage);
-    }
-
-    private void connectToServer() {
-        new Thread() {
-            @SneakyThrows
-            public void run() {
-                IOUtil.init();
-            }
-
-        }.start();
     }
 
     public static void main(String[] args) {
