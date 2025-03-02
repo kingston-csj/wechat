@@ -93,9 +93,6 @@ public class ChatManager implements LifeCycle {
 
     private Map<Long, LinkedList<ChatMessage>> friendMessage = new HashMap<>();
 
-    @Getter
-    private ConcurrentMap<String, EmojiVo> emojiVoMap = new ConcurrentHashMap<>();
-
     /**
      * 保存每个好友最小的消息序号
      */
@@ -113,32 +110,6 @@ public class ChatManager implements LifeCycle {
         EventDispatcher.eventBus.register(this);
 
         FileUtil.createDirectory("asserts/emoji");
-
-        SchedulerManager.INSTANCE.runDelay(() -> {
-            try {
-                HttpResult httpResult = Context.httpClientManager.get("/emoji/list", new HashMap<>(), HttpResult.class);
-                @SuppressWarnings("all") LinkedList<EmojiVo> list = JsonUtil.string2Collection(httpResult.getData(), LinkedList.class, EmojiVo.class);
-                Map<String, Resource> localFaces = SqliteDbUtil.queryEmoijResource().stream().collect(Collectors.toMap(Resource::getLabel, Function.identity()));
-                for (EmojiVo emojiVo : list) {
-                    Image image;
-                    Resource localRes = localFaces.get(emojiVo.getLabel());
-                    if (localRes != null) {
-                        String url = "asserts/emoji/" + localRes.getUrl();
-                        image = new Image(Files.newInputStream(new File(url).toPath()));
-                    } else {
-                        image = new Image(emojiVo.getUrl());
-                        String imageName = emojiVo.getUrl().substring(emojiVo.getUrl().lastIndexOf("/") + 1);
-                        Context.httpClientManager.downloadFile(emojiVo.getUrl(), "asserts/emoji/" + imageName, new ProgressMonitor());
-                        SqliteDbUtil.insertFace(emojiVo.getLabel(), imageName);
-                    }
-                    emojiVo.setImage(image);
-                    emojiVoMap.put(emojiVo.getLabel(), emojiVo);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }, TimeUtil.MILLIS_PER_SECOND);
-
 
         chatPaneHandlers.put(ChatContact.TYPE_FRIEND, Context.friendManager);
         chatPaneHandlers.put(ChatContact.TYPE_DISCUSSION, Context.discussionManager);

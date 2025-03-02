@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
+import pers.kinson.wechat.logic.system.EmojiCache;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 
@@ -35,7 +36,7 @@ public class EmojiPopup extends PopupControl {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
-        Map<String, EmojiVo> emojiVoMap = Context.chatManager.getEmojiVoMap();
+        Map<String, EmojiVo> emojiVoMap = EmojiCache.getEmojiVoMap();
 
         ObservableList<EmojiVo> emojis = FXCollections.observableArrayList(
                 emojiVoMap.values()

@@ -10,15 +10,17 @@ import pers.kinson.wechat.base.UiContext;
 import pers.kinson.wechat.logic.login.message.req.ReqConnectSocket;
 import pers.kinson.wechat.logic.login.message.req.ReqLoginPlatform;
 import pers.kinson.wechat.logic.login.message.res.ResConnectServer;
+import pers.kinson.wechat.logic.system.EmojiCache;
 import pers.kinson.wechat.logic.user.util.PasswordUtil;
 import pers.kinson.wechat.net.CmdConst;
-import pers.kinson.wechat.net.HttpResult;
 import pers.kinson.wechat.net.IOUtil;
 import pers.kinson.wechat.ui.R;
 import pers.kinson.wechat.ui.StageController;
 import pers.kinson.wechat.util.I18n;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginManager implements LifeCycle {
 
@@ -33,15 +35,19 @@ public class LoginManager implements LifeCycle {
      */
     public void beginToLogin(long userId, String password) {
         ReqLoginPlatform reqLogin = new ReqLoginPlatform();
-        reqLogin.setUserId(userId);
-        reqLogin.setUserPwd(PasswordUtil.passwordEncryption(userId, password));
+        reqLogin.setUsername(String.valueOf(userId));
+        reqLogin.setPassword(PasswordUtil.passwordEncryption(userId, password));
         System.err.println("向服务端发送登录请求");
-        HttpResult httpResult = null;
         try {
-            httpResult = Context.httpClientManager.post("/user/login", reqLogin, HttpResult.class);
-            if (httpResult.isOk()) {
+            Map<String, String> httpResult = Context.httpClientManager.get("/oauth/token", reqLogin, HashMap.class);
+            if (httpResult.containsKey("access_token")) {
                 //与socket服务端建立连接
                 try {
+                    Context.userManager.getMyProfile().setRequestToken(httpResult.get("access_token"));
+                    // 数据初始化
+                    Context.settingManager.init();
+                    EmojiCache.loadEmoji();
+
                     IOUtil.init();
                     ReqConnectSocket reqConnectSocket = new  ReqConnectSocket();
                     reqConnectSocket.setUserId(userId);

@@ -38,6 +38,11 @@ public class UserModel {
      */
     private long chatMaxSeq;
 
+    /**
+     * 访问http的token
+     */
+    private String requestToken;
+
 
     public final StringProperty userNameProperty() {
         return userName;

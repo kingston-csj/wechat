@@ -75,21 +75,21 @@ public class LoginViewController implements ControlledStage, Initializable {
 
     @Override
     public void onStageShown() {
-        login.setVisible(false);
-        notice.setText("版本检测中");
-        try {
-            HttpResult httpResult = Context.httpClientManager.get("/system/version", new HashMap<>(), HttpResult.class);
-            String serverVersion = httpResult.getData();
-            String clientVersion = SystemConfig.getInstance().getClient().getVersion();
-            if (serverVersion.equals(clientVersion)) {
-                notice.setVisible(false);
-                login.setVisible(true);
-            } else {
-                downloadNewClient(serverVersion);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        login.setVisible(false);
+//        notice.setText("版本检测中");
+//        try {
+//            HttpResult httpResult = Context.httpClientManager.get("/system/version", new HashMap<>(), HttpResult.class);
+//            String serverVersion = httpResult.getData();
+//            String clientVersion = SystemConfig.getInstance().getClient().getVersion();
+//            if (serverVersion.equals(clientVersion)) {
+//                notice.setVisible(false);
+//                login.setVisible(true);
+//            } else {
+//                downloadNewClient(serverVersion);
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     private void downloadNewClient(String version) {

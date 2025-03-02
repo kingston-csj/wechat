@@ -2,7 +2,7 @@
    <server>
       <remoteServerIp>192.168.0.121</remoteServerIp>
       <remoteServerPort>9090</remoteServerPort>
-      <remoteHttpUrl>http://192.168.0.121:8080</remoteHttpUrl>
+      <remoteHttpUrl>http://192.168.0.121:8091</remoteHttpUrl>
    </server>
    <client>
       <version>1.0.0</version>

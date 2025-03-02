@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.logic.chat.message.vo.EmojiVo;
+import pers.kinson.wechat.logic.system.EmojiCache;
 
 public class EmojiElemNode implements ContentElemNode {
 
@@ -15,7 +16,7 @@ public class EmojiElemNode implements ContentElemNode {
 
     @Override
     public Node toUi() {
-        EmojiVo target = Context.chatManager.getEmojiVoMap().get(label);
+        EmojiVo target = EmojiCache.getEmojiVoMap().get(label);
         ImageView imageView = new ImageView(target.getImage());
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);

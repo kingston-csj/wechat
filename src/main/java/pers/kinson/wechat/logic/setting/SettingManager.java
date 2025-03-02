@@ -17,16 +17,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
-public class SettingManager implements LifeCycle {
+public class SettingManager {
 
     List<EmojiVo> avatarList = new ArrayList<>();
 
-    @Override
     public void init() {
 
         SchedulerManager.INSTANCE.runDelay(() -> {
             try {
-                HttpResult httpResult = Context.httpClientManager.get( "/avatar/list", new HashMap<>(), HttpResult.class);
+                HttpResult httpResult = Context.httpClientManager.get("/avatar/list", new HashMap<>(), HttpResult.class);
                 @SuppressWarnings("all") LinkedList<EmojiVo> list = JsonUtil.string2Collection(httpResult.getData(), LinkedList.class, EmojiVo.class);
                 for (EmojiVo emojiVo : list) {
                     Image image = new Image(emojiVo.getUrl());

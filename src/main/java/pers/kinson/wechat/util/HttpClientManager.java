@@ -20,6 +20,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
 import pers.kinson.wechat.config.SystemConfig;
 import pers.kinson.wechat.ui.controller.ProgressMonitor;
@@ -106,6 +107,10 @@ public class HttpClientManager implements LifeCycle {
         }
         if (headers != null && !headers.isEmpty()) {
             headers.forEach(httpPost::addHeader);
+        }
+        String token = Context.userManager.getMyProfile().getRequestToken();
+        if (StringUtils.isNoneEmpty(token)) {
+            httpPost.addHeader("Authorization", "bearer " + token);
         }
 //        httpPost.addHeader("accept","application/json, text/plain, */*");
 //        httpPost.addHeader("Content-Type","application/json; charset=UTF-8");

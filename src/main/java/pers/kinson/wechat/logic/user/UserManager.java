@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jforgame.commons.TimeUtil;
+import lombok.Getter;
 import pers.kinson.wechat.logic.constant.Constants;
 import pers.kinson.wechat.base.Context;
 import pers.kinson.wechat.base.LifeCycle;
