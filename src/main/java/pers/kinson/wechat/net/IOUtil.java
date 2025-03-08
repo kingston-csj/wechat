@@ -23,7 +23,7 @@ public class IOUtil {
 
     public static MessageFactory messageFactory;
 
-    public static void init() throws Exception {
+    public static void init(String socketIp, int socketPort) throws Exception {
         HostAndPort hostPort = new HostAndPort();
         hostPort.setHost(SystemConfig.getInstance().getServer().getRemoteServerIp());
         hostPort.setPort(SystemConfig.getInstance().getServer().getRemoteServerPort());

@@ -127,12 +127,6 @@ public class LoginViewController implements ControlledStage, Initializable {
         final long useId = Long.parseLong(userId.getText());
         final String psw = password.getText();
 
-//		if (!SessionManager.INSTANCE.isConnectedSever()) {
-//			errorPane.setVisible(true);
-//			errorTips.setText(I18n.get("login.failToConnect"));
-//			return;
-//		}
-
         loginProgress.setVisible(true);
         login.setVisible(false);
 

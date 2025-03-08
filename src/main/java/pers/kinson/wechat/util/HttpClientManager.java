@@ -112,9 +112,6 @@ public class HttpClientManager implements LifeCycle {
         if (StringUtils.isNoneEmpty(token)) {
             httpPost.addHeader("Authorization", "bearer " + token);
         }
-//        httpPost.addHeader("accept","application/json, text/plain, */*");
-//        httpPost.addHeader("Content-Type","application/json; charset=UTF-8");
-//        httpPost.addHeader("accept-language:","zh-CN,zh;q=0.9,en;q=0.8");
         //发送请求，接受响应结果
         HttpResponse response = httpClient.execute(httpPost);
         int statusCode = response.getStatusLine().getStatusCode();
@@ -129,7 +126,6 @@ public class HttpClientManager implements LifeCycle {
         try {
             return JsonUtil.string2Object(EntityUtils.toString(entity), responseClazz);
         } catch (Exception e) {
-            e.printStackTrace();
 //            LoggerUtil.error(String.format("json %s 解析错误", JsonUtil.object2String(entity)), e);
         }
         return null;
