@@ -82,33 +82,6 @@ public class MainViewController implements ControlledStage, Initializable {
     }
 
 
-    @FXML
-    private void minEntered() {
-        Image image = ResourceContainer.getMin_1();
-        min.setImage(image);
-    }
-
-    @FXML
-    private void minExited() {
-        Image image = ResourceContainer.getMin();
-        min.setImage(image);
-    }
-
-    @FXML
-    private void bind() {
-        friendSp.setFitToWidth(false);
-        friends.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
-            @Override
-            public void changed(ObservableValue<? extends TitledPane> arg0, TitledPane arg1, TitledPane arg2) {
-                if (arg2 != null) {
-                    System.out.println("-------11111111--------");
-                }
-                if (arg1 != null) {
-                    System.out.println("-------2222222222---------");
-                }
-            }
-        });
-    }
 
     @FXML
     private void min() {

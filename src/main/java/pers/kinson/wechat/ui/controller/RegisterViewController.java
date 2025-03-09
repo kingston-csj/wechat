@@ -41,12 +41,6 @@ public class RegisterViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void register() {
-//		if (!SessionManager.INSTANCE.isConnectedSever()) {
-//			errorTips.setText(I18n.get("login.failToConnect"));
-//			errorTips.setVisible(true);
-//			return;
-//		}
-
 		String nickName = userName.getText();
 		String psw = password.getText();
 		byte sexCode = Byte.parseByte(sexGroup.getSelectedToggle().getUserData().toString());
@@ -70,18 +64,6 @@ public class RegisterViewController implements ControlledStage, Initializable {
 
 	@FXML
 	private void min() {
-	}
-
-	@FXML
-	private void closeEntered() {
-		Image image = ResourceContainer.getClose_1();
-		closeBtn.setImage(image);
-	}
-
-	@FXML
-	private void closeExited() {
-		Image image = ResourceContainer.getClose();
-		closeBtn.setImage(image);
 	}
 
 	@FXML

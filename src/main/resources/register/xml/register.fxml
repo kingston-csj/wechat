@@ -84,7 +84,7 @@
                  mnemonicParsing="false" text="%register.girl" toggleGroup="$sexGroup"/>
 
     <ImageView fx:id="closeBtn" fitHeight="30.0" fitWidth="30.0" layoutX="399.0"
-               onMouseClicked="#close" onMouseEntered="#closeEntered" onMouseExited="#closeExited"
+               onMouseClicked="#close"
                pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0"
                AnchorPane.topAnchor="0.0">
         <rotationAxis>

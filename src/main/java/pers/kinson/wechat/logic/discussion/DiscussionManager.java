@@ -104,7 +104,6 @@ public class DiscussionManager implements LifeCycle, ChatPaneHandler {
                 long discussionId = Long.parseLong(userIdUi.getText());
                 DiscussionGroupVo target = discussionGroups.get(discussionId);
                 if (target != null) {
-//                    openGroupUI(target);
                     Context.chatManager.openChatPanel(target);
                 }
             }

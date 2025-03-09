@@ -19,18 +19,6 @@
         <Image url="@../../login/img/headimag.png"/>
     </ImageView>
     <HBox layoutX="99.0" layoutY="89.0" prefHeight="25.0" prefWidth="189.0" spacing="6.0">
-        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../img/top/1.png"/>
-        </ImageView>
-        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../img/top/3.png"/>
-        </ImageView>
-        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../img/top/2.png"/>
-        </ImageView>
-        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../img/top/6.png"/>
-        </ImageView>
     </HBox>
     <HBox layoutY="124.0" prefHeight="30.0" prefWidth="300.0" style="-fx-background-color: lightblue;">
         <TextField prefHeight="28.0" prefWidth="260.0" styleClass="-fx-prompt-text-fill:#000000;"
@@ -71,7 +59,7 @@
         </Tab>
     </TabPane>
     <ImageView fx:id="min" fitHeight="30.0" fitWidth="30.0" layoutX="241.0" layoutY="-1.0" onMouseClicked="#min"
-               onMouseEntered="#minEntered" onMouseExited="#minExited" pickOnBounds="true" preserveRatio="true">
+              pickOnBounds="true" preserveRatio="true">
         <Image url="@../../login/img/min.png"/>
     </ImageView>
     <ImageView fx:id="close" fitHeight="30.0" fitWidth="30.0" layoutX="271.0" layoutY="-1.0" onMouseClicked="#close"
@@ -106,22 +94,6 @@
         </ImageView>
         <HBox alignment="CENTER_RIGHT" layoutX="1.0" minHeight="20.0" minWidth="180.0" prefHeight="20.0"
               prefWidth="180.0" spacing="20.0">
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="200.0" pickOnBounds="true"
-                       preserveRatio="true" x="10.0">
-                <Image url="@../img/app/2.png"/>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../img/app/9.png"/>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../img/app/4.png"/>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../img/app/11.png"/>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../img/app/7.png"/>
-            </ImageView>
         </HBox>
         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../img/bottom/appbox_mgr_btn.png"/>
